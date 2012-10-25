@@ -10,6 +10,7 @@
 
     <!-- Le styles -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/main.css" rel="stylesheet">
     
 
@@ -69,7 +70,7 @@
 						   <form class="form-search main-search" id="search-form">
 						     <div class="input-append">
 								    <input type="text" class="span2 search-query" placeholder="Search">
-								    <button type="submit" class="btn"><i class="icon-search"></i></button>
+								    <button type="submit" class="btn hidden-tablet"><i class="icon-search"></i></button>
 								  </div>
 	             </form>
 	            </li>
@@ -77,10 +78,16 @@
 	        </div>
 	       </div>
         <div class="span4">
-          <div class="well">
+          <div class="well" id="player-box">
+            <i class="icon-play" id="player-status"></i>
+            <div>
+              <div id="current-song-title"></div>
+              <div id="current-song-artist"></div>
+              <div id="current-song-album"></div>
             <h3>Queue</h3>
             <hr>
-           </div>
+            <div id="queue-holder"></div>
+          </div>
         </div>
       </div>
     </div> <!-- /container -->

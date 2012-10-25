@@ -10,7 +10,7 @@ class PlayerSelectController {
   SessionModel _session_model;
   AppView _app_view;
   PlayerSelectView _player_select_view;
-  Element _current_player_btn;
+  Function _player_selected_callback;
   
   PlayerSelectController(AppView app_view, SessionModel session_model){
     this._app_view = app_view;
@@ -20,6 +20,10 @@ class PlayerSelectController {
     Element box = query("#player-select-box");
     this._player_select_view = new PlayerSelectView(box);
     this._player_select_view.register_join_btn_clicked(join_btn_clicked);
+  }
+  
+  void register_on_player_selected(Function callback){
+    this._player_selected_callback = callback;
   }
   
   void player_change_clicked(){
@@ -35,10 +39,11 @@ class PlayerSelectController {
   }
   
   void finished_join_player(HttpRequest request, Map data){
-    if(request.status == 201){
+    //201 means success, 400 means you own it
+    if(request.status == 201 || request.status == 400){
       this._player_select_view.hide();
       this._session_model.player = data;
-      this._app_view.set_player_name(this._session_model.player['name']);
+      this._player_selected_callback();
     }else{
       this._app_view.throwError("Error joining player");
     }
