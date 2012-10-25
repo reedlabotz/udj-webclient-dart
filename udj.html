@@ -48,8 +48,8 @@
             <img src="assets/img/logo-big.png">
             <h2>UDJ</h2>
             <div class="alert alert-error login-error" id="login-error">Username and password did not match. Please try again.</div>
-            <input type="text" placeholder="Username" id="username">
-            <input type="password" placeholder="Password" id="password">
+            <input type="text" placeholder="Username" id="username"><br>
+            <input type="password" placeholder="Password" id="password"><br>
             <button type="submit" class="btn btn-primary">Login</button>
           </form>
 				</div>
@@ -111,10 +111,10 @@
     <script src="http://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js"></script>
     <script type="application/javascript">
       window.showPlayerSelectBox = function(){
-        $("#player-select-box").modal('show');
+        jQuery("#player-select-box").modal('show');
       }
       window.hidePlayerSelectBox = function(){
-        $("#player-select-box").modal('hide');
+        jQuery("#player-select-box").modal('hide');
       }
     </script>
   </body>

@@ -17,6 +17,8 @@ class PlayerController {
     this._app_view = app_view;
     this._session_model = session_model;
     this._player_view = new PlayerView(query("#player-box"));
+    this._player_view.register_downvote_callback(this._downvote_song);
+    this._player_view.register_upvote_callback(this._upvote_song);
   }
   
   void reload(){
@@ -36,5 +38,23 @@ class PlayerController {
     this._player_view.set_current(data['current_song']);
     this._player_view.set_state(data['state']);
     this._player_view.set_queue(data['active_playlist']);
+  }
+  
+  void _upvote_song(String id){
+    this._session_model.auth_put_request('/players/${this._session_model.player['id']}/active_playlist/songs/${id}/upvote', 
+        {}, this._upvote_song_finished);
+  }
+  
+  void _upvote_song_finished(HttpRequest request){
+    
+  }
+  
+  void _downvote_song(String id){
+    this._session_model.auth_put_request('/players/${this._session_model.player['id']}/active_playlist/songs/${id}/downvote', 
+        {}, this._downvote_song_finished);
+  }
+  
+  void _downvote_song_finished(HttpRequest request){
+    
   }
 }

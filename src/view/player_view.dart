@@ -4,8 +4,19 @@ import 'dart:html';
 
 class PlayerView {
   Element _box;
+  Function _upvote_callback;
+  Function _downvote_callback;
+  
   PlayerView(Element box){
     this._box = box; 
+  }
+  
+  void register_downvote_callback(Function callback){
+    this._downvote_callback = callback;
+  }
+  
+  void register_upvote_callback(Function callback){
+    this._upvote_callback = callback;
   }
   
   void set_state(String state){
@@ -44,6 +55,7 @@ class PlayerView {
       up_vote_icon.classes.add("icon-chevron-up");
       up_vote.elements.add(up_vote_icon);
       up_vote.dataAttributes['id'] = q['song']['id'];
+      up_vote.on.click.add(this._upvote);
       li.elements.add(up_vote);
       
       ButtonElement down_vote = new ButtonElement();
@@ -52,6 +64,7 @@ class PlayerView {
       down_vote_icon.classes.add("icon-chevron-down");
       down_vote.elements.add(down_vote_icon);
       down_vote.dataAttributes['id'] = q['song']['id'];
+      down_vote.on.click.add(this._downvote);
       li.elements.add(down_vote);
       
       DivElement div_title = new DivElement();
@@ -70,6 +83,24 @@ class PlayerView {
     }
     this._box.query('#queue-holder').elements.clear();
     this._box.query('#queue-holder').elements.add(ul);
+  }
+  
+  void _upvote(MouseEvent e){
+    Element target = e.target;
+    if(target.tagName != "BUTTON"){
+      target = target.parent;
+    }
+    String id = target.dataAttributes['id'];
+    this._upvote_callback(id);
+  }
+  
+  void _downvote(MouseEvent e){
+    Element target = e.target;
+    if(target.tagName != "BUTTON"){
+      target = target.parent;
+    }
+    String id = target.dataAttributes['id'];
+    this._downvote_callback(id);
   }
   
 }

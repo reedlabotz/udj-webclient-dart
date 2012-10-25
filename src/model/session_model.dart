@@ -102,6 +102,7 @@ class SessionModel {
     this.user_id = null;
     this.username = null;
     this.token = null;
+    this.player = null;
   }
   
   void auth_get_request(String url,Map data,Function callback){
