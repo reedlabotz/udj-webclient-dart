@@ -1,0 +1,32 @@
+body{
+  padding-top: 60px;
+  background: url('../img/cream_dust.png');
+}
+
+/* logged out view */
+
+.loggin-box{
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  margin-top: -200px;
+}
+
+.loggin-box-inner{
+  text-align: center;
+}
+
+
+/* logged in view */
+.logged-in-view{
+  display: none;
+}
+
+.logo{
+  height: 22px;
+  width: 22px;
+}
+
+.main-search{
+  margin-bottom: 0;
+}
