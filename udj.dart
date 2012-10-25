@@ -5,5 +5,6 @@
 void main()
 {
   AppController app_controller = new AppController();
+  app_controller.init();
 
 }

@@ -25,11 +25,11 @@ class LoginView {
  }
  
  void hide(){
-   this.box.hidden = true;
+   this.box.style.display = "none";
  }
  
  void show(){
-   this.box.hidden = false;
+   this.box.style.display = "block";
  }
  
  void show_error(){
@@ -42,6 +42,15 @@ class LoginView {
  
  String getPassword(){
    return this.password.value;
+ }
+ 
+ void clearPassword(){
+   this.password.value = "";
+ }
+ 
+ void clearInput(){
+   this.password.value = "";
+   this.username.value = "";
  }
  
  void _submitted(Event e){

@@ -4,6 +4,9 @@ body{
 }
 
 /* logged out view */
+.logged-out-view{
+  display: none;
+}
 
 .loggin-box{
   height: 300px;
