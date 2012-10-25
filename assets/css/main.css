@@ -16,6 +16,10 @@ body{
   text-align: center;
 }
 
+.login-error{
+  display: none;
+}
+
 
 /* logged in view */
 .logged-in-view{

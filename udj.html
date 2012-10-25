@@ -33,19 +33,24 @@
         </div>
       </div>
     </div>
-    <div class="container logged-out-view">
+    
+    
+    <div class="container logged-out-view" id="login-box">
       <div class="row">
         <div class="span4 offset4 loggin-box">
-          <form class="well loggin-box-inner">
+          <form class="well loggin-box-inner" id="login-form">
             <img src="assets/img/logo-big.png">
             <h2>UDJ</h2>
-            <input type="text" placeholder="Username">
-            <input type="password" placeholder="Password">
+            <div class="alert alert-error login-error" id="login-error">Username and password did not match. Please try again.</div>
+            <input type="text" placeholder="Username" id="username">
+            <input type="password" placeholder="Password" id="password">
             <button type="submit" class="btn btn-primary">Login</button>
           </form>
 				</div>
 		  </div>
     </div>
+    
+    
     <div class="container logged-in-view">
       <div class="row">
         <div class="span8">
