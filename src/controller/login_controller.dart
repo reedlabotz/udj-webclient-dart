@@ -6,6 +6,7 @@
 class LoginController {
   LoginView login_view;
   SessionModel session_model;
+  Function on_logged_in;
   
   LoginController(SessionModel session_model){
     this.session_model = session_model;
@@ -14,9 +15,14 @@ class LoginController {
     this.login_view.register_submitted_callback(this.login);
   }
   
+  void register_on_logged_in(Function callback){
+    this.on_logged_in = callback;
+  }
+  
   void login_finished(bool success){
     if(success){
       this.login_view.hide();
+      this.on_logged_in();
     }else{
       this.login_view.show_error();
     }
