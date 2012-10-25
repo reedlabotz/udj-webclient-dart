@@ -4,4 +4,6 @@ description: >
 version: 0.0.1
 author: Reed La Botz <reedlabotz@gmail.com>
 homepage: https://github.com/reedlabotz/udj-webclient
-
+dependencies:
+  js:
+    hosted: js

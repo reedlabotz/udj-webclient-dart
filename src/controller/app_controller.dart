@@ -1,11 +1,14 @@
-#library('app_controller');
-#import("dart:html");
-#import('login_controller.dart');
-#import('../model/session_model.dart');
-#import('../view/app_view.dart');
+library app_controller;
+
+import "dart:html";
+import 'login_controller.dart';
+import 'player_select_controller.dart';
+import '../model/session_model.dart';
+import '../view/app_view.dart'  ;
 
 class AppController {
   LoginController login_controller;
+  PlayerSelectController player_select_cortroller;
   SessionModel session_model;
   AppView app_view;
   
@@ -19,6 +22,8 @@ class AppController {
     Element main_content = query("#main-content");
     this.app_view = new AppView(top_bar,main_content);
     this.app_view.register_on_logged_out(this.logout_clicked);
+    
+    this.player_select_cortroller = new PlayerSelectController(this.app_view,this.session_model);
   }
   
   void init(){

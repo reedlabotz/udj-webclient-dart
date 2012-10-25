@@ -1,6 +1,7 @@
-// DART HTML Library
-#import('dart:html');
-#import('src/controller/app_controller.dart');
+library udj;
+
+import 'dart:html';
+import 'src/controller/app_controller.dart';
 
 void main()
 {

@@ -1,7 +1,8 @@
-#library("login_controller");
-#import("dart:html");
-#import('../view/login_view.dart');
-#import('../model/session_model.dart');
+library login_controller;
+
+import "dart:html";
+import '../view/login_view.dart';
+import '../model/session_model.dart';
 
 class LoginController {
   LoginView _login_view;

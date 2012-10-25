@@ -1,8 +1,9 @@
-#library("session_model");
-#import("dart:html");
-#import("dart:json");
-#import("dart:uri");
-#import("../constants.dart");
+library session_model;
+
+import "dart:html";
+import "dart:json";
+import "dart:uri";
+import "../constants.dart";
 
 
 class SessionModel {
@@ -89,7 +90,7 @@ class SessionModel {
   
   bool login(String username,String password,Function callback){
     HttpRequest request = new HttpRequest();
-    request.open("POST", '${API_URL}auth', true);
+    request.open("POST", '${API_URL}/auth', true);
     String data;
     data = encodeMap({'username':username,'password':password});
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
@@ -101,5 +102,41 @@ class SessionModel {
     this.user_id = null;
     this.username = null;
     this.token = null;
+  }
+  
+  void auth_get_request(String url,Map data,Function callback){
+    HttpRequest request;
+    request = new HttpRequest();
+    String query = encodeMap(data);
+    request.open("GET",'${API_URL}${url}?${query}');
+    this.auth_request(request, null, callback);
+  }
+  
+  void auth_put_request(String url,Map data,Function callback){
+    HttpRequest request;
+    request = new HttpRequest();
+    String query = encodeMap(data);
+    request.open("PUT",'${API_URL}${url}');
+    request.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
+    this.auth_request(request, query, callback);
+  }
+  
+  void auth_post_request(String url,Map data,Function callback){
+    HttpRequest request;
+    request = new HttpRequest();
+    String query = encodeMap(data);
+    request.open("POST",'${API_URL}${url}');
+    request.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
+    this.auth_request(request, query, callback);
+  }
+  
+  void auth_request(HttpRequest request,String body,Function callback){
+    request.on.loadEnd.add((e) => callback(request));
+    request.setRequestHeader('X-Udj-Ticket-Hash',this._token);
+    if(body == null){
+      request.send();
+    }else{
+      request.send(body);
+    }
   }
 }

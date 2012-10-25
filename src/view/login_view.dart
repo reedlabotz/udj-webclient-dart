@@ -1,5 +1,6 @@
-#library("login_view");
-#import("dart:html");
+library login_view;
+
+import "dart:html";
 
 class LoginView {
  Element box;
