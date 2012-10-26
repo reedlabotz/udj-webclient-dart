@@ -85,9 +85,8 @@ class LibraryView {
       TableRowElement tr = table_body.insertRow(-1);
       
       TableCellElement td_add = new TableCellElement();
-      AnchorElement add_btn = new AnchorElement();
+      ButtonElement add_btn = new ButtonElement();
       add_btn.classes.add('btn');
-      add_btn.href = "#";
       add_btn.dataAttributes['id'] = s['id'];
       Element plus_icon = new Element.tag("i");
       plus_icon.classes.add('icon-plus');

@@ -1976,8 +1976,8 @@ $$.Object = {"": [],
  get$_portId: function() {
   return this.noSuchMethod$2("get:_portId", []);
  },
- set$rootContext: function($0) {
-  return this.noSuchMethod$2("set:rootContext", [$0]);
+ set$_previous: function($0) {
+  return this.noSuchMethod$2("set:_previous", [$0]);
  },
  set$$$dom_className: function($0) {
   return this.noSuchMethod$2("set:$dom_className", [$0]);
@@ -1991,11 +1991,14 @@ $$.Object = {"": [],
  set$innerHTML: function($0) {
   return this.noSuchMethod$2("set:innerHTML", [$0]);
  },
+ set$rootContext: function($0) {
+  return this.noSuchMethod$2("set:rootContext", [$0]);
+ },
  set$text: function($0) {
   return this.noSuchMethod$2("set:text", [$0]);
  },
- set$href: function($0) {
-  return this.noSuchMethod$2("set:href", [$0]);
+ set$value: function($0) {
+  return this.noSuchMethod$2("set:value", [$0]);
  },
  set$_cssClassSet: function($0) {
   return this.noSuchMethod$2("set:_cssClassSet", [$0]);
@@ -2003,8 +2006,8 @@ $$.Object = {"": [],
  set$_next: function($0) {
   return this.noSuchMethod$2("set:_next", [$0]);
  },
- set$value: function($0) {
-  return this.noSuchMethod$2("set:value", [$0]);
+ set$href: function($0) {
+  return this.noSuchMethod$2("set:href", [$0]);
  },
  set$player: function($0) {
   return this.noSuchMethod$2("set:player", [$0]);
@@ -2020,9 +2023,6 @@ $$.Object = {"": [],
  },
  set$type: function($0) {
   return this.noSuchMethod$2("set:type", [$0]);
- },
- set$_previous: function($0) {
-  return this.noSuchMethod$2("set:_previous", [$0]);
  },
  set$dartProxyDebug: function($0) {
   return this.noSuchMethod$2("set:dartProxyDebug", [$0]);
@@ -5540,9 +5540,8 @@ $$.LibraryView = {"": ["_box", "_add_callback", "_random_btn_callback", "_artist
     var t2 = t1.next$0();
     var tr = table_body.insertRow$1(-1);
     td_add = $.TableCellElement_TableCellElement();
-    var add_btn = $.AnchorElement_AnchorElement($);
+    var add_btn = $.ButtonElement_ButtonElement();
     $.add$1(add_btn.get$classes(), 'btn');
-    add_btn.set$href('#');
     $.indexSet(add_btn.get$dataAttributes(), 'id', $.index(t2, 'id'));
     var plus_icon = $.Element_Element$tag('i');
     $.add$1(plus_icon.get$classes(), 'icon-plus');
@@ -7445,6 +7444,10 @@ $.StringBufferImpl$ = function(content$) {
   return t1;
 };
 
+$._Elements_createButtonElement = function() {
+  return $._document().$dom_createElement$1('button');
+};
+
 $._uriEncode = function(canonical, text) {
   if (typeof text !== 'string' && (typeof text !== 'object' || text === null || text.constructor !== Array && !text.is$JavaScriptIndexingBehavior()))
     return $._uriEncode$bailout(1, canonical, text);
@@ -7598,16 +7601,16 @@ $._FrameSetElementEventsImpl$ = function(_ptr) {
   return new $._FrameSetElementEventsImpl(_ptr);
 };
 
-$.add = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? a + b : $.add$slow(a, b);
-};
-
 $.TableElement_TableElement = function() {
   return $._Elements_createTableElement();
 };
 
 $._JsSendPortSync$ = function(_id) {
   return new $._JsSendPortSync(_id);
+};
+
+$.add = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? a + b : $.add$slow(a, b);
 };
 
 $._deserializeElement = function(id) {
@@ -7820,6 +7823,10 @@ $._EventLoop$ = function() {
   return new $._EventLoop($.Queue_Queue());
 };
 
+$.contains = function(userAgent, name$) {
+  return userAgent.indexOf(name$) !== -1;
+};
+
 $.substringUnchecked = function(receiver, startIndex, endIndex) {
   return receiver.substring(startIndex, endIndex);
 };
@@ -7895,10 +7902,6 @@ $._dynamicMetadata0 = function() {
   return $dynamicMetadata;
 };
 
-$.contains = function(userAgent, name$) {
-  return userAgent.indexOf(name$) !== -1;
-};
-
 $.add$slow = function(a, b) {
   if ($.checkNumbers(a, b))
     return a + b;
@@ -7921,10 +7924,6 @@ $._AllMatchesIterable$ = function(_re, _str) {
   return new $._AllMatchesIterable(_re, _str);
 };
 
-$._MatchImplementation$ = function(pattern, str, _start, _end, _groups) {
-  return new $._MatchImplementation(pattern, str, _start, _end, _groups);
-};
-
 $._PendingSendPortFinder$ = function() {
   var t1 = $._MessageTraverserVisitedMap$0();
   t1 = new $._PendingSendPortFinder([], t1);
@@ -7932,22 +7931,8 @@ $._PendingSendPortFinder$ = function() {
   return t1;
 };
 
-$.Futures_wait = function(futures) {
-  var t1 = {};
-  if (typeof futures !== 'string' && (typeof futures !== 'object' || futures === null || futures.constructor !== Array && !futures.is$JavaScriptIndexingBehavior()))
-    return $.Futures_wait$bailout(1, futures, t1);
-  if ($.isEmpty(futures) === true)
-    return $.Future_Future$immediate($.CTC1);
-  var completer = $.Completer_Completer();
-  var result = completer.get$future();
-  t1.remaining_1 = futures.length;
-  var values = $.ListImplementation_List(futures.length);
-  for (var i = 0; i < futures.length; ++i) {
-    var future = futures[i];
-    future.then$1(new $.Futures_wait_anon(completer, i, t1, result, values));
-    future.handleException$1(new $.Futures_wait_anon0(future, completer, result));
-  }
-  return result;
+$._MatchImplementation$ = function(pattern, str, _start, _end, _groups) {
+  return new $._MatchImplementation(pattern, str, _start, _end, _groups);
 };
 
 $.Arrays_copy = function(src, srcStart, dst, dstStart, count) {
@@ -7981,6 +7966,24 @@ $.Arrays_copy = function(src, srcStart, dst, dstStart, count) {
 
 $._PeerConnection00EventsImpl$ = function(_ptr) {
   return new $._PeerConnection00EventsImpl(_ptr);
+};
+
+$.Futures_wait = function(futures) {
+  var t1 = {};
+  if (typeof futures !== 'string' && (typeof futures !== 'object' || futures === null || futures.constructor !== Array && !futures.is$JavaScriptIndexingBehavior()))
+    return $.Futures_wait$bailout(1, futures, t1);
+  if ($.isEmpty(futures) === true)
+    return $.Future_Future$immediate($.CTC1);
+  var completer = $.Completer_Completer();
+  var result = completer.get$future();
+  t1.remaining_1 = futures.length;
+  var values = $.ListImplementation_List(futures.length);
+  for (var i = 0; i < futures.length; ++i) {
+    var future = futures[i];
+    future.then$1(new $.Futures_wait_anon(completer, i, t1, result, values));
+    future.handleException$1(new $.Futures_wait_anon0(future, completer, result));
+  }
+  return result;
 };
 
 $._AbstractWorkerEventsImpl$ = function(_ptr) {
@@ -8144,6 +8147,13 @@ $.AnchorElement_AnchorElement = function(href) {
   return $._Elements_createAnchorElement(href);
 };
 
+$.map = function(receiver, f) {
+  if (!$.isJsArray(receiver))
+    return receiver.map$1(f);
+  else
+    return $.Collections_map(receiver, [], f);
+};
+
 $._ListRange$ = function(source, offset, length$) {
   var t1 = length$ == null ? $.sub($.get$length(source), offset) : length$;
   t1 = new $._ListRange(source, offset, t1);
@@ -8216,13 +8226,6 @@ $.Primitives_objectToString = function(object) {
 
 $._currentIsolate = function() {
   return $._globalState().get$currentContext();
-};
-
-$.map = function(receiver, f) {
-  if (!$.isJsArray(receiver))
-    return receiver.map$1(f);
-  else
-    return $.Collections_map(receiver, [], f);
 };
 
 $._NotificationEventsImpl$ = function(_ptr) {
@@ -8405,10 +8408,6 @@ $._FrozenElementList$_wrap = function(_nodeList) {
 
 $._FrozenCSSClassSet$ = function() {
   return new $._FrozenCSSClassSet(null);
-};
-
-$._Elements_createButtonElement = function() {
-  return $._document().$dom_createElement$1('button');
 };
 
 $._Collections_forEach = function(iterable, f) {
@@ -8863,18 +8862,18 @@ $._depth = function() {
   return $.get$length($._proxiedObjectTable().get$_scopeIndices());
 };
 
-$.last = function(receiver) {
-  if (!$.isJsArray(receiver))
-    return receiver.last$0();
-  return $.index(receiver, $.sub($.get$length(receiver), 1));
-};
-
 $.HashMapImplementation__nextProbe = function(currentProbe, numberOfProbes, length$) {
   return $.and($.add(currentProbe, numberOfProbes), $.sub(length$, 1));
 };
 
 $.Completer_Completer = function() {
   return $.CompleterImpl$();
+};
+
+$.last = function(receiver) {
+  if (!$.isJsArray(receiver))
+    return receiver.last$0();
+  return $.index(receiver, $.sub($.get$length(receiver), 1));
 };
 
 $.CompleterImpl$ = function() {
@@ -9311,6 +9310,13 @@ $.LoginController$ = function(session_model) {
   return t1;
 };
 
+$.filter = function(receiver, predicate) {
+  if (!$.isJsArray(receiver))
+    return receiver.filter$1(predicate);
+  else
+    return $.Collections_filter(receiver, [], predicate);
+};
+
 $._Collections_contains = function(iterable, element) {
   for (var t1 = $.iterator(iterable); t1.hasNext$0() === true;)
     if ($.eqB(t1.next$0(), element))
@@ -9318,11 +9324,13 @@ $._Collections_contains = function(iterable, element) {
   return false;
 };
 
-$.filter = function(receiver, predicate) {
-  if (!$.isJsArray(receiver))
-    return receiver.filter$1(predicate);
-  else
-    return $.Collections_filter(receiver, [], predicate);
+$.Collections_filter = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true;) {
+    var t2 = t1.next$0();
+    if (f.call$1(t2) === true)
+      destination.push(t2);
+  }
+  return destination;
 };
 
 $._TextTrackCueEventsImpl$ = function(_ptr) {
@@ -9347,15 +9355,6 @@ $.endsWith = function(receiver, other) {
 
 $._Elements_createUListElement = function() {
   return $._document().$dom_createElement$1('ul');
-};
-
-$.Collections_filter = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true;) {
-    var t2 = t1.next$0();
-    if (f.call$1(t2) === true)
-      destination.push(t2);
-  }
-  return destination;
 };
 
 $.allMatchesInStringUnchecked = function(needle, haystack) {
@@ -9412,12 +9411,6 @@ $._HttpRequestUploadEventsImpl$ = function(_ptr) {
   return new $._HttpRequestUploadEventsImpl(_ptr);
 };
 
-$.checkNull = function(object) {
-  if (object == null)
-    throw $.$$throw($.NullPointerException$(null, $.CTC1));
-  return object;
-};
-
 $._Collections_filter = function(source, destination, f) {
   for (var t1 = $.iterator(source); t1.hasNext$0() === true;) {
     var t2 = t1.next$0();
@@ -9425,6 +9418,12 @@ $._Collections_filter = function(source, destination, f) {
       destination.push(t2);
   }
   return destination;
+};
+
+$.checkNull = function(object) {
+  if (object == null)
+    throw $.$$throw($.NullPointerException$(null, $.CTC1));
+  return object;
 };
 
 $.Collections__containsRef = function(c, ref) {
@@ -9438,6 +9437,12 @@ $.Collections__containsRef = function(c, ref) {
 
 $._MediaElementEventsImpl$ = function(_ptr) {
   return new $._MediaElementEventsImpl(_ptr);
+};
+
+$.Collections_map = function(source, destination, f) {
+  for (var t1 = $.iterator(source); t1.hasNext$0() === true;)
+    destination.push(f.call$1(t1.next$0()));
+  return destination;
 };
 
 $.Proxy$_internal = function(_port, _id) {
@@ -9491,12 +9496,6 @@ $._IDBOpenDBRequestEventsImpl$ = function(_ptr) {
 $.checkGrowable = function(list, reason) {
   if (!!(list.fixed$length))
     throw $.$$throw($.UnsupportedOperationException$(reason));
-};
-
-$.Collections_map = function(source, destination, f) {
-  for (var t1 = $.iterator(source); t1.hasNext$0() === true;)
-    destination.push(f.call$1(t1.next$0()));
-  return destination;
 };
 
 $._Deserializer_isPrimitive0 = function(x) {
