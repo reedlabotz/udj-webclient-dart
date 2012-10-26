@@ -4,6 +4,7 @@ import "dart:html";
 import 'login_controller.dart';
 import 'player_select_controller.dart';
 import 'player_controller.dart';
+import 'library_controller.dart';
 import '../model/session_model.dart';
 import '../view/app_view.dart'  ;
 
@@ -11,6 +12,7 @@ class AppController {
   LoginController login_controller;
   PlayerSelectController player_select_controller;
   PlayerController player_controller;
+  LibraryController library_controller;
   SessionModel session_model;
   AppView app_view;
   
@@ -29,6 +31,9 @@ class AppController {
     this.player_select_controller.register_on_player_selected(this.on_player_selected);
     
     this.player_controller = new PlayerController(this.app_view,this.session_model);
+    
+    this.library_controller = new LibraryController(this.app_view,this.session_model);
+    this.library_controller.load_random();
   }
   
   void init(){

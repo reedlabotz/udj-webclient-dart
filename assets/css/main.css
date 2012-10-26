@@ -95,3 +95,10 @@ body{
 .queue-song-info-holder{
   margin-left: 50px;
 }
+
+/* library view */
+.library-results .btn{
+  font-size: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
+}

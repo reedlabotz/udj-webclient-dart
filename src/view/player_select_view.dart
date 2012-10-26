@@ -63,7 +63,7 @@ class PlayerSelectView {
     tr_head.elements.add(td_max);
     
     TableCellElement td_join = new Element.tag("th");
-    td_join.text = "Join";
+    td_join.text = "";
     tr_head.elements.add(td_join);
     
     table.tHead.elements.add(tr_head);

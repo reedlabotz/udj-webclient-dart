@@ -48,8 +48,8 @@
             <img src="assets/img/logo-big.png">
             <h2>UDJ</h2>
             <div class="alert alert-error login-error" id="login-error">Username and password did not match. Please try again.</div>
-            <input type="text" placeholder="Username" id="username"><br>
-            <input type="password" placeholder="Password" id="password"><br>
+            <input type="text" placeholder="Username" id="username" class="input input-medium"><br>
+            <input type="password" placeholder="Password" id="password" class="input input-medium"><br>
             <button type="submit" class="btn btn-primary">Login</button>
           </form>
 				</div>
@@ -61,24 +61,24 @@
       <div class="row">
         <div class="span8">
           <h3>Library</h3>
-	        <div class="well">
+	        <div class="well" id="library-box">
 	          <ul class="nav nav-tabs">
-						  <li><a href="#">Playlist</a></li>
-						  <li><a href="#">Artist</a></li>
-						  <li><a href="#">Recent</a></li>
-						  <li><a href="#">Random</a></li>
+	            <li id="random-tab" class="tab"><a href="#">Random</a></li>
+						  <li id="artists-tab" class="tab"><a href="#">Artist</a></li>
+						  <li id="recent-tab" class="tab"><a href="#">Recent</a></li>
 						  <li class="pull-right">
 						   <form class="form-search main-search" id="search-form">
 						     <div class="input-append">
 								    <input type="text" class="span2 search-query" placeholder="Search">
-								    <button type="submit" class="btn hidden-tablet"><i class="icon-search"></i></button>
+								    <button type="submit" class="btn"><i class="icon-search"></i></button>
 								  </div>
 	             </form>
 	            </li>
 						</ul>
+						<div id="library-results" class="library-results"></div>
 	        </div>
 	       </div>
-        <div class="span4" id="player-box">
+         <div class="span4" id="player-box">
           <h3>Now Playing</h3>
           <div class="well">
             <i class="icon-play player-status" id="player-status"></i>
