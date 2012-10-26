@@ -1184,9 +1184,6 @@ $$.Object = {"": [],
  register_on_player_select$1: function($0) {
   return this.noSuchMethod$2("register_on_player_select", [$0]);
  },
- load_random$0: function() {
-  return this.noSuchMethod$2("load_random", []);
- },
  allMatches$1: function($0) {
   return this.noSuchMethod$2("allMatches", [$0]);
  },
@@ -1207,6 +1204,9 @@ $$.Object = {"": [],
  },
  _modify$1: function($0) {
   return this.noSuchMethod$2("_modify", [$0]);
+ },
+ load_random$0: function() {
+  return this.noSuchMethod$2("load_random", []);
  },
  _clearAttachedInfo$1: function($0) {
   return this.noSuchMethod$2("_clearAttachedInfo", [$0]);
@@ -4731,6 +4731,7 @@ $$.AppController = {"": ["login_controller", "player_select_controller", "player
  on_player_selected$0: function() {
   this.app_view.set_player_name$1($.index(this.session_model.get$player(), 'name'));
   this.player_controller.reload$0();
+  this.library_controller.load_random$0();
 },
  get$on_player_selected: function() { return new $.BoundClosure0(this, 'on_player_selected$0'); },
  logout_clicked$0: function() {
@@ -4748,7 +4749,6 @@ $$.AppController = {"": ["login_controller", "player_select_controller", "player
   this.player_select_controller.register_on_player_selected$1(this.get$on_player_selected());
   this.player_controller = $.PlayerController$(this.app_view, this.session_model);
   this.library_controller = $.LibraryController$(this.app_view, this.session_model);
-  this.library_controller.load_random$0();
 }
 };
 

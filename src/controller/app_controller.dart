@@ -33,7 +33,6 @@ class AppController {
     this.player_controller = new PlayerController(this.app_view,this.session_model);
     
     this.library_controller = new LibraryController(this.app_view,this.session_model);
-    this.library_controller.load_random();
   }
   
   void init(){
@@ -53,6 +52,7 @@ class AppController {
   void on_player_selected(){
     this.app_view.set_player_name(this.session_model.player['name']);
     this.player_controller.reload();
+    this.library_controller.load_random();
   }
   
   void logout_clicked(){
