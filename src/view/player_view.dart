@@ -49,6 +49,11 @@ class PlayerView {
     for(Map q in queue){
       LIElement li = new LIElement();
       
+      //button holder
+      DivElement button_holder = new DivElement();
+      button_holder.classes.add('player-vote-button-holder');
+      
+      //up vote button
       ButtonElement up_vote = new ButtonElement();
       up_vote.classes.add('btn');
       Element up_vote_icon = new Element.tag("i");
@@ -56,8 +61,24 @@ class PlayerView {
       up_vote.elements.add(up_vote_icon);
       up_vote.dataAttributes['id'] = q['song']['id'];
       up_vote.on.click.add(this._upvote);
-      li.elements.add(up_vote);
+      button_holder.elements.add(up_vote);
       
+      DivElement vote_count = new DivElement();
+      vote_count.classes.add("song-vote-count");
+      SpanElement up_vote_count = new SpanElement();
+      up_vote_count.classes.add("song-upvote-count");
+      up_vote_count.text = "+${q['upvoters'].length}";
+      vote_count.elements.add(up_vote_count);
+      SpanElement vote_divider = new SpanElement();
+      vote_divider.text = "/";
+      vote_count.elements.add(vote_divider);
+      SpanElement down_vote_count = new SpanElement();
+      down_vote_count.classes.add("song-downvote-count");
+      down_vote_count.text = "-${q['downvoters'].length}";
+      vote_count.elements.add(down_vote_count);
+      button_holder.elements.add(vote_count);
+      
+      //down vote button
       ButtonElement down_vote = new ButtonElement();
       down_vote.classes.add('btn');
       Element down_vote_icon = new Element.tag("i");
@@ -65,19 +86,34 @@ class PlayerView {
       down_vote.elements.add(down_vote_icon);
       down_vote.dataAttributes['id'] = q['song']['id'];
       down_vote.on.click.add(this._downvote);
-      li.elements.add(down_vote);
+      button_holder.elements.add(down_vote);
+      
+      li.elements.add(button_holder);
+      
+      //song info holder
+      DivElement song_info_holder = new DivElement();
+      song_info_holder.classes.add("queue-song-info-holder");
       
       DivElement div_title = new DivElement();
+      div_title.classes.add('song-title');
       div_title.text = q['song']['title'];
-      li.elements.add(div_title);
+      song_info_holder.elements.add(div_title);
       
       DivElement div_artist = new DivElement();
+      div_artist.classes.add('song-artist');
       div_artist.text = q['song']['artist'];
-      li.elements.add(div_artist);
+      song_info_holder.elements.add(div_artist);
       
       DivElement div_album = new DivElement();
+      div_album.classes.add('song-album');
       div_album.text = q['song']['album'];
-      li.elements.add(div_album);
+      song_info_holder.elements.add(div_album);
+      
+      li.elements.add(song_info_holder);
+      
+      DivElement clear_fix = new DivElement();
+      clear_fix.classes.add("clearfix");
+      li.elements.add(clear_fix);
       
       ul.elements.add(li);
     }

@@ -6,6 +6,7 @@ import 'dart:json';
 import '../view/player_view.dart';
 import '../model/session_model.dart';
 import '../view/app_view.dart';
+import '../constants.dart';
 
 class PlayerController {
   PlayerView _player_view;
@@ -25,7 +26,7 @@ class PlayerController {
     if(this._queue_timer != null){
       this._queue_timer.cancel();
     }
-    this._queue_timer = new Timer.repeating(5000,this._load_queue);
+    this._queue_timer = new Timer.repeating(POLL_INTERVAL,this._load_queue);
     this._load_queue(null);
   }
   

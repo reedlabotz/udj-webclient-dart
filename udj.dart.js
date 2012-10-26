@@ -5228,7 +5228,7 @@ $$.PlayerController = {"": ["_player_view", "_session_model", "_app_view?", "_qu
   var t1 = this._queue_timer;
   if (!(t1 == null))
     t1.cancel$0();
-  this._queue_timer = $.Timer_Timer$repeating(5000, this.get$_load_queue());
+  this._queue_timer = $.Timer_Timer$repeating(2000, this.get$_load_queue());
   this._load_queue$1(null);
 },
  _load_queue$1: function(t) {
@@ -5308,6 +5308,8 @@ $$.PlayerView = {"": ["_box", "_upvote_callback", "_downvote_callback"],
   for (var t1 = $.iterator(queue); t1.hasNext$0() === true;) {
     var t2 = t1.next$0();
     var li = $.LIElement_LIElement();
+    var button_holder = $.DivElement_DivElement();
+    $.add$1(button_holder.get$classes(), 'player-vote-button-holder');
     var up_vote = $.ButtonElement_ButtonElement();
     $.add$1(up_vote.get$classes(), 'btn');
     var up_vote_icon = $.Element_Element$tag('i');
@@ -5315,7 +5317,21 @@ $$.PlayerView = {"": ["_box", "_upvote_callback", "_downvote_callback"],
     $.add$1(up_vote.get$elements(), up_vote_icon);
     $.indexSet(up_vote.get$dataAttributes(), 'id', $.index($.index(t2, 'song'), 'id'));
     $.add$1(up_vote.get$on().get$click(), this.get$_upvote());
-    $.add$1(li.get$elements(), up_vote);
+    $.add$1(button_holder.get$elements(), up_vote);
+    var vote_count = $.DivElement_DivElement();
+    $.add$1(vote_count.get$classes(), 'song-vote-count');
+    var up_vote_count = $.SpanElement_SpanElement();
+    $.add$1(up_vote_count.get$classes(), 'song-upvote-count');
+    up_vote_count.set$text('+' + $.S($.get$length($.index(t2, 'upvoters'))));
+    $.add$1(vote_count.get$elements(), up_vote_count);
+    var vote_divider = $.SpanElement_SpanElement();
+    vote_divider.set$text('/');
+    $.add$1(vote_count.get$elements(), vote_divider);
+    var down_vote_count = $.SpanElement_SpanElement();
+    $.add$1(down_vote_count.get$classes(), 'song-downvote-count');
+    down_vote_count.set$text('-' + $.S($.get$length($.index(t2, 'downvoters'))));
+    $.add$1(vote_count.get$elements(), down_vote_count);
+    $.add$1(button_holder.get$elements(), vote_count);
     var down_vote = $.ButtonElement_ButtonElement();
     $.add$1(down_vote.get$classes(), 'btn');
     var down_vote_icon = $.Element_Element$tag('i');
@@ -5323,16 +5339,26 @@ $$.PlayerView = {"": ["_box", "_upvote_callback", "_downvote_callback"],
     $.add$1(down_vote.get$elements(), down_vote_icon);
     $.indexSet(down_vote.get$dataAttributes(), 'id', $.index($.index(t2, 'song'), 'id'));
     $.add$1(down_vote.get$on().get$click(), this.get$_downvote());
-    $.add$1(li.get$elements(), down_vote);
+    $.add$1(button_holder.get$elements(), down_vote);
+    $.add$1(li.get$elements(), button_holder);
+    var song_info_holder = $.DivElement_DivElement();
+    $.add$1(song_info_holder.get$classes(), 'queue-song-info-holder');
     var div_title = $.DivElement_DivElement();
+    $.add$1(div_title.get$classes(), 'song-title');
     div_title.set$text($.index($.index(t2, 'song'), 'title'));
-    $.add$1(li.get$elements(), div_title);
+    $.add$1(song_info_holder.get$elements(), div_title);
     var div_artist = $.DivElement_DivElement();
+    $.add$1(div_artist.get$classes(), 'song-artist');
     div_artist.set$text($.index($.index(t2, 'song'), 'artist'));
-    $.add$1(li.get$elements(), div_artist);
+    $.add$1(song_info_holder.get$elements(), div_artist);
     var div_album = $.DivElement_DivElement();
+    $.add$1(div_album.get$classes(), 'song-album');
     div_album.set$text($.index($.index(t2, 'song'), 'album'));
-    $.add$1(li.get$elements(), div_album);
+    $.add$1(song_info_holder.get$elements(), div_album);
+    $.add$1(li.get$elements(), song_info_holder);
+    var clear_fix = $.DivElement_DivElement();
+    $.add$1(clear_fix.get$classes(), 'clearfix');
+    $.add$1(li.get$elements(), clear_fix);
     $.add$1(ul.get$elements(), li);
   }
   $.clear(this._box.query$1('#queue-holder').get$elements());
@@ -7771,6 +7797,10 @@ $.Future_Future$immediate = function(value) {
   return $.FutureImpl_FutureImpl$immediate(value);
 };
 
+$._Elements_createSpanElement = function() {
+  return $._document().$dom_createElement$1('span');
+};
+
 $.$$throw = function(ex) {
   if (ex == null)
     ex = $.CTC0;
@@ -9298,6 +9328,10 @@ $._MessageTraverserVisitedMap$0 = function() {
   return new $._MessageTraverserVisitedMap0();
 };
 
+$.SpanElement_SpanElement = function() {
+  return $._Elements_createSpanElement();
+};
+
 $.FutureNotCompleteException$ = function() {
   return new $.FutureNotCompleteException();
 };
@@ -9648,6 +9682,7 @@ $.UNICODE_VALID_RANGE_MAX = 1114111;
 $._JsonParser_SPACE = 32;
 $._UTF8_FIRST_BYTE_OF_THREE_MASK = 15;
 $._jsPortDebug = null;
+$.POLL_INTERVAL = 2000;
 $._JsonParser_CHAR_U = 117;
 $._jsExitJavaScriptScope = null;
 $._JsonParser_NUMBER_LITERAL = 45;
