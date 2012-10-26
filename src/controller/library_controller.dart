@@ -18,7 +18,6 @@ class LibraryController {
     this._library_view = new LibraryView(library_box);
     this._library_view.register_add_callback(this._add_song);
     this._library_view.register_random_click(this.load_random);
-    this._library_view.register_artist_click(this.load_artists);
     this._library_view.register_recent_click(this.load_recent);
     this._library_view.register_search_click(this.load_search);
   }
@@ -32,10 +31,6 @@ class LibraryController {
   void _load_random_finished(HttpRequest request){
     List data = JSON.parse(request.responseText);
     this._library_view.display_song_set(data);
-  }
-  
-  void load_artists(){
-    
   }
   
   void load_recent(){
@@ -54,7 +49,14 @@ class LibraryController {
   }
   
   void load_search(String query){
-    
+    this._library_view.activate_search();
+    this._session_model.auth_get_request('/players/${this._session_model.player['id']}/available_music', 
+        {'max_randoms':'50','query':query}, this._load_search_finished);
+  }
+  
+  void _load_search_finished(HttpRequest request){
+    List data = JSON.parse(request.responseText);
+    this._library_view.display_song_set(data);
   }
   
   void _add_song(String id){

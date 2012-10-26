@@ -7,15 +7,14 @@ class LibraryView {
   Element _box;
   Function _add_callback;
   Function _random_btn_callback;
-  Function _artists_btn_callback;
   Function _recent_btn_callback;
   Function _search_callback;
   
   LibraryView(Element box){
     this._box = box;
     this._box.query("#random-tab").on.click.add((e) => this._random_btn_callback());
-    this._box.query("#artists-tab").on.click.add((e) => this._artists_btn_callback());
     this._box.query("#recent-tab").on.click.add((e) => this._recent_btn_callback());
+    this._box.query("#search-form").on.submit.add(this._sumbit_search);
   }
   
   void register_add_callback(Function callback){
@@ -24,10 +23,6 @@ class LibraryView {
   
   void register_random_click(Function callback){
     this._random_btn_callback = callback;
-  }
-  
-  void register_artist_click(Function callback){
-    this._artists_btn_callback = callback;
   }
   
   void register_recent_click(Function callback){
@@ -50,6 +45,18 @@ class LibraryView {
       t.classes.remove('active');
     }
     this._box.query('#recent-tab').classes.add('active');
+  }
+  
+  void activate_search(){
+    for(var t in this._box.queryAll('.tab')){
+      t.classes.remove('active');
+    }
+  }
+  
+  void _sumbit_search(Event e){
+    e.preventDefault();
+    InputElement search = this._box.query("#search-input");
+    this._search_callback(search.value);
   }
   
   void display_song_set(List songs){
