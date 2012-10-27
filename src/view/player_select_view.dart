@@ -9,14 +9,20 @@ class PlayerSelectView {
   Element _box;
   Element _content;
   Function _join_btn_clicked_callback;
+  Function _search_callback;
   
   PlayerSelectView(Element box){
     this._box = box;
     this._content = box.query("#player-select-content");
+    this._box.query("#player-select-search").on.submit.add(this._submit_search);
   }
   
   void register_join_btn_clicked(Function callback){
     this._join_btn_clicked_callback = callback;
+  }
+  
+  void register_search_callback(Function callback) {
+    this._search_callback = callback;
   }
   
   void show(){
@@ -109,7 +115,13 @@ class PlayerSelectView {
     this.set_content(table);
   }
   
-
+  
+  void _submit_search(Event e) {
+    e.preventDefault();
+    InputElement search = this._box.query("#player-select-search-input");
+    this._search_callback(search.value);
+  }
+  
   void join_btn_clicked(MouseEvent e){
     AnchorElement target = e.target;
     String id = target.dataAttributes['id'];

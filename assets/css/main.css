@@ -102,3 +102,10 @@ body{
   padding-left: 8px;
   padding-right: 8px;
 }
+
+/* player select view */
+.player-select-search {
+  float: right;
+  margin-right: 16px;
+  margin-bottom: 0;
+}

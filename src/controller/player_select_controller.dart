@@ -20,6 +20,7 @@ class PlayerSelectController {
     Element box = query("#player-select-box");
     this._player_select_view = new PlayerSelectView(box);
     this._player_select_view.register_join_btn_clicked(join_btn_clicked);
+    this._player_select_view.register_search_callback(this.load_search);
   }
   
   void register_on_player_selected(Function callback){
@@ -38,6 +39,16 @@ class PlayerSelectController {
     this._session_model.auth_put_request('/players/${id}/users/user',{},(req) => this.finished_join_player(req,data));
   }
   
+  void load_search(String query) {
+    this._session_model.auth_get_request('/players', 
+        {'name':query}, this._load_search_finished);
+  }
+  
+  void _load_search_finished(HttpRequest request) {
+    List data = JSON.parse(request.responseText);
+    this._player_select_view.list_players(data);
+  }
+    
   void finished_join_player(HttpRequest request, Map data){
     //201 means success, 400 means you own it
     if(request.status == 201 || request.status == 400){
