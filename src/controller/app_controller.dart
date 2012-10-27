@@ -51,7 +51,7 @@ class AppController {
   
   void on_player_selected(){
     this.app_view.set_player_name(this.session_model.player['name']);
-    this.player_controller.reload();
+    this.player_controller.init();
     this.library_controller.load_random();
   }
   
