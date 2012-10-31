@@ -1,4 +1,4 @@
-#library("swarmlib");
+library udjlib;
 
 #import('dart:coreimpl');
 #import('dart:json');
