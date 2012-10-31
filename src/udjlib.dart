@@ -10,8 +10,11 @@
 #import('lib/ui/touch/touch.dart');
 #import('lib/ui/util/utilslib.dart');
 
+#source('UdjConstants.dart');
 #source('lib/App.dart');
 #source('lib/UIState.dart');
 #source('lib/Views.dart');
 
 #source('UdjApp.dart');
+#source('UdjState.dart');
+#source('UdjModels.dart');
