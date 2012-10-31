@@ -2,15 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-#library("ui_state");
 
-#import('dart:html');
-#import('dart:json');
-#import('ui/base/base.dart');
-#import('ui/view/view.dart');
-#import('ui/observable/observable.dart');
-#import('ui/touch/touch.dart');
-#import('ui/util/utilslib.dart');
 
 /**
  * The base class for UI state that intends to support browser history.

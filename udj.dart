@@ -1,6 +1,6 @@
 library udj;
 
-import 'src/UdjApp.dart';
+#import('src/udjlib.dart');
 
 void main()
 {
