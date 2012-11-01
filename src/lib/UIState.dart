@@ -7,6 +7,9 @@
 /**
  * The base class for UI state that intends to support browser history.
  */
+
+part of framework;
+
 abstract class UIState {
   /**
    * The event listener we hook to the window's "popstate" event.

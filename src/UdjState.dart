@@ -1,3 +1,4 @@
+part of udjlib;
 
 class UdjState extends UIState {
   final ObservableValue<bool> loggedIn;
@@ -12,7 +13,7 @@ class UdjState extends UIState {
   
   final ObservableList<Player> playerList;
   
-  final ObservableValue<String> playerSection;
+  final ObservableValue<String> libraryView;
   
   final ObservableList<Song> librarySongs;
   
@@ -24,7 +25,7 @@ class UdjState extends UIState {
     nowPlaying = new ObservableValue<QueueSong>(null),
     queue = new ObservableList<QueueSong>(null),
     playerList = new ObservableList<Player>(null),
-    playerSection = new ObservableValue<String>(null),
+    libraryView = new ObservableValue<String>(null),
     librarySongs = new ObservableList<Song>(null){
       
     }

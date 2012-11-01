@@ -8,6 +8,9 @@
 
 
 /** A factory that creates a view from a data model. */
+
+part of framework;
+
 abstract class ViewFactory<D> {
   View newView(D item);
 

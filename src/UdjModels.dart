@@ -1,3 +1,5 @@
+part of udjlib;
+
 class User{
   int id;
   String username;
