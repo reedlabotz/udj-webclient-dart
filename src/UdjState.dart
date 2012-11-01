@@ -19,6 +19,8 @@ class UdjState extends UIState {
   
   final ObservableList<Song> librarySongs;
   
+  final ObservableValue<Session> session;
+  
   UdjState(): 
     super(), 
     loggedIn = new ObservableValue<bool>(false),
@@ -29,7 +31,8 @@ class UdjState extends UIState {
     playerList = new ObservableList<Player>(null),
     libraryView = new ObservableValue<String>(null),
     searchTerm = new ObservableValue<String>(null),
-    librarySongs = new ObservableList<Song>(null){
+    librarySongs = new ObservableList<Song>(null),
+    session = new ObservableValue<Session>(null){
       
-    }
+  }
 }

@@ -1,5 +1,5 @@
 library udj;
-
+import "dart:html";
 import 'src/udjlib.dart';
 
 void main()

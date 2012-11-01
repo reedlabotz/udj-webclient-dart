@@ -5,6 +5,8 @@ class User{
   String username;
   String firstName;
   String lastName;
+  
+  User(this.id, this.username, this.firstName, this.lastName);
 }
 
 class Player{
@@ -27,5 +29,13 @@ class Song{
 class QueueSong extends Song{
   List<User> upvoters;
   List<User> downvoters;
+}
+
+class Session{
+  String ticket_hash;
+  int user_id;
+  String username;
+  
+  Session(this.ticket_hash, this.user_id, this.username);
 }
 

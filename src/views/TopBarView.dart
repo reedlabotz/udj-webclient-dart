@@ -6,8 +6,10 @@ class TopBarView extends CompositeView {
   /// reference to the main app
   final UdjApp _udjApp;
   
+  /// The menue at the top to choose library section
   SliderMenu _librarySelectView;
   
+  /// Holder for search box
   View _searchBoxView;
   
   /*
@@ -46,6 +48,9 @@ class TopBarView extends CompositeView {
     _udjApp.state.libraryView.value = menuText;
   }
   
+  /**
+   * Callback for when the form is submitted.
+   */
   void _searchFormSubmitted(Event e){
     e.preventDefault();
     InputElement searchBox = _searchBoxView.node.query("#search-input");
@@ -55,7 +60,7 @@ class TopBarView extends CompositeView {
   /* 
    * Callback after the node has been rendered. Add watchers and callbacks.
    */
-  void afterRender(Element node) {
+  void afterRender(Element node){
     _searchBoxView.node.query("#search-form").on.submit.add(_searchFormSubmitted);
   }
 }

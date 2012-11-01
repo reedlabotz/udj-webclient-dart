@@ -22,8 +22,33 @@ class MainView extends CompositeView{
    * Initialize the view and create all the child views.
    */
   MainView(this._udjApp):super('all-hold'){
-    _topBar = new TopBarView(this._udjApp);
+    _topBar = new TopBarView(_udjApp);
     this.addChild(_topBar);
+    
+    _login = new LoginView(_udjApp);
+    this.addChild(_login);
+    
+    _swapLoggedInView();
+  }
+  
+  /**
+   * After render add listeners.
+   */
+  void afterRender(Element node){
+    watch(_udjApp.state.loggedIn, (e) => _swapLoggedInView());
+  }
+  
+  /**
+   * Swap the the views to show login or logged in view.
+   */
+  void _swapLoggedInView(){
+    if(_udjApp.state.loggedIn.value){
+      _topBar.hidden = false;
+      _login.hidden = true;
+    }else{
+      _topBar.hidden = true;
+      _login.hidden = false;
+    }
   }
   
 }
