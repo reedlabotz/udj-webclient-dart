@@ -8,6 +8,8 @@ class TopBarView extends CompositeView {
   
   SliderMenu _librarySelectView;
   
+  View _searchBoxView;
+  
   /*
    * Main constructor initalizes child views
    */
@@ -24,7 +26,7 @@ class TopBarView extends CompositeView {
     addChild(_librarySelectView);
     
     // Create search box
-    var searchBoxView = new View.html('''
+    _searchBoxView = new View.html('''
       <div class="search-box-holder">
         <form class="form-search main-search" id="search-form">
           <div class="input-append">
@@ -34,8 +36,7 @@ class TopBarView extends CompositeView {
         </form>
       </div>
     ''');
-    
-    addChild(searchBoxView);
+    addChild(_searchBoxView);
   }  
   
   /*
@@ -45,13 +46,16 @@ class TopBarView extends CompositeView {
     _udjApp.state.libraryView.value = menuText;
   }
   
-  void _searchFormSubmitted(){
-    
+  void _searchFormSubmitted(Event e){
+    e.preventDefault();
+    InputElement searchBox = _searchBoxView.node.query("#search-input");
+    _udjApp.state.searchTerm.value = searchBox.value;
   }
   
   /* 
    * Callback after the node has been rendered. Add watchers and callbacks.
    */
   void afterRender(Element node) {
+    _searchBoxView.node.query("#search-form").on.submit.add(_searchFormSubmitted);
   }
 }

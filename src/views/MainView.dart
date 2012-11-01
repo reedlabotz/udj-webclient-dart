@@ -23,7 +23,6 @@ class MainView extends CompositeView{
    */
   MainView(this._udjApp):super('all-hold'){
     _topBar = new TopBarView(this._udjApp);
-    print('hi there main view');
     this.addChild(_topBar);
   }
   
