@@ -25,7 +25,8 @@ class MainView extends CompositeView{
     _topBar = new TopBarView(_udjApp);
     this.addChild(_topBar);
     
-    _login = new LoginView(_udjApp);
+    LoginState loginState = new LoginState();
+    _login = new LoginView(_udjApp, loginState);
     this.addChild(_login);
     
     _swapLoggedInView();
