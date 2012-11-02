@@ -1,11 +1,8 @@
 library udj;
-
-import 'dart:html';
-import 'src/controller/app_controller.dart';
+import "dart:html";
+import 'src/udjlib.dart';
 
 void main()
 {
-  AppController app_controller = new AppController();
-  app_controller.init();
-
+  new UdjApp().run();
 }
