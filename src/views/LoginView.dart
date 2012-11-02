@@ -51,14 +51,7 @@ class LoginView extends CompositeView{
     InputElement passwordInput = _loginForm.node.query("#password");
     var username = usernameInput.value;
     var password = passwordInput.value;
-    _udjApp.login(username,password,(success){
-      passwordInput.value = "";
-      if(!success){
-        _state.errorMessage.value = "Username and password did not match. Please try again.";
-      }else{
-        _state.errorMessage.value = null;
-      }
-    });
+    _state.login(username,password);
   }
   
   /**
@@ -69,6 +62,8 @@ class LoginView extends CompositeView{
   }
   
   void _showErrorMessage(e){
+    InputElement passwordInput = _loginForm.node.query("#password");
+    passwordInput.value = "";
     if(_state.errorMessage.value != null){
       _errorMessage.node.text = _state.errorMessage.value;
       _errorMessage.hidden = false;

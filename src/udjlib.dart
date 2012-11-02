@@ -11,15 +11,16 @@ import 'lib/requestHelper.dart';
 
 part 'UdjConstants.dart';
 
-//app level 
+// app level 
 part 'UdjApp.dart';
-part 'view_models/UdjState.dart';
-part 'UdjModels.dart';
+part 'UdjService.dart';
+part 'UdjStructs.dart';
 
-//views
+// views
 part 'views/MainView.dart';
 part 'views/TopBarView.dart';
 part 'views/LoginView.dart';
 
-//view models
+// view models
+part 'view_models/UdjState.dart';
 part 'view_models/LoginState.dart';

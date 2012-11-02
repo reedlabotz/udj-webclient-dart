@@ -1,7 +1,10 @@
 part of udjlib;
 
+/**
+ * The global state object.
+ */
 class UdjState extends UIState {
-  final ObservableValue<bool> loggedIn;
+  final ObservableValue<String> currentUsername;
   
   final ObservableValue<String> playerState;
   
@@ -19,11 +22,11 @@ class UdjState extends UIState {
   
   final ObservableList<Song> librarySongs;
   
-  final ObservableValue<Session> session;
+  final UdjApp _udjApp;
   
-  UdjState(): 
+  UdjState(this._udjApp): 
     super(), 
-    loggedIn = new ObservableValue<bool>(false),
+    currentUsername = new ObservableValue<String>(null),
     playerState = new ObservableValue<String>(null),
     currentPlayer = new ObservableValue<Player>(null),
     nowPlaying = new ObservableValue<QueueSong>(null),
@@ -31,6 +34,5 @@ class UdjState extends UIState {
     playerList = new ObservableList<Player>(null),
     libraryView = new ObservableValue<String>(null),
     searchTerm = new ObservableValue<String>(null),
-    librarySongs = new ObservableList<Song>(null),
-    session = new ObservableValue<Session>(null);
+    librarySongs = new ObservableList<Song>(null);
 }

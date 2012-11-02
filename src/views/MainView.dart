@@ -25,7 +25,7 @@ class MainView extends CompositeView{
     _topBar = new TopBarView(_udjApp);
     this.addChild(_topBar);
     
-    LoginState loginState = new LoginState();
+    LoginState loginState = new LoginState(this._udjApp);
     _login = new LoginView(_udjApp, loginState);
     this.addChild(_login);
     
@@ -36,14 +36,14 @@ class MainView extends CompositeView{
    * After render add listeners.
    */
   void afterRender(Element node){
-    watch(_udjApp.state.loggedIn, (e) => _swapLoggedInView());
+    watch(_udjApp.state.currentUsername, (e) => _swapLoggedInView());
   }
   
   /**
    * Swap the the views to show login or logged in view.
    */
   void _swapLoggedInView(){
-    if(_udjApp.state.loggedIn.value){
+    if(_udjApp.state.currentUsername.value != null){
       _topBar.hidden = false;
       _login.hidden = true;
     }else{

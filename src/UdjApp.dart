@@ -1,14 +1,28 @@
 part of udjlib;
 
+/**
+ * Class that begins the whole app. This will be passed around 
+ * to most objects, so it has access to some globals [state] and 
+ * [service] that will be access by many different parts.
+ */
 class UdjApp extends App{
+  /// The global state object
   UdjState state;
   
+  /// the global service object
+  UdjService service;
+  
+  /// Track if the page has loaded
   bool onLoadFired;
   
+  /// The main view
   MainView _mainView;
   
-  UdjApp(): super(), onLoadFired = false{
-    state = new UdjState();
+  UdjApp(): 
+    super(), 
+    onLoadFired = false{
+    state = new UdjState(this);
+    service = new UdjService(_loginNeeded);
     setupApp();
   }
   
@@ -31,24 +45,12 @@ class UdjApp extends App{
     _mainView.addToDocument(document.body);
   }
   
-  void login(String username, String password, Function callback){
-    HttpRequest request = new HttpRequest();
-    request.open("POST", '${Constants.API_URL}/auth', true);
-    String data;
-    data = RequestHelper.encodeMap({'username':username,'password':password});
-    request.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
-    request.on.loadEnd.add((e){
-      if(request.status==200){
-        var data = JSON.parse(request.responseText);
-        var token = data['ticket_hash'];
-        var user_id = data['user_id'];
-        state.session.value = new Session(token, user_id, username);
-        state.loggedIn.value = true;
-        callback(true);
-      }else{
-        callback(false);
-      }
-    });
-    request.send(data);
+  /**
+   * Callback fired by [service] when a re-auth is needed.
+   * By setting the [state.currentUsername] to null, we will cause
+   * the login screen to be displayed.
+   */
+  void _loginNeeded(){
+    state.currentUsername.value = null;
   }
 }
