@@ -86,4 +86,13 @@ class CompositeView extends View {
       view.node.remove();
     }
   }
+  
+  void removeAllChildren(){
+    if (container != null) {
+      for(var v in childViews){
+        v.node.remove();
+      }
+      childViews.clear();
+    }
+  }
 }
