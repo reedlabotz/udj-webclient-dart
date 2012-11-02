@@ -10,7 +10,10 @@ class MainView extends CompositeView{
   TopBarView _topBar;
   
   /// The side bar which holds current player info box, now playing box, and queue
-  CompositeView _sideBar;
+  SideBarView _sideBar;
+  
+  /// The library view to hold the library
+  LibraryView _library;
   
   /// The login view which is shown at login and in case of reauth.
   LoginView _login;
@@ -36,6 +39,14 @@ class MainView extends CompositeView{
     _playerSelect = new PlayerSelectView(_udjApp, playerSelectState);
     addChild(_playerSelect);
     
+    // Create the side bar view
+    _sideBar = new SideBarView();
+    addChild(_sideBar);
+    
+    // Create the library view
+    _library = new LibraryView();
+    addChild(_library);
+    
     // Call [_swapLoggedInView] to get initial view setup correctly
     _swapLoggedInView();
   }
@@ -53,11 +64,15 @@ class MainView extends CompositeView{
   void _swapLoggedInView(){
     if(_udjApp.state.currentUsername.value != null){
       _topBar.hidden = false;
+      _sideBar.hidden = false;
+      _library.hidden = false;
       _login.hidden = true;
     }else{
       _topBar.hidden = true;
+      _sideBar.hidden = true;
+      _library.hidden = true;
+      _playerSelect.hidden = true;
       _login.hidden = false;
     }
   }
-  
 }

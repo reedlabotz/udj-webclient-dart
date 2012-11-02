@@ -22,6 +22,8 @@ part 'views/MainView.dart';
 part 'views/TopBarView.dart';
 part 'views/LoginView.dart';
 part 'views/PlayerSelectView.dart';
+part 'views/LibraryView.dart';
+part 'views/SideBarView.dart';
 
 // view models
 part 'view_models/UdjState.dart';

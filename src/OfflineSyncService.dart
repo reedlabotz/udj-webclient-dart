@@ -27,7 +27,6 @@ class OfflineSyncService extends View{
   }
   
   void _saveSession(e){
-    print("save session to offline");
     if(_service.session.value == null){
       window.localStorage.remove('session');
     }else{
@@ -41,8 +40,6 @@ class OfflineSyncService extends View{
     }else{
       window.localStorage['player'] = JSON.stringify(_udjApp.state.currentPlayer.value);
     }
-    
-    
   }
   
   
