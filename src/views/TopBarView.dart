@@ -1,5 +1,5 @@
 part of udjlib;
-/*
+/**
  * The top bar which holds the library navigation and search bar
  */
 class TopBarView extends CompositeView {
@@ -12,7 +12,7 @@ class TopBarView extends CompositeView {
   /// Holder for search box
   View _searchBoxView;
   
-  /*
+  /**
    * Main constructor initalizes child views
    */
   TopBarView(this._udjApp):super('top-bar'){
@@ -41,7 +41,7 @@ class TopBarView extends CompositeView {
     addChild(_searchBoxView);
   }  
   
-  /*
+  /**
    * Callback for when a new library view is selected
    */
   void _onSelectLibraryView(String menuText){
@@ -57,7 +57,7 @@ class TopBarView extends CompositeView {
     _udjApp.state.searchTerm.value = searchBox.value;
   }
   
-  /* 
+  /**
    * Callback after the node has been rendered. Add watchers and callbacks.
    */
   void afterRender(Element node){
