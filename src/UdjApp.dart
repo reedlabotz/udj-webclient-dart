@@ -18,11 +18,15 @@ class UdjApp extends App{
   /// The main view
   MainView _mainView;
   
+  /// Service that keeps ofline in sync
+  OfflineSyncService offlineSync;
+  
   UdjApp(): 
     super(), 
     onLoadFired = false{
     state = new UdjState(this);
     service = new UdjService(_loginNeeded);
+    offlineSync = new OfflineSyncService(this,service);
     setupApp();
   }
   

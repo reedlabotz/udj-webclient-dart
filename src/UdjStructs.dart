@@ -7,6 +7,16 @@ class User{
   String lastName;
   
   User(this.id, this.username, this.firstName, this.lastName);
+  
+  String toJson(){
+    var data = {
+      'id': id,
+      'username': username,
+      'firstName': firstName,
+      'lastName': lastName
+    };
+    return JSON.stringify(data);
+  }
 }
 
 class Player{
@@ -17,6 +27,23 @@ class Player{
   bool hasPassword;
   List<User> admins;
   int sizeLimit;
+  
+  Player.fromJson(Map data){
+    
+  }
+  
+  Map toJson(){
+    var data = {
+      'id': id,
+      'owner': owner,
+      'name': name,
+      'numActiveUsers': numActiveUsers,
+      'hasPassword': hasPassword,
+      'admins': admins,
+      'sizeLimit': sizeLimit
+    };
+    return data;
+  }
 }
 
 class Song{
@@ -37,5 +64,20 @@ class Session{
   String username;
   
   Session(this.ticket_hash, this.user_id, this.username);
+  
+  Session.fromJson(Map data){
+    this.ticket_hash = data['ticket_hash'];
+    this.user_id = data['user_id'];
+    this.username = data['username'];
+  }
+  
+  Map toJson(){
+    var data = {
+      'ticket_hash': ticket_hash,
+      'user_id': user_id,
+      'username': username
+    };
+    return data;
+  }
 }
 

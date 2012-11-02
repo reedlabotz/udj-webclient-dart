@@ -10,6 +10,7 @@ import 'lib/ui/util/utilslib.dart';
 import 'lib/requestHelper.dart';
 
 part 'UdjConstants.dart';
+part 'OfflineSyncService.dart';
 
 // app level 
 part 'UdjApp.dart';
@@ -20,7 +21,9 @@ part 'UdjStructs.dart';
 part 'views/MainView.dart';
 part 'views/TopBarView.dart';
 part 'views/LoginView.dart';
+part 'views/PlayerSelectView.dart';
 
 // view models
 part 'view_models/UdjState.dart';
 part 'view_models/LoginState.dart';
+part 'view_models/PlayerSelectState.dart';

@@ -13,22 +13,30 @@ class MainView extends CompositeView{
   CompositeView _sideBar;
   
   /// The login view which is shown at login and in case of reauth.
-  CompositeView _login;
+  LoginView _login;
   
-  /// The player select view which shows on first load and when the user chooses to change players.
-  CompositeView _playerSelect;
+  /// The player select view that is shown if no player is selected.
+  PlayerSelectView _playerSelect;
   
   /*
    * Initialize the view and create all the child views.
    */
   MainView(this._udjApp):super('all-hold'){
+    // Create the top bar
     _topBar = new TopBarView(_udjApp);
-    this.addChild(_topBar);
+    addChild(_topBar);
     
-    LoginState loginState = new LoginState(this._udjApp);
+    // Create the login view
+    LoginState loginState = new LoginState(_udjApp);
     _login = new LoginView(_udjApp, loginState);
-    this.addChild(_login);
+    addChild(_login);
     
+    // Create the player select view
+    PlayerSelectState playerSelectState = new PlayerSelectState(this._udjApp);
+    _playerSelect = new PlayerSelectView(_udjApp, playerSelectState);
+    addChild(_playerSelect);
+    
+    // Call [_swapLoggedInView] to get initial view setup correctly
     _swapLoggedInView();
   }
   
