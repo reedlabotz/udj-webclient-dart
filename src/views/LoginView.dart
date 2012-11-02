@@ -30,6 +30,12 @@ class LoginView extends CompositeView{
               <input type="text" placeholder="Username" id="username" class="input input-medium"><br>
               <input type="password" placeholder="Password" id="password" class="input input-medium"><br>
               <button type="submit" class="btn btn-primary">Login</button>
+              <br>
+              <br>
+              <p>
+                <a href="https://www.udjplayer.com/recover/">I forgot my username or password.</a><br>
+                <a href="https://www.udjplayer.com/registration/register/">Don't have an account? Create one.</a>
+              </p>
             </form>
           </div>
         </div>
