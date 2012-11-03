@@ -226,6 +226,10 @@ body{
     width: 30px;
     float: left;
     height: 100%;
+
+    i{
+      cursor: pointer;
+    }
   }
 
   .song-vote-count{
