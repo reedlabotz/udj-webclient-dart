@@ -1,12 +1,19 @@
 part of udjlib;
 
 class User{
-  int id;
+  String id;
   String username;
   String firstName;
   String lastName;
   
   User(this.id, this.username, this.firstName, this.lastName);
+  
+  User.fromJson(Map data){
+    id = data['id'];
+    username = data['username'];
+    firstName = data['first_name'];
+    lastName = data['last_name'];
+  }
   
   String toJson(){
     var data = {
@@ -17,10 +24,11 @@ class User{
     };
     return JSON.stringify(data);
   }
+
 }
 
 class Player{
-  int id;
+  String id;
   User owner;
   String name;
   int numActiveUsers;
@@ -29,7 +37,16 @@ class Player{
   int sizeLimit;
   
   Player.fromJson(Map data){
-    
+    id = data['id'];
+    owner = new User.fromJson(data['owner']);
+    name = data['name'];
+    numActiveUsers = data['num_active_users'];
+    hasPassword = data['has_password'];
+    admins = new List<User>();
+    for (var adminData in data['admins']) {
+      admins.add(new User.fromJson(adminData));
+    }
+    sizeLimit = data['size_limit'];
   }
   
   Map toJson(){
@@ -47,7 +64,7 @@ class Player{
 }
 
 class Song{
-  int id;
+  String id;
   String title;
   String artist;
   String album;
@@ -60,7 +77,7 @@ class QueueSong extends Song{
 
 class Session{
   String ticket_hash;
-  int user_id;
+  String user_id;
   String username;
   
   Session(this.ticket_hash, this.user_id, this.username);
