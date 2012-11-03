@@ -5427,20 +5427,17 @@ body {
   margin-bottom: 0; }
 
 /* player select view */
-.player-name {
+.player-select-list .player-name {
   font-weight: bold;
   float: left; }
-
-.player-owner {
+.player-select-list .player-owner {
   float: left; }
-  .player-owner.dashed:before {
+  .player-select-list .player-owner.dashed:before {
     content: "- ";
     padding-left: 3px; }
-
-.player-attrs {
+.player-select-list .player-attrs {
   float: right; }
-
-.player-join {
+.player-select-list .player-join {
   float: right; }
 
 /* player */

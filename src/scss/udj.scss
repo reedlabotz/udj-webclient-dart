@@ -39,26 +39,28 @@ body{
 }
 
 /* player select view */
-.player-name {
-  font-weight: bold;
-  float: left;
-}
-
-.player-owner {
-  float: left;
-  
-  &.dashed:before {
-    content: "- ";
-    padding-left: 3px;
-  }
-}
-
-.player-attrs {
-  float: right;
-}
-
-.player-join {
-  float: right;
+.player-select-list {
+	.player-name {
+	  font-weight: bold;
+	  float: left;
+	}
+	
+	.player-owner {
+	  float: left;
+	  
+	  &.dashed:before {
+	    content: "- ";
+	    padding-left: 3px;
+	  }
+	}
+	
+	.player-attrs {
+	  float: right;
+	}
+	
+	.player-join {
+	  float: right;
+	}
 }
 
 
