@@ -42,6 +42,7 @@ class SideBarView extends CompositeView {
     // player info watching
     watch(_udjApp.state.currentPlayer, _changeCurrentPlayer);
     watch(_udjApp.state.queue,(e) => _queueView.rerender());
+    watch(_udjApp.state.queue,_updateQueueCount);
     watch(_udjApp.state.nowPlaying,_changeNowPlaying);
     watch(_udjApp.state.playerState,_changePlayerState);
   }
@@ -56,7 +57,7 @@ class SideBarView extends CompositeView {
     if (p != null) {
       _playerInfo.node.query(".player-name").text = p.name;
       _playerInfo.node.query(".player-user-count").text = p.numActiveUsers.toString();
-      _updateQueueCount();
+      _updateQueueCount(null);
       
     } else {
       _playerInfo.node.query(".player-name").text = "";
@@ -69,7 +70,7 @@ class SideBarView extends CompositeView {
   /**
    * Updates the number of songs in the queue.
    */
-  void _updateQueueCount() {
+  void _updateQueueCount(e) {
     List<QueueSong> queue = _udjApp.state.queue.value;
     if (queue != null && _udjApp.state.currentPlayer.value != null) {
       _playerInfo.node.query(".player-queue-count").text = queue.length.toString();
