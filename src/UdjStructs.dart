@@ -15,14 +15,14 @@ class User{
     lastName = data['last_name'];
   }
   
-  String toJson(){
+  Map toJson(){
     var data = {
       'id': id,
       'username': username,
       'firstName': firstName,
       'lastName': lastName
     };
-    return JSON.stringify(data);
+    return data;
   }
 
 }
