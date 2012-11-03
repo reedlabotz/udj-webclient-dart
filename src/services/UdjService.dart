@@ -71,13 +71,13 @@ class UdjService {
   }
   
   void voteSong(String action,String playerId, String songId, Function callback){
-    authPutRequest('/players/${playerId}/active_playlist/songs/${songId}/${action}',{},(HttpRequest request){
+    authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}/${action}',{},(HttpRequest request){
       
     });
   }
   
   void addSong(String playerId, String songId, Function callback){
-    authPutRequest('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest request){
+    authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest request){
       
     });
   }
@@ -91,26 +91,42 @@ class UdjService {
       });
   }
   
+  void createPlayer(Map playerAttrs, Function callback) {
+    authPutRequestJson('/players/player', playerAttrs, (HttpRequest request) {
+      if (request.status == 201) {
+        callback({
+          'success': true,
+          'playerData': JSON.parse(request.responseText)
+        });
+      
+      } else {
+        String error = Errors.UNKOWN;
+        //TODO: handle errors
+        
+        callback({'success': false, 'error': error});
+        
+      }
+      
+    });
+  }
+  
   /**
    * 
    */
   void joinPlayer(String playerID, Function callback){
-    authPutRequest('/players/$playerID/users/user', {}, (HttpRequest req) {
+    authPutRequestForm('/players/$playerID/users/user', {}, (HttpRequest req) {
       // 201 is success, 400 is you own it
      if (req.status == 201 || req.status == 400) {
         callback( {'success': true} );
         
       } else {
-        String error = 'unkown';
+        String error = Errors.UNKOWN;
         if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
           error = Errors.PLAYER_FULL;
           
         } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
           error = Errors.PLAYER_BANNED;
           
-        } else {
-          error = Errors.UNKOWN;
-        
         }
         
         callback({
@@ -135,14 +151,24 @@ class UdjService {
   }
   
   /**
-   * A PUT request with auth token.
+   * A PUT request with auth token and application/x-www-form-urlencode Content-type.
    */
-  void authPutRequest(String url,Map data,Function callback){
+  void authPutRequestForm(String url,Map data,Function callback) {
+    authPutRequest(url, RequestHelper.encodeMap(data), callback, 'application/x-www-form-urlencode');
+  }
+  
+  /**
+   * A PUT request with auth token and text/json Content-type.
+   */
+  void authPutRequestJson(String url, Map data, Function callback) {
+    authPutRequest(url, JSON.stringify(data), callback, 'text/json');
+  }
+  
+  void authPutRequest(String url, String query, Function callback, String contentType) {
     HttpRequest request;
     request = new HttpRequest();
-    String query = RequestHelper.encodeMap(data);
     request.open("PUT",'${Constants.API_URL}${url}');
-    request.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
+    request.setRequestHeader('Content-type', contentType);
     this.authRequest(request, query, callback);
   }
   

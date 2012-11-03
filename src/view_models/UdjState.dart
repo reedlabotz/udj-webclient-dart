@@ -10,6 +10,8 @@ class UdjState extends UIState {
   
   final ObservableValue<Player> currentPlayer;
   
+  final ObservableValue<Player> localPlayer;
+  
   final ObservableValue<QueueSong> nowPlaying;
   
   final ObservableValue<List<QueueSong>> queue;
@@ -22,15 +24,16 @@ class UdjState extends UIState {
   
   final ObservableValue<bool> ready;
   
-  final UdjApp _udjApp;
-  
   final ObservableValue<bool> creatingPlayer;
   
+  final UdjApp _udjApp;
+      
   UdjState(this._udjApp): 
     super(), 
     currentUsername = new ObservableValue<String>(null),
     playerState = new ObservableValue<String>(null),
     currentPlayer = new ObservableValue<Player>(null),
+    localPlayer = new ObservableValue<Player>(null),
     nowPlaying = new ObservableValue<QueueSong>(null),
     queue = new ObservableValue<List<QueueSong>>(null),
     libraryView = new ObservableValue<String>(null),

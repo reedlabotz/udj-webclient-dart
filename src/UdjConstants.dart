@@ -14,8 +14,28 @@ class Constants{
  * Constants used to represent errors.
  */
 class Errors{
+  // general
   static const UNKOWN = null;
+  
+  // requests
+  static const String INVALID_CONTENT_TYPE = "invalid-content-type";
+  static const String INVALID_JSON = "invalid-json";
+  
+  // location
+  static const String INVALID_LOCATION = "invalid-location";
+  static const String LOCATION_NOT_FOUND = "location-not-found";
+  
+  // joining a player
   static const String PLAYER_BANNED = "player-banned";
   static const String PLAYER_FULL = "player-full";
+  
+  // creating a player
+  static const String CREATE_PLAYER_NO_NAME = "no-name";
+  static const String CREATE_PLAYER_NAME_TAKEN = "name-taken";
+  static const String CREATE_PLAYER_INVALID_PSWD = "invalid-password";
+  static const String CREATE_PLAYER_UNKOWN_SORT = "unkown-sorting-algorithm";
+
+  
+  
       
 }
