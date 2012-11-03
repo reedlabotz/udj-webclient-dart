@@ -1,15 +1,25 @@
 part of udjlib;
 
 class SideBarView extends CompositeView {
-  SideBarView():super('sidebar-box'){
-    View temp = new View.html('''
+  final UdjApp _udjApp;
+  
+  /// Information about the player a user is currently in.
+  View _playerInfo;
+  
+  // constructors
+  
+  SideBarView(this._udjApp):super('sidebar-box'){
+    _playerInfo = new View.html('''
       <div class="player-box">
-        <div class="player-name">Reed's Party</div>
-        <div class="player-user-count"><i class="icon-user"></i> 17</div>
-        <div class="player-queue-count"><i class="icon-music"></i> 100</div>
+        <div class="player-name"></div>
+        <div class="player-user-count"><i class="icon-user"></i></div>
+        <div class="player-queue-count"><i class="icon-music"></i></div>
       </div>
     ''');
-    addChild(temp);
+    addChild(_playerInfo);
+    
+    // player info watching
+    watch(_udjApp.state.currentPlayer, _changeCurrentPlayer);
     
     View temp2 = new View.html('''
       <div class="now-playing-box">
@@ -30,4 +40,39 @@ class SideBarView extends CompositeView {
     ''');
     addChild(temp3);
   }
+  
+  // watchers
+  
+  /**
+   * Update the player the user is currently in.
+   */
+  _changeCurrentPlayer(e) {
+    Player p = _udjApp.state.currentPlayer.value;
+    if (p != null) {
+      _playerInfo.node.query(".player-name").text = p.name;
+      _playerInfo.node.query(".player-user-count").text = p.numActiveUsers.toString();
+      _updateQueueCount();
+      
+    } else {
+      _playerInfo.node.query(".player-name").text = "";
+      _playerInfo.node.query(".player-user-count").text = "";
+      _playerInfo.node.query(".player-queue-count").text = "";
+      
+    }
+  }
+  
+  /**
+   * Updates the number of songs in the queue.
+   */
+  _updateQueueCount() {
+    List<QueueSong> queue = _udjApp.state.queue.value;
+    if (queue != null && _udjApp.state.currentPlayer.value != null) {
+      _playerInfo.node.query(".player-queue-count").text = queue.length.toString();
+      
+    } else {
+      _playerInfo.node.query(".player-queue-count").text = "--";
+      
+    }
+  }
+  
 }

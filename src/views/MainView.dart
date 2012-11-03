@@ -43,7 +43,7 @@ class MainView extends CompositeView{
     addChild(_playerSelect);
     
     // Create the side bar view
-    _sideBar = new SideBarView();
+    _sideBar = new SideBarView(this._udjApp);
     addChild(_sideBar);
     
     // Create the library view

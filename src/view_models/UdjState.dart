@@ -12,7 +12,7 @@ class UdjState extends UIState {
   
   final ObservableValue<QueueSong> nowPlaying;
   
-  final ObservableList<QueueSong> queue;
+  final ObservableValue<List<QueueSong>> queue;
   
   final ObservableValue<String> libraryView;
   
@@ -28,7 +28,7 @@ class UdjState extends UIState {
     playerState = new ObservableValue<String>(null),
     currentPlayer = new ObservableValue<Player>(null),
     nowPlaying = new ObservableValue<QueueSong>(null),
-    queue = new ObservableList<QueueSong>(null),
+    queue = new ObservableValue<List<QueueSong>>(null),
     libraryView = new ObservableValue<String>(null),
     searchTerm = new ObservableValue<String>(null),
     librarySongs = new ObservableList<Song>(null);
