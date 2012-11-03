@@ -8,17 +8,31 @@ class PlayerCreateView extends CompositeView {
   // views
   View _form;
   
-  PlayerCreateView(this._udjApp, this._state):super('player-create') {
+  PlayerCreateView(this._udjApp, this._state):super('player-create container') {
+    CompositeView formRow = new CompositeView('row');
+    CompositeView formSpan = new CompositeView('span4 offset4 player-create-wrap');
+    formRow.addChild(formSpan);
+    
     _form = new View.html('''
-    <form id="player-create-form">
-      <input id="player-create-name" placeholder="Player Name">
-      <input id="player-create-zip" placeholder="Postal Code">
-      <input id="player-create-country" placeholder="Country">
+    <form id="player-create-form" class="well player-create-form">
+      <h3>Create Your Player</h3>
+
+      <div>
+        <input id="player-create-name" placeholder="Player Name">
+      </div>
+      <div>
+        <input id="player-create-zip" placeholder="Postal Code">
+      </div>
+      <div>
+        <input id="player-create-country" placeholder="Country">
+      </div>
 
       <button type="submit" class="btn">Create!</button>
     </form>
     ''');
-    addChild(_form);
+    formSpan.addChild(_form);
+    
+    addChild(formRow);
     
   }
   

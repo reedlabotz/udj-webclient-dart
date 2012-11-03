@@ -161,6 +161,25 @@ body{
   }
 }
 
+/* player create */
+.player-create-wrap {
+  top: 50%;
+  position: absolute;
+  margin-top: -200px;
+}
+
+.player-create-form {
+  text-align: center;
+  
+  div {
+    margin-bottom: 10px;
+  }
+  
+  button[type='submit'] {
+    margin-top: 10px;
+  }
+}
+
 .top-bar{
   position: absolute;
   top: 0px;

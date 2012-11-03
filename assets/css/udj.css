@@ -5513,6 +5513,19 @@ body {
 .player-select-list .player-join {
   float: right; }
 
+/* player create */
+.player-create-wrap {
+  top: 50%;
+  position: absolute;
+  margin-top: -200px; }
+
+.player-create-form {
+  text-align: center; }
+  .player-create-form div {
+    margin-bottom: 10px; }
+  .player-create-form button[type='submit'] {
+    margin-top: 10px; }
+
 .top-bar {
   position: absolute;
   top: 0px;
