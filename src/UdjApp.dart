@@ -76,7 +76,8 @@ class UdjApp extends App{
       service.pollPlayer(state.currentPlayer.value.id,(Map data){
         if(data['success']){
           state.playerState.value = data['data']['state'];
-          state.nowPlaying.value = new QueueSong.fromJson(data['data']['current_song']);
+          if(data['data']['current_song'] != null)
+            state.nowPlaying.value = new QueueSong.fromJson(data['data']['current_song']);
           List queue = new List<QueueSong>();
           for(var s in data['data']['active_playlist']){
             queue.add(new QueueSong.fromJson(s));
