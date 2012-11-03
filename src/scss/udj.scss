@@ -121,6 +121,11 @@ body{
 /* player select view */
 .player-select-actionbar {
   margin-bottom: 10px;
+  
+  .alert {
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
 }
 
 .player-select-list {

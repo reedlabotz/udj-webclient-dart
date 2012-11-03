@@ -5491,6 +5491,9 @@ body {
 /* player select view */
 .player-select-actionbar {
   margin-bottom: 10px; }
+  .player-select-actionbar .alert {
+    margin-top: 15px;
+    margin-bottom: 10px; }
 
 .player-select-list .player {
   margin-bottom: 5px; }
