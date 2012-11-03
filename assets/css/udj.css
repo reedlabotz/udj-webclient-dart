@@ -5426,6 +5426,23 @@ body {
 .main-search {
   margin-bottom: 0; }
 
+/* player select view */
+.player-name {
+  font-weight: bold;
+  float: left; }
+
+.player-owner {
+  float: left; }
+  .player-owner.dashed:before {
+    content: "- ";
+    padding-left: 3px; }
+
+.player-attrs {
+  float: right; }
+
+.player-join {
+  float: right; }
+
 /* player */
 .queue-holder ul {
   margin: 0; }
