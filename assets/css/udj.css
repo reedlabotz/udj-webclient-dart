@@ -5563,6 +5563,8 @@ body {
     width: 50px;
     float: left;
     height: 100%; }
+  .song .song-add {
+    padding-top: 7px; }
   .song .song-vote-count {
     color: #ccc;
     font-size: 12px;
