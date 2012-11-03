@@ -223,13 +223,9 @@ body{
 
   .song-vote, .song-add{
     text-align: center;
-    width: 30px;
+    width: 50px;
     float: left;
     height: 100%;
-
-    i{
-      cursor: pointer;
-    }
   }
 
   .song-vote-count{

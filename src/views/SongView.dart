@@ -12,18 +12,18 @@ class SongView extends CompositeView{
       QueueSong song = _song;
       _vote = new View.html('''
         <div class="song-vote" data-song-id="${song.id}">
-          <div class="song-vote-up"><i class="icon-chevron-up"></i></div>
+          <div class="song-vote-up"><button><i class="icon-chevron-up"></i></button></div>
           <div class="song-vote-count">
             <span class="song-vote-count-up">+${song.upvoters.length}</span>/<span class="song-vote-count-down">-${song.downvoters.length}</span>
           </div>
-          <div class="song-vote-down"><i class="icon-chevron-down"></i></div>
+          <div class="song-vote-down"><button><i class="icon-chevron-down"></i></button></div>
         </div>
       ''');
       addChild(_vote);
     }else{
       View add = new View.html('''
         <div class="song-add" data-song-id="${_song.id}">
-          <i class="icon-plus"></i>
+          <button><i class="icon-plus"></i></button>
         </div>
       ''');
       add.addOnClick((Event e){

@@ -5560,11 +5560,9 @@ body {
   margin: 5px 0; }
   .song .song-vote, .song .song-add {
     text-align: center;
-    width: 30px;
+    width: 50px;
     float: left;
     height: 100%; }
-    .song .song-vote i, .song .song-add i {
-      cursor: pointer; }
   .song .song-vote-count {
     color: #ccc;
     font-size: 12px;
