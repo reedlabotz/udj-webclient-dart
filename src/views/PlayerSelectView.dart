@@ -138,32 +138,8 @@ class PlayerSelectListView extends CompositeView {
       target = target.parent;
     }
     
-    String playerID = target.dataAttributes['player-id'];
-    _udjApp.service.auth_put_request('/players/$playerID/users/user', {}, (HttpRequest req) {
-      // 201 is success, 400 is you own it
-      if (req.status == 201 || req.status == 400) {
-        for (Player p in _state.players.value) {
-          if (p.id == playerID) {
-            _udjApp.state.currentPlayer.value = p;
-          }
-        }
-        
-      } else {
-        // TODO: test errors
-        
-        if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
-          _state.errorMessage.value = "The server is full.";
-          
-        } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
-          _state.errorMessage.value = "You have been banned from this server.";
-          // TODO: reload the players list from the server- filter should be applied
-          
-        } else {
-          _state.errorMessage.value = "There was an error joining the server.";
-        
-        }
-      }
-    });
+    _state.joinPlayer( target.dataAttributes['player-id'] );
+
   }
   
 }
