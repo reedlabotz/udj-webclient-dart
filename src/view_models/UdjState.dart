@@ -20,6 +20,8 @@ class UdjState extends UIState {
   
   final ObservableList<Song> librarySongs;
   
+  final ObservableValue<bool> ready;
+  
   final UdjApp _udjApp;
   
   UdjState(this._udjApp): 
@@ -31,7 +33,8 @@ class UdjState extends UIState {
     queue = new ObservableValue<List<QueueSong>>(null),
     libraryView = new ObservableValue<String>(null),
     searchTerm = new ObservableValue<String>(null),
-    librarySongs = new ObservableList<Song>(null);
+    librarySongs = new ObservableList<Song>(null),
+    ready = new ObservableValue<bool>(false);
   
   void voteSong(String action,String songId){
     _udjApp.service.voteSong(action,_udjApp.state.currentPlayer.value.id,songId,(res){

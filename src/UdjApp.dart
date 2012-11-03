@@ -14,6 +14,7 @@ class UdjApp extends App{
   
   /// Track if the page has loaded
   bool onLoadFired;
+  bool constructorFired;
   
   /// The main view
   MainView _mainView;
@@ -21,9 +22,10 @@ class UdjApp extends App{
   /// Service that keeps ofline in sync
   OfflineSyncService offlineSync;
   
-  UdjApp(): 
-    super(), 
-    onLoadFired = false{
+  UdjApp():super(), 
+    onLoadFired = false,
+    constructorFired = false
+ {
     state = new UdjState(this);
     service = new UdjService(_loginNeeded);
     offlineSync = new OfflineSyncService(this,service);
@@ -33,7 +35,6 @@ class UdjApp extends App{
   void setupApp(){
     if (onLoadFired && state != null) {
       render();
-      eraseSplashScreen();
     }
   }
   
@@ -46,7 +47,23 @@ class UdjApp extends App{
   
   void render(){
     _mainView = new MainView(this);
+    
+    if (state.ready.value == true) {
+      _showApp();
+      
+    } else {
+      _mainView.watch(state.ready, (e) {
+        if (state.ready.value == true) {
+          _showApp();
+        }
+      });
+      
+    }
+  }
+  
+  void _showApp() {
     _mainView.addToDocument(document.body);
+    eraseSplashScreen();
   }
   
   /**
