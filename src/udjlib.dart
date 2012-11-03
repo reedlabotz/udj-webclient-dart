@@ -2,6 +2,8 @@ library udjlib;
 import 'dart:html';
 import 'dart:json';
 import 'dart:isolate';
+import 'dart:uri';
+
 import 'lib/framework.dart';
 import 'lib/ui/base/base.dart';
 import 'lib/ui/view/view.dart';

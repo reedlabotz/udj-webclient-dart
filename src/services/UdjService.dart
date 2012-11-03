@@ -71,12 +71,14 @@ class UdjService {
   }
   
   void voteSong(String action,String playerId, String songId, Function callback){
+    songId = songId.replaceFirst('://', '%3A%2F%2F');
     authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}/${action}',{},(HttpRequest request){
       
     });
   }
   
   void addSong(String playerId, String songId, Function callback){
+    songId = songId.replaceFirst('://', '%3A%2F%2F');
     authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest request){
       
     });
