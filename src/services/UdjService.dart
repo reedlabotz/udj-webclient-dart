@@ -120,6 +120,19 @@ class UdjService {
     });
   }
   
+  void addPlayerLibrary(String playerID, String libraryID, Function callback) {
+    authPutRequestForm("/players/$playerID/external_libraries/$libraryID",
+      {},
+      (HttpRequest request)
+    {
+      if (request.status == 200) {
+        callback( {'success': true} );
+      }
+      //TODO: else handle errors
+      
+    });
+  }
+  
   /**
    * 
    */

@@ -12,17 +12,28 @@ class PlayerCreateState extends UIState {
         Player p = new Player.fromJson( status['playerData'] );
         
         _udjApp.service.setPlayerState(p.id, 'paused', (Map status) {
-          _udjApp.state.localPlayer.value = p;
-          _udjApp.state.currentPlayer.value = p;
-          _udjApp.state.creatingPlayer.value = false;
-        });
-        
-        
+          if (status['success']) {
+            _udjApp.service.addPlayerLibrary(p.id, "1", (Map status) {
+              if (status['success']) {
+                _udjApp.state.localPlayer.value = p;
+                _udjApp.state.currentPlayer.value = p;
+                _udjApp.state.creatingPlayer.value = false;
+                
+              } else {
+                // TODO: error handling
+
+              }
+            }); // close addPlayerLibrary
+            
+          } else {
+            // TODO: error handling
+          }
+        }); // close setPlayerState
         
       } else {
         // TODO: error handling
       }
-    });
+    }); // close createPlayer
   }
   
 }
