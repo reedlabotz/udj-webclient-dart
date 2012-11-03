@@ -23,7 +23,7 @@ class TopBarView extends CompositeView {
     addChild(logoView);
     
     // Create the library view menue
-    var menuItems = ['Random','Artists','Recent'];
+    var menuItems = ['Random','Recent'];
     _librarySelectView = new SliderMenu(menuItems,_onSelectLibraryView);
     addChild(_librarySelectView);
     
