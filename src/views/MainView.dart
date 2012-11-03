@@ -26,6 +26,10 @@ class MainView extends CompositeView{
   PlayerSelectView _playerSelect;
   PlayerSelectState _playerSelectState;
   
+  /// The player create view.
+  PlayerCreateView _playerCreate;
+  PlayerCreateState _playerCreateState;
+  
   /*
    * Initialize the view and create all the child views.
    */
@@ -44,6 +48,11 @@ class MainView extends CompositeView{
     _playerSelectState = new PlayerSelectState(_udjApp);
     _playerSelect = new PlayerSelectView(_udjApp, _playerSelectState);
     addChild(_playerSelect);
+    
+    // Create the player create view
+    _playerCreateState = new PlayerCreateState(_udjApp);
+    _playerCreate = new PlayerCreateView(_udjApp, _playerCreateState);
+    addChild(_playerCreate);
     
     // Create the side bar view
     _sideBarState = new SideBarState(_udjApp);
@@ -65,6 +74,7 @@ class MainView extends CompositeView{
   void afterRender(Element node){
     watch(_udjApp.state.currentUsername, (e) => _chooseView());
     watch(_udjApp.state.currentPlayer, (e) => _chooseView());
+    watch(_udjApp.state.creatingPlayer, (e) => _chooseView());
   }
   
   /**
@@ -81,12 +91,24 @@ class MainView extends CompositeView{
       _login.hidden = false;
     }
     
+    // create a player
+    else if (_udjApp.state.creatingPlayer.value) {
+      _topBar.hidden = true;
+      _sideBar.hidden = true;
+      _library.hidden = true;
+      _playerSelectState.hidden.value = true;
+      _login.hidden = true;
+      
+      _playerCreate.hidden = false;
+    }
+    
     // choose a player
     else if (_udjApp.state.currentPlayer.value == null) {
       _topBar.hidden = true;
       _sideBar.hidden = true;
       _library.hidden = true;
       _login.hidden = true;
+      _playerCreate.hidden = true;
       
       _playerSelectState.hidden.value = false;
     }
@@ -95,6 +117,7 @@ class MainView extends CompositeView{
     else {
       _login.hidden = true;
       _playerSelectState.hidden.value = true;
+      _playerCreate.hidden = true;
       
       _topBar.hidden = false;
       _sideBar.hidden = false;

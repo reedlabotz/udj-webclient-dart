@@ -8,6 +8,7 @@ class PlayerSelectView extends CompositeView {
   PlayerSelectListView _playersList;
   View _errorMessage;
   View _search;
+  View _createPlayer;
   
   Player _prevPlayer; // used in changePlayers to allow exiting from player selection
   
@@ -29,6 +30,11 @@ class PlayerSelectView extends CompositeView {
         </div>
     ''');
     addChild(_playerSelectHeader);
+    
+    _createPlayer = new View.html('''
+    <button type="button" id="player-select-create">Create</button>
+    ''');
+    addChild(_createPlayer);
     
     _search = new View.html('''
     <form id="player-select-search" class="player-select-search">
@@ -68,6 +74,7 @@ class PlayerSelectView extends CompositeView {
     
     // events
     _search.node.on.submit.add(_searchFormSubmit);
+    
     _playerSelectHeader.node.query("#player-select-close").on.click.add((Event e) {
       if (_prevPlayer != null) {
         _udjApp.state.currentPlayer.value = _prevPlayer;
@@ -75,9 +82,14 @@ class PlayerSelectView extends CompositeView {
       }
       // TODO: handle else?  x should be hidden if no prev player
     });
+    
+    _createPlayer.node.on.click.add((Event e) {
+      _udjApp.state.creatingPlayer.value = true;
+    });
+    
   }
   
-  // events
+  // event handlers
   
   void _searchFormSubmit(Event e) {
     e.preventDefault();
