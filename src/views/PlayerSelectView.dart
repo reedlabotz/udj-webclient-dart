@@ -42,10 +42,6 @@ class PlayerSelectView extends CompositeView {
     watch(_state.players, _updatePlayers);
     watch(_state.errorMessage, _displayErrorMsg);
   }
-  
-  // drawing
-  
-
 
   // watchers
   

@@ -56,7 +56,8 @@ class PlayerSelectState extends UIState{
         }
         
       } else {
-        // TODO: test errors
+        // TODO: test errors - currently the server responds correctly but the browser gives an error:
+        // Refused to get unsafe header "X-Udj-Forbidden-Reason"
         
         if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
           errorMessage.value = "The server is full.";
