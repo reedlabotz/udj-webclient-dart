@@ -32,4 +32,16 @@ class UdjState extends UIState {
     libraryView = new ObservableValue<String>(null),
     searchTerm = new ObservableValue<String>(null),
     librarySongs = new ObservableList<Song>(null);
+  
+  void voteSong(String action,String songId){
+    _udjApp.service.voteSong(action,_udjApp.state.currentPlayer.value.id,songId,(res){
+      
+    });
+  }
+  
+  void addSong(String songId){
+    _udjApp.service.addSong(_udjApp.state.currentPlayer.value.id,songId,(res){
+      
+    });
+  }
 }

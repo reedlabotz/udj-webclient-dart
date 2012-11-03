@@ -48,7 +48,7 @@ class LibraryListView extends CompositeView{
     
     if (_state.results.value != null) {
       for (Song s in _state.results.value) {
-        SongView view = new SongView(s);
+        SongView view = new SongView(_udjApp,s);
         addChild(view);
       } 
     }

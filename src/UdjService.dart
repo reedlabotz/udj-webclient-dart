@@ -47,6 +47,18 @@ class UdjService {
         });
   }
   
+  void voteSong(String action,String playerId, String songId, Function callback){
+    auth_put_request('/players/${playerId}/active_playlist/${songId}/${action}',{},(HttpRequest response){
+      
+    });
+  }
+  
+  void addSong(String playerId, String songId, Function callback){
+    auth_put_request('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest response){
+      
+    });
+  }
+  
   /**
    * A GET request with auth token.
    */
