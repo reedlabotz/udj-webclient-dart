@@ -17,7 +17,6 @@ class LoginState extends UIState{
   // methods
   
   void login(String username, String password){
-    print("login");
     _udjApp.service.login(username, password, (success){
       if(!success){
         errorMessage.value = "Username and password did not match. Please try again.";

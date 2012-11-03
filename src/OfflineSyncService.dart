@@ -27,7 +27,6 @@ class OfflineSyncService extends View{
     // must come first, so other functions that require a user to be logged in
     // will have the necessary session info
     if(window.localStorage.containsKey('session')){
-      print(JSON.parse(window.localStorage['session']));
       _service.session.value = new Session.fromJson(JSON.parse(window.localStorage['session']));
       _udjApp.state.currentUsername.value = _service.session.value.username;
     }
@@ -39,7 +38,6 @@ class OfflineSyncService extends View{
       _service.joinPlayer(playerData['id'], (Map status) {
         if (status['success'] == true) {
           _udjApp.state.currentPlayer.value = new Player.fromJson(playerData);
-          print("joined: $playerData");
         
         } else {
           _udjApp.state.currentPlayer.value = null;
@@ -74,13 +72,10 @@ class OfflineSyncService extends View{
   }
   
   void _saveCurrentPlayer(EventSummary e){
-    print(e.events.toString());
     if(_udjApp.state.currentPlayer.value == null){
-      print("1");
-      window.localStorage.remove('player'); 
+      window.localStorage.remove('player');
+      
     }else{
-      print("test");
-      print(JSON.stringify(_udjApp.state.currentPlayer.value));
       window.localStorage['player'] = JSON.stringify(_udjApp.state.currentPlayer.value);
     }
   }
