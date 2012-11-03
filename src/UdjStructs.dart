@@ -93,22 +93,22 @@ class QueueSong extends Song{
 }
 
 class Session{
-  String ticket_hash;
-  String user_id;
+  String ticketHash;
+  String userId;
   String username;
   
-  Session(this.ticket_hash, this.user_id, this.username);
+  Session(this.ticketHash, this.userId, this.username);
   
   Session.fromJson(Map data){
-    this.ticket_hash = data['ticket_hash'];
-    this.user_id = data['user_id'];
+    this.ticketHash = data['ticket_hash'];
+    this.userId = data['user_id'];
     this.username = data['username'];
   }
   
   Map toJson(){
     var data = {
-      'ticket_hash': ticket_hash,
-      'user_id': user_id,
+      'ticket_hash': ticketHash,
+      'user_id': userId,
       'username': username
     };
     return data;

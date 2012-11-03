@@ -26,7 +26,7 @@ class PlayerSelectState extends UIState{
     
     window.navigator.geolocation.getCurrentPosition(
       (Geoposition position){
-        _udjApp.service.auth_get_request('/players/${position.coords.latitude}/${position.coords.longitude}',{},
+        _udjApp.service.authGetRequest('/players/${position.coords.latitude}/${position.coords.longitude}',{},
           (HttpRequest request){
             List playerData = JSON.parse(request.responseText);
             List<Player> playersTmp = new List<Player>();
