@@ -216,7 +216,7 @@ body{
   }
 
   .queue-box{
-    overflow-y: scroll;
+    overflow-y: hidden;
     position: absolute;
     top: 200px;
     bottom: 10px;
@@ -264,7 +264,7 @@ body{
 }
 
 .library-box{
-  overflow-y: scroll;
+  overflow-y: hidden;
   position: absolute;
   right: 310px;
   top: 50px;

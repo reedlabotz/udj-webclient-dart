@@ -5553,7 +5553,7 @@ body {
   .sidebar-box .now-playing-box {
     height: 90px; }
   .sidebar-box .queue-box {
-    overflow-y: scroll;
+    overflow-y: hidden;
     position: absolute;
     top: 200px;
     bottom: 10px; }
@@ -5585,7 +5585,7 @@ body {
     font-size: 12px; }
 
 .library-box {
-  overflow-y: scroll;
+  overflow-y: hidden;
   position: absolute;
   right: 310px;
   top: 50px;
