@@ -87,6 +87,7 @@ class MainView extends CompositeView{
       _sideBar.hidden = true;
       _library.hidden = true;
       _playerSelectState.hidden.value = true;
+      _playerCreate.hidden = true;
 
       _login.hidden = false;
     }
