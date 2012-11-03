@@ -48,31 +48,51 @@ class MainView extends CompositeView{
     addChild(_library);
     
     // Call [_swapLoggedInView] to get initial view setup correctly
-    _swapLoggedInView();
+    _chooseView();
   }
   
   /**
    * After render add listeners.
    */
   void afterRender(Element node){
-    watch(_udjApp.state.currentUsername, (e) => _swapLoggedInView());
+    watch(_udjApp.state.currentUsername, (e) => _chooseView());
   }
   
   /**
-   * Swap the the views to show login or logged in view.
+   * Chooses the view to show the user based on the udjApp state.
    */
-  void _swapLoggedInView(){
-    if(_udjApp.state.currentUsername.value != null){
-      _topBar.hidden = false;
-      _sideBar.hidden = false;
-      _library.hidden = false;
-      _login.hidden = true;
-    }else{
+  void _chooseView(){
+    // login
+    if (_udjApp.state.currentUsername.value == null) {
       _topBar.hidden = true;
       _sideBar.hidden = true;
       _library.hidden = true;
       _playerSelect.hidden = true;
+
       _login.hidden = false;
+    }
+    
+    // choose a player
+    else if (_udjApp.state.currentPlayer.value == null) {
+      _topBar.hidden = true;
+      _sideBar.hidden = true;
+      _library.hidden = true;
+      _login.hidden = true;
+      
+      _playerSelect.hidden = false;
+      
+      return;
+    }
+    
+    // use udj
+    else {
+      _login.hidden = true;
+      _playerSelect.hidden = true;
+      
+      _topBar.hidden = false;
+      _sideBar.hidden = false;
+      _library.hidden = false;
+
     }
   }
 }
