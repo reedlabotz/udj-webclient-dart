@@ -361,7 +361,7 @@ $$.HashSetImplementation = {"": ["_backingMap"],
 },
  map$1: function(f) {
   var result = $.Set_Set();
-  $.forEach(this._backingMap, new $.HashSetImplementation_map__(f, result));
+  $.forEach(this._backingMap, new $.HashSetImplementation_map__(result, f));
   return result;
 },
  filter$1: function(f) {
@@ -1932,13 +1932,13 @@ $$._DataAttributeMap = {"": ["$$dom_attributes"],
     this.remove$1(t1.next$0());
 },
  forEach$1: function(f) {
-  $.forEach(this.$$dom_attributes, new $._DataAttributeMap_forEach_anon(this, f));
+  $.forEach(this.$$dom_attributes, new $._DataAttributeMap_forEach_anon(f, this));
 },
  get$keys: function() {
   var keys = $.ListImplementation_List(null, 'String');
   var t1 = 'String';
   $.setRuntimeTypeInfo(keys, {runtimeType: 'List<' + t1 + '>', 'E': t1});
-  $.forEach(this.$$dom_attributes, new $._DataAttributeMap_keys_anon(this, keys));
+  $.forEach(this.$$dom_attributes, new $._DataAttributeMap_keys_anon(keys, this));
   return keys;
 },
  get$values: function() {
@@ -4452,10 +4452,12 @@ $$.LoginView = {"": ["_udjApp?", "_state?", "_loginForm", "_errorMessage", "chil
 }
 };
 
-$$.PlayerSelectView = {"": ["_udjApp?", "_state?", "_playerSelectHeader", "_playersList", "_errorMessage", "_search", "_createPlayer", "_prevPlayer?", "childViews", "container", "scroller", "_scrollbar", "_cssName", "_scrollable", "_vertical", "_nestedContainer", "_showScrollbar", "_node", "_layout", "_resizeHandler", "customStyle"],
+$$.PlayerSelectView = {"": ["_udjApp?", "_state?", "_playerSelectHeader", "_playersList", "_errorMessage", "_search", "_createPlayer", "_actionbar", "_prevPlayer?", "childViews", "container", "scroller", "_scrollbar", "_cssName", "_scrollable", "_vertical", "_nestedContainer", "_showScrollbar", "_node", "_layout", "_resizeHandler", "customStyle"],
  "super": "CompositeView",
  afterRender$1: function(node) {
   this.addClass$1('container');
+  this._actionbar.addClass$1('span6');
+  this._actionbar.addClass$1('offset3');
   var t1 = this._state;
   this.watch$2(t1.get$hidden(), this.get$_displayPlayers());
   this.watch$2(t1.get$players(), this.get$_updatePlayers());
@@ -4513,15 +4515,24 @@ $$.PlayerSelectView = {"": ["_udjApp?", "_state?", "_playerSelectHeader", "_play
   this._prevPlayer = null;
   this._playerSelectHeader = $.View$html('        <div class="row">\n          <div class="span6 offset3">\n            <button type="button" id="player-select-close" class="close" aria-hidden="true">&times;</button>\n            <h3>Select Player</h3>\n          </div>\n        </div>\n    ');
   this.addChild$1(this._playerSelectHeader);
+  var actionbarWrap = $.CompositeView$('row', false, false, false, false);
+  this._actionbar = $.CompositeView$('player-select-actionbar', false, false, false, false);
+  actionbarWrap.addChild$1(this._actionbar);
   this._createPlayer = $.View$html('    <button type="button" id="player-select-create">Create</button>\n    ');
-  this.addChild$1(this._createPlayer);
-  this._search = $.View$html('    <form id="player-select-search" class="player-select-search">\n      <div class="input-append">\n        <input type="text" id="player-select-search-input" class="search-query span2" placeholder="Search">\n        <button type="submit" class="btn">\n          <i class="icon-search"></i>\n        </button>\n      </div>\n    </form>\n    ');
-  this.addChild$1(this._search);
+  this._actionbar.addChild$1(this._createPlayer);
+  this._search = $.View$html('    <form id="player-select-search" class="player-select-search form-search">\n      <div class="input-append">\n        <input type="text" id="player-select-search-input" class="search-query span2" placeholder="Search">\n        <button type="submit" class="btn">\n          <i class="icon-search"></i>\n        </button>\n      </div>\n    </form>\n    ');
+  this._actionbar.addChild$1(this._search);
   this._errorMessage = $.View$html('    <div class="alert alert-error"></div>\n    ');
   this._errorMessage.set$hidden(true);
-  this.addChild$1(this._errorMessage);
+  this._actionbar.addChild$1(this._errorMessage);
+  this._actionbar.addChild$1($.View$html('<div class="clearfix"></div>'));
+  this.addChild$1(actionbarWrap);
+  var playersListWrap = $.CompositeView$('row', false, false, false, false);
+  var playersListSpan = $.CompositeView$('span6 offset3', false, false, false, false);
+  playersListWrap.addChild$1(playersListSpan);
   this._playersList = $.PlayerSelectListView$(this._udjApp, this._state);
-  this.addChild$1(this._playersList);
+  playersListSpan.addChild$1(this._playersList);
+  this.addChild$1(playersListWrap);
 }
 };
 
@@ -4539,9 +4550,10 @@ $$.PlayerSelectListView = {"": ["_udjApp?", "_state?", "childViews", "container"
 },
  _makePlayerSelector$1: function(p) {
   var password = p.get$hasPassword() === true ? '      <span class="player-attr"><i class="icon-lock"></i></span>\n      ' : '<span class="player-attr"></span>';
-  return $.View$html('    <div class="row">\n      <div class="player span6 offset3">\n        <div class="player-name">' + $.S(p.get$name()) + '</div>\n        <div class="player-owner dashed">' + $.S(p.get$owner().get$username()) + '</div>\n        <button class="player-join" data-player-id="' + $.S(p.get$id()) + '">Join</button>\n        <div class="player-attrs">\n          <span class="player-attr"><i class="icon-user"></i>' + $.S(p.get$numActiveUsers()) + '</span>\n          <span class="player-attr"><i class="icon-music"></i>' + $.S(p.get$sizeLimit()) + '</span>\n          ' + password + '\n        </div>\n      </div>\n    </div>\n    ');
+  return $.View$html('    <div class="player">\n      <div class="player-name">' + $.S(p.get$name()) + '</div>\n      <div class="player-owner dashed">' + $.S(p.get$owner().get$username()) + '</div>\n      <button class="player-join" data-player-id="' + $.S(p.get$id()) + '">Join</button>\n      <div class="player-attrs">\n        <span class="player-attr"><i class="icon-user"></i>' + $.S(p.get$numActiveUsers()) + '</span>\n        <span class="player-attr"><i class="icon-music"></i>' + $.S(p.get$sizeLimit()) + '</span>\n        ' + password + '\n      </div>\n\n      <div class="clearfix"></div>\n    </div>\n    ');
 },
  afterRender$1: function(node) {
+  this.addClass$1('well');
 },
  _joinPlayer$1: function(e) {
   var target = e.get$target();
@@ -5284,20 +5296,20 @@ $$.View = {"": ["_node", "_layout", "_resizeHandler", "customStyle?"],
 }
 };
 
-$$.CompositeView = {"": ["childViews?"],
+$$.CompositeView = {"": ["childViews?", "container", "scroller", "_scrollbar", "_cssName", "_scrollable", "_vertical", "_nestedContainer", "_showScrollbar", "_node", "_layout", "_resizeHandler", "customStyle"],
  "super": "View",
  render$0: function() {
-  var node = $.Element_Element$html('<div class="' + this._cssName + '"></div>');
-  if (this._nestedContainer) {
+  var node = $.Element_Element$html('<div class="' + $.S(this._cssName) + '"></div>');
+  if (this._nestedContainer === true) {
     this.container = $.Element_Element$html('<div class="scroll-container"></div>');
     $.add$1(node.get$nodes(), this.container);
   } else
     this.container = node;
-  if (this._scrollable) {
+  if (this._scrollable === true) {
     var t1 = this.container;
     var t2 = this._vertical;
-    this.scroller = $.Scroller$(t1, t2, !t2, true, null, 1, null, false);
-    if (this._showScrollbar)
+    this.scroller = $.Scroller$(t1, t2, t2 !== true, true, null, 1, null, false);
+    if (this._showScrollbar === true)
       this._scrollbar = $.Scrollbar$(this.scroller, true);
   }
   for (t1 = $.iterator(this.childViews); t1.get$hasNext() === true;) {
@@ -5747,7 +5759,7 @@ $$.Scroller = {"": ["_lib3_element?", "_frame?", "_touchHandler", "_momentum?", 
  throwTo$3: function(x, y, decelerationFactor) {
   var t1 = {};
   t1.decelerationFactor_1 = decelerationFactor;
-  this.reconfigure$1(new $.Scroller_throwTo_anon(y, x, t1, this));
+  this.reconfigure$1(new $.Scroller_throwTo_anon(x, t1, y, this));
 },
  throwDelta$3: function(deltaX, deltaY, decelerationFactor) {
   var start = this._contentOffset;
@@ -5853,11 +5865,11 @@ $$.Scroller = {"": ["_lib3_element?", "_frame?", "_touchHandler", "_momentum?", 
  onTouchEnd$0: function() {
 },
  onTouchStart$1: function(e) {
-  this.reconfigure$1(new $.Scroller_onTouchStart_anon(e, this));
+  this.reconfigure$1(new $.Scroller_onTouchStart_anon(this, e));
   return true;
 },
  reconfigure$1: function(callback) {
-  this._resize$1(new $.Scroller_reconfigure_anon(this, callback));
+  this._resize$1(new $.Scroller_reconfigure_anon(callback, this));
 },
  reset$0: function() {
   this.stop$0();
@@ -5879,7 +5891,7 @@ $$.Scroller = {"": ["_lib3_element?", "_frame?", "_touchHandler", "_momentum?", 
     contentSizeFuture = this._lib3_element.get$rect();
     contentSizeFuture.then$1(new $.Scroller__resize_anon0(this));
   }
-  $.joinFutures([frameRect, contentSizeFuture], new $.Scroller__resize_anon1(this, frameRect, callback));
+  $.joinFutures([frameRect, contentSizeFuture], new $.Scroller__resize_anon1(frameRect, callback, this));
 },
  _snapToBounds$2: function(x, y) {
   var t1 = this._minPoint.get$x();
@@ -6485,7 +6497,7 @@ $$.GridLayout = {"": ["rows?", "columns?", "template?", "rowSizing", "columnSizi
 },
  measureLayout$2: function(size, changed) {
   this._ensureAllTracks$0();
-  $.window().requestLayoutFrame$1(new $.GridLayout_measureLayout_anon(this, changed, size));
+  $.window().requestLayoutFrame$1(new $.GridLayout_measureLayout_anon(changed, this, size));
 },
  _measureTracks$0: function() {
   try {
@@ -6652,7 +6664,7 @@ $$.GridLayout = {"": ["rows?", "columns?", "template?", "rowSizing", "columnSizi
       var t2 = tracks[i];
       var t3 = t2.get$tempBreadth();
       if (typeof t3 !== 'number')
-        return this._distributeSpaceToTracks$4$bailout(2, i, share, freeSpace, t2, t3, tracks);
+        return this._distributeSpaceToTracks$4$bailout(2, freeSpace, share, i, t2, t3, tracks);
       t2.set$tempBreadth(t3 + share);
       freeSpace -= share;
     }
@@ -6671,9 +6683,9 @@ $$.GridLayout = {"": ["rows?", "columns?", "template?", "rowSizing", "columnSizi
       var ignoreMaxBreadth = env3;
       break;
     case 2:
-      i = env0;
+      freeSpace = env0;
       share = env1;
-      freeSpace = env2;
+      i = env2;
       t2 = env3;
       t3 = env4;
       tracks = env5;
@@ -6726,7 +6738,7 @@ $$.GridLayout = {"": ["rows?", "columns?", "template?", "rowSizing", "columnSizi
   }
 },
  _distributeSpaceBySpanCount$3: function(items, sizeMode, breadth) {
-  items = $.filter(items, new $.GridLayout__distributeSpaceBySpanCount_anon(breadth, this, sizeMode));
+  items = $.filter(items, new $.GridLayout__distributeSpaceBySpanCount_anon(breadth, sizeMode, this));
   if (typeof items !== 'string' && (typeof items !== 'object' || items === null || items.constructor !== Array && !items.is$JavaScriptIndexingBehavior()))
     return this._distributeSpaceBySpanCount$3$bailout(1, sizeMode, breadth, items);
   var tracks = [];
@@ -7034,17 +7046,17 @@ $$.GridLayout = {"": ["rows?", "columns?", "template?", "rowSizing", "columnSizi
       span = childLayout.get$rowSpan();
       tracks = this._rowTracks;
     } else {
+      span = null;
       tracks = null;
       start = null;
-      span = null;
     }
     if (typeof start !== 'number')
-      return this._getTracks$1$bailout(5, tracks, start, span);
+      return this._getTracks$1$bailout(5, span, tracks, start);
   }
-  if (typeof span !== 'number')
-    return this._getTracks$1$bailout(7, tracks, start, span);
   if (typeof tracks !== 'string' && (typeof tracks !== 'object' || tracks === null || tracks.constructor !== Array && !tracks.is$JavaScriptIndexingBehavior()))
-    return this._getTracks$1$bailout(6, tracks, start, span);
+    return this._getTracks$1$bailout(7, span, tracks, start);
+  if (typeof span !== 'number')
+    return this._getTracks$1$bailout(6, span, tracks, start);
   var result = $.ListImplementation_List(span, 'GridTrack');
   var t3 = 'GridTrack';
   $.setRuntimeTypeInfo(result, {runtimeType: 'List<' + t3 + '>', 'E': t3});
@@ -7081,19 +7093,19 @@ $$.GridLayout = {"": ["rows?", "columns?", "template?", "rowSizing", "columnSizi
       childLayout = env1;
       break;
     case 5:
-      tracks = env0;
-      start = env1;
-      span = env2;
+      span = env0;
+      tracks = env1;
+      start = env2;
       break;
     case 7:
-      tracks = env0;
-      start = env1;
-      span = env2;
+      span = env0;
+      tracks = env1;
+      start = env2;
       break;
     case 6:
-      tracks = env0;
-      start = env1;
-      span = env2;
+      span = env0;
+      tracks = env1;
+      start = env2;
       break;
   }
   switch (state0) {
@@ -7129,9 +7141,9 @@ $$.GridLayout = {"": ["rows?", "columns?", "template?", "rowSizing", "columnSizi
                   tracks = this._rowTracks;
               }
             else {
+              span = null;
               tracks = null;
               start = null;
-              span = null;
             }
           case 5:
             state0 = 0;
@@ -7398,7 +7410,7 @@ $$._Parser = {"": [],
   for (; t2 = value.length, i < t2; ++i) {
     var t2 = this._offset;
     if (typeof t2 !== 'number')
-      return this._maybeEat$2$bailout(4, i, value, t2, t1);
+      return this._maybeEat$2$bailout(4, value, i, t2, t1);
     t2 += i;
     if (t2 !== (t2 | 0))
       throw $.iae(t2);
@@ -7436,8 +7448,8 @@ $$._Parser = {"": [],
       t1 = env1;
       break;
     case 4:
-      i = env0;
-      value = env1;
+      value = env0;
+      i = env1;
       t2 = env2;
       t1 = env3;
       break;
@@ -7529,7 +7541,7 @@ $$._Parser = {"": [],
   t1 = this._src;
   var t2 = this._offset;
   if (typeof t2 !== 'number')
-    return this._maybeEatString$0$bailout(2, hasEscape, start, t1, t2);
+    return this._maybeEatString$0$bailout(2, start, hasEscape, t1, t2);
   var result = $.substring$2(t1, start, t2 - 1);
   return hasEscape ? $.replaceFirst(result, '\\', '') : result;
 },
@@ -7542,8 +7554,8 @@ $$._Parser = {"": [],
       hasEscape = env3;
       break;
     case 2:
-      hasEscape = env0;
-      start = env1;
+      start = env0;
+      hasEscape = env1;
       t1 = env2;
       t2 = env3;
       break;
@@ -8714,12 +8726,12 @@ $$.ConstantMap_forEach_anon = {"": ["this_1", "f_0"],
 }
 };
 
-$$._DataAttributeMap_keys_anon = {"": ["this_1", "keys_0"],
+$$._DataAttributeMap_keys_anon = {"": ["keys_1", "this_0"],
  "super": "Closure",
  call$2: function(key, value) {
-  var t1 = this.this_1;
+  var t1 = this.this_0;
   if (t1._matches$1(key) === true)
-    $.add$1(this.keys_0, t1._strip$1(key));
+    $.add$1(this.keys_1, t1._strip$1(key));
 }
 };
 
@@ -8731,12 +8743,12 @@ $$._DataAttributeMap_values_anon = {"": ["values_1", "this_0"],
 }
 };
 
-$$._DataAttributeMap_forEach_anon = {"": ["this_1", "f_0"],
+$$._DataAttributeMap_forEach_anon = {"": ["f_1", "this_0"],
  "super": "Closure",
  call$2: function(key, value) {
-  var t1 = this.this_1;
+  var t1 = this.this_0;
   if (t1._matches$1(key) === true)
-    this.f_0.call$2(t1._strip$1(key), value);
+    this.f_1.call$2(t1._strip$1(key), value);
 }
 };
 
@@ -9096,11 +9108,11 @@ $$.Scroller__getOffsetFunction_anon0 = {"": [],
 }
 };
 
-$$.Scroller_throwTo_anon = {"": ["y_4", "x_3", "box_0", "this_2"],
+$$.Scroller_throwTo_anon = {"": ["x_4", "box_0", "y_3", "this_2"],
  "super": "Closure",
  call$0: function() {
   var t1 = this.this_2;
-  var snappedTarget = t1._snapToBounds$2(this.x_3, this.y_4);
+  var snappedTarget = t1._snapToBounds$2(this.x_4, this.y_3);
   var t2 = this.box_0;
   if (t2.decelerationFactor_1 == null)
     t2.decelerationFactor_1 = t1.get$_momentum().get$decelerationFactor();
@@ -9112,11 +9124,11 @@ $$.Scroller_throwTo_anon = {"": ["y_4", "x_3", "box_0", "this_2"],
 }
 };
 
-$$.Scroller_reconfigure_anon = {"": ["this_1", "callback_0"],
+$$.Scroller_reconfigure_anon = {"": ["callback_1", "this_0"],
  "super": "Closure",
  call$0: function() {
-  this.this_1._snapContentOffsetToBounds$0();
-  this.callback_0.call$0();
+  this.this_0._snapContentOffsetToBounds$0();
+  this.callback_1.call$0();
 }
 };
 
@@ -9135,21 +9147,21 @@ $$.Scroller__resize_anon0 = {"": ["this_1"],
 }
 };
 
-$$.Scroller__resize_anon1 = {"": ["this_4", "frameRect_3", "callback_2"],
+$$.Scroller__resize_anon1 = {"": ["frameRect_4", "callback_3", "this_2"],
  "super": "Closure",
  call$0: function() {
-  var t1 = this.frameRect_3;
+  var t1 = this.frameRect_4;
   var t2 = $.Size$(t1.get$value().get$offset().get$width(), t1.get$value().get$offset().get$height());
-  var t3 = this.this_4;
+  var t3 = this.this_2;
   t3.set$_scrollSize(t2);
   var adjusted = t3._getAdjustedContentSize$0();
   t3.set$_maxPoint($.Coordinate$($.neg(t3.get$_maxOffset().get$x()), $.neg(t3.get$_maxOffset().get$y())));
   t3.set$_minPoint($.Coordinate$($.min($.add($.sub(t3.get$_scrollSize().get$width(), adjusted.get$width()), t3.get$_minOffset().get$x()), t3.get$_maxPoint().get$x()), $.min($.add($.sub(t3.get$_scrollSize().get$height(), adjusted.get$height()), t3.get$_minOffset().get$y()), t3.get$_maxPoint().get$y())));
-  this.callback_2.call$0();
+  this.callback_3.call$0();
 }
 };
 
-$$.joinFutures_helper = {"": ["box_0", "callback_3", "len_2"],
+$$.joinFutures_helper = {"": ["callback_3", "box_0", "len_2"],
  "super": "Closure",
  call$1: function(value) {
   var t1 = this.box_0;
@@ -9320,66 +9332,66 @@ $$._addEventListeners_onCancelWrapper = {"": ["box_0", "onCancel_5"],
 }
 };
 
-$$._addEventListeners_anon = {"": ["onEndWrapper_9", "box_0", "onCancelWrapper_8", "capture_7", "onLeaveWrapper_6"],
+$$._addEventListeners_anon = {"": ["onCancelWrapper_9", "box_0", "capture_8", "onLeaveWrapper_7", "onEndWrapper_6"],
  "super": "Closure",
  call$0: function() {
   var t1 = $.document().get$on().get$touchMove();
   var t2 = this.box_0.onMove_2;
-  var t3 = this.capture_7;
+  var t3 = this.capture_8;
   t1.remove$2(t2, t3);
-  $.document().get$on().get$touchEnd().remove$2(this.onEndWrapper_9, t3);
-  $.document().get$on().get$touchLeave().remove$2(this.onLeaveWrapper_6, t3);
-  $.document().get$on().get$touchCancel().remove$2(this.onCancelWrapper_8, t3);
+  $.document().get$on().get$touchEnd().remove$2(this.onEndWrapper_6, t3);
+  $.document().get$on().get$touchLeave().remove$2(this.onLeaveWrapper_7, t3);
+  $.document().get$on().get$touchCancel().remove$2(this.onCancelWrapper_9, t3);
 }
 };
 
-$$._addEventListeners_anon0 = {"": ["onEndWrapper_13", "box_0", "onCancelWrapper_12", "capture_11", "onLeaveWrapper_10"],
+$$._addEventListeners_anon0 = {"": ["onCancelWrapper_13", "box_0", "capture_12", "onLeaveWrapper_11", "onEndWrapper_10"],
  "super": "Closure",
  call$1: function(e) {
   var t1 = $.document().get$on().get$touchMove();
   var t2 = this.box_0;
   var t3 = t2.onMove_2;
-  var t4 = this.capture_11;
+  var t4 = this.capture_12;
   t1.add$2(t3, t4);
-  $.document().get$on().get$touchEnd().add$2(this.onEndWrapper_13, t4);
-  $.document().get$on().get$touchLeave().add$2(this.onLeaveWrapper_10, t4);
-  $.document().get$on().get$touchCancel().add$2(this.onCancelWrapper_12, t4);
+  $.document().get$on().get$touchEnd().add$2(this.onEndWrapper_10, t4);
+  $.document().get$on().get$touchLeave().add$2(this.onLeaveWrapper_11, t4);
+  $.document().get$on().get$touchCancel().add$2(this.onCancelWrapper_13, t4);
   return t2.onStart_1.call$1(e);
 }
 };
 
-$$._addEventListeners_anon1 = {"": ["onEndWrapper_16", "box_0", "onCancelWrapper_15", "capture_14"],
+$$._addEventListeners_anon1 = {"": ["onCancelWrapper_16", "box_0", "capture_15", "onEndWrapper_14"],
  "super": "Closure",
  call$0: function() {
   var t1 = $.document().get$on().get$mouseMove();
   var t2 = this.box_0.onMove_2;
-  var t3 = this.capture_14;
+  var t3 = this.capture_15;
   t1.remove$2(t2, t3);
-  $.document().get$on().get$mouseUp().remove$2(this.onEndWrapper_16, t3);
-  $.document().get$on().get$touchCancel().remove$2(this.onCancelWrapper_15, t3);
+  $.document().get$on().get$mouseUp().remove$2(this.onEndWrapper_14, t3);
+  $.document().get$on().get$touchCancel().remove$2(this.onCancelWrapper_16, t3);
 }
 };
 
-$$._addEventListeners_anon2 = {"": ["onEndWrapper_19", "box_0", "onCancelWrapper_18", "capture_17"],
+$$._addEventListeners_anon2 = {"": ["onCancelWrapper_19", "box_0", "capture_18", "onEndWrapper_17"],
  "super": "Closure",
  call$1: function(e) {
   var t1 = $.document().get$on().get$mouseMove();
   var t2 = this.box_0;
   var t3 = t2.onMove_2;
-  var t4 = this.capture_17;
+  var t4 = this.capture_18;
   t1.add$2(t3, t4);
-  $.document().get$on().get$mouseUp().add$2(this.onEndWrapper_19, t4);
-  $.document().get$on().get$touchCancel().add$2(this.onCancelWrapper_18, t4);
+  $.document().get$on().get$mouseUp().add$2(this.onEndWrapper_17, t4);
+  $.document().get$on().get$touchCancel().add$2(this.onCancelWrapper_19, t4);
   return t2.onStart_1.call$1(e);
 }
 };
 
-$$.Scroller_onTouchStart_anon = {"": ["e_1", "this_0"],
+$$.Scroller_onTouchStart_anon = {"": ["this_1", "e_0"],
  "super": "Closure",
  call$0: function() {
-  var t1 = this.e_1;
+  var t1 = this.e_0;
   $.index(t1.get$touches(), 0);
-  var t2 = this.this_0;
+  var t2 = this.this_1;
   if (t2.get$_momentum().get$decelerating() === true) {
     t1.preventDefault$0();
     t1.stopPropagation$0();
@@ -9411,17 +9423,17 @@ $$.ClickBuster_preventGhostClick_anon1 = {"": [],
 }
 };
 
-$$.EventUtil_observe_anon = {"": ["listenerList_2", "capture_1", "handler_0"],
+$$.EventUtil_observe_anon = {"": ["capture_2", "handler_1", "listenerList_0"],
  "super": "Closure",
  call$1: function(e) {
-  this.listenerList_2.remove$2(this.handler_0, this.capture_1);
+  this.listenerList_0.remove$2(this.handler_1, this.capture_2);
 }
 };
 
-$$.EventUtil_observe_anon0 = {"": ["listenerList_5", "capture_4", "handler_3"],
+$$.EventUtil_observe_anon0 = {"": ["capture_5", "handler_4", "listenerList_3"],
  "super": "Closure",
  call$1: function(e) {
-  this.listenerList_5.add$2(this.handler_3, this.capture_4);
+  this.listenerList_3.add$2(this.handler_4, this.capture_5);
 }
 };
 
@@ -9511,31 +9523,6 @@ $$.AbstractObservable_recordEvent_anon = {"": ["event_1", "this_0"],
 }
 };
 
-$$.PlayerSelectState_joinPlayer_anon = {"": ["playerID_1", "this_0"],
- "super": "Closure",
- call$1: function(status$) {
-  if ($.eqB($.index(status$, 'success'), true))
-    for (var t1 = this.this_0, t2 = $.iterator(t1.get$players().get$value()), t3 = this.playerID_1; t2.get$hasNext() === true;) {
-      var t4 = t2.next$0();
-      if ($.eqB(t4.get$id(), t3))
-        t1.get$_udjApp().get$state().get$currentPlayer().set$value(t4);
-    }
-  else {
-    var error = $.index(status$, 'error');
-    if ($.eqB(error, 'player-full'))
-      this.this_0.get$errorMessage().set$value('The server is full.');
-    else {
-      t1 = $.eqB(error, 'player-banned');
-      t2 = this.this_0;
-      if (t1)
-        t2.get$errorMessage().set$value('You have been banned from this server.');
-      else
-        t2.get$errorMessage().set$value('There was an error joining the server.');
-    }
-  }
-}
-};
-
 $$.View_doLayout_anon = {"": ["this_0"],
  "super": "Closure",
  call$1: function(changed) {
@@ -9560,18 +9547,18 @@ $$.View__measureLayoutHelper_anon = {"": ["sizeCompleter_0"],
 }
 };
 
-$$.GridLayout_measureLayout_anon = {"": ["this_2", "changed_1", "size_0"],
+$$.GridLayout_measureLayout_anon = {"": ["changed_2", "this_1", "size_0"],
  "super": "Closure",
  call$0: function() {
   var t1 = this.size_0;
   var t2 = t1.get$value().get$width();
-  var t3 = this.this_2;
+  var t3 = this.this_1;
   t3.set$_gridWidth(t2);
   t3.set$_gridHeight(t1.get$value().get$height());
   if ($.gtB($.get$length(t3.get$_rowTracks()), 0) && $.gtB($.get$length(t3.get$_columnTracks()), 0)) {
     t3._measureTracks$0();
     t3._setBoundsOfChildren$0();
-    t1 = this.changed_1;
+    t1 = this.changed_2;
     if (!(t1 == null))
       t1.complete$1(true);
   }
@@ -9649,10 +9636,10 @@ $$.GridLayout__getRemainingSpace_anon = {"": [],
 }
 };
 
-$$.GridLayout__distributeSpaceBySpanCount_anon = {"": ["breadth_2", "this_1", "sizeMode_0"],
+$$.GridLayout__distributeSpaceBySpanCount_anon = {"": ["breadth_2", "sizeMode_1", "this_0"],
  "super": "Closure",
  call$1: function(item) {
-  return $.GridLayout__hasContentSizedTracks(this.this_1._getTracks$1(item), this.sizeMode_0, this.breadth_2);
+  return $.GridLayout__hasContentSizedTracks(this.this_0._getTracks$1(item), this.sizeMode_1, this.breadth_2);
 }
 };
 
@@ -9689,6 +9676,31 @@ $$.LinkedHashMapImplementation_keys__ = {"": ["box_0", "list_2"],
   var t3 = t2.index_10;
   t2.index_10 = $.add(t3, 1);
   $.indexSet(t1, t3, entry.get$key());
+}
+};
+
+$$.PlayerSelectState_joinPlayer_anon = {"": ["playerID_1", "this_0"],
+ "super": "Closure",
+ call$1: function(status$) {
+  if ($.eqB($.index(status$, 'success'), true))
+    for (var t1 = this.this_0, t2 = $.iterator(t1.get$players().get$value()), t3 = this.playerID_1; t2.get$hasNext() === true;) {
+      var t4 = t2.next$0();
+      if ($.eqB(t4.get$id(), t3))
+        t1.get$_udjApp().get$state().get$currentPlayer().set$value(t4);
+    }
+  else {
+    var error = $.index(status$, 'error');
+    if ($.eqB(error, 'player-full'))
+      this.this_0.get$errorMessage().set$value('The server is full.');
+    else {
+      t1 = $.eqB(error, 'player-banned');
+      t2 = this.this_0;
+      if (t1)
+        t2.get$errorMessage().set$value('You have been banned from this server.');
+      else
+        t2.get$errorMessage().set$value('There was an error joining the server.');
+    }
+  }
 }
 };
 
@@ -10010,10 +10022,10 @@ $$.RequestHelper_encodeMap_anon = {"": ["data_0"],
 }
 };
 
-$$.HashSetImplementation_map__ = {"": ["f_1", "result_0"],
+$$.HashSetImplementation_map__ = {"": ["result_1", "f_0"],
  "super": "Closure",
  call$2: function(key, value) {
-  $.add$1(this.result_0, this.f_1.call$1(key));
+  $.add$1(this.result_1, this.f_0.call$1(key));
 }
 };
 
@@ -10644,12 +10656,6 @@ $.substringUnchecked = function(receiver, startIndex, endIndex) {
   return receiver.substring(startIndex, endIndex);
 };
 
-$.div$slow = function(a, b) {
-  if ($.checkNumbers(a, b))
-    return a / b;
-  return a.operator$div$1(b);
-};
-
 $.$$throw = function(ex) {
   if (ex == null)
     ex = $.CTC;
@@ -10742,6 +10748,17 @@ $.convertDartClosureToJS = function(closure, arity) {
   return function$;
 };
 
+$.shl = function(a, b) {
+  if ($.checkNumbers(a, b)) {
+    if (b < 0)
+      throw $.$$throw($.ArgumentError$(b));
+    if (b > 31)
+      return 0;
+    return (a << b) >>> 0;
+  }
+  return a.operator$shl$1(b);
+};
+
 $.jsHasOwnProperty = function(jsObject, property) {
   return jsObject.hasOwnProperty(property);
 };
@@ -10774,19 +10791,10 @@ $.getTraceFromException = function(exception) {
   return $.StackTrace$(exception.stack);
 };
 
-$.ge = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? a >= b : $.ge$slow(a, b);
-};
-
-$.shl = function(a, b) {
-  if ($.checkNumbers(a, b)) {
-    if (b < 0)
-      throw $.$$throw($.ArgumentError$(b));
-    if (b > 31)
-      return 0;
-    return (a << b) >>> 0;
-  }
-  return a.operator$shl$1(b);
+$.div$slow = function(a, b) {
+  if ($.checkNumbers(a, b))
+    return a / b;
+  return a.operator$div$1(b);
 };
 
 $.le = function(a, b) {
@@ -10797,6 +10805,10 @@ $._LocationWrapper$ = function(_ptr) {
   var t1 = new $._LocationWrapper(_ptr);
   $.setRuntimeTypeInfo(t1, {runtimeType: '_LocationWrapper'});
   return t1;
+};
+
+$.ge = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? a >= b : $.ge$slow(a, b);
 };
 
 $.listTypeCast = function(value) {
@@ -10868,6 +10880,27 @@ $.typeNameInFirefox = function(obj) {
   return name$;
 };
 
+$.constructorNameFallback = function(object) {
+  if (object == null)
+    return 'Null';
+  var constructor$ = object.constructor;
+  if (typeof(constructor$) === 'function') {
+    var name$ = constructor$.name;
+    if (typeof name$ === 'string')
+      var t1 = !(name$ === '') && !(name$ === 'Object') && !(name$ === 'Function.prototype');
+    else
+      t1 = false;
+    if (t1)
+      return name$;
+  }
+  var string = Object.prototype.toString.call(object);
+  return string.substring(8, string.length - 1);
+};
+
+$.contains = function(userAgent, name$) {
+  return userAgent.indexOf(name$) !== -1;
+};
+
 $.typeNameInIE = function(obj) {
   var name$ = $.constructorNameFallback(obj);
   if (name$ === 'Window')
@@ -10900,27 +10933,6 @@ $.typeNameInIE = function(obj) {
   if (name$ === 'MouseWheelEvent')
     return 'WheelEvent';
   return name$;
-};
-
-$.constructorNameFallback = function(object) {
-  if (object == null)
-    return 'Null';
-  var constructor$ = object.constructor;
-  if (typeof(constructor$) === 'function') {
-    var name$ = constructor$.name;
-    if (typeof name$ === 'string')
-      var t1 = !(name$ === '') && !(name$ === 'Object') && !(name$ === 'Function.prototype');
-    else
-      t1 = false;
-    if (t1)
-      return name$;
-  }
-  var string = Object.prototype.toString.call(object);
-  return string.substring(8, string.length - 1);
-};
-
-$.contains = function(userAgent, name$) {
-  return userAgent.indexOf(name$) !== -1;
 };
 
 $.propertySet = function(object, property, value) {
@@ -11144,14 +11156,6 @@ $.stringJoinUnchecked = function(array, separator) {
   return array.join(separator);
 };
 
-$._LocationCrossFrameImpl__createSafe = function(location$) {
-  var t1 = $.window().get$location();
-  if (location$ == null ? t1 == null : location$ === t1)
-    return location$;
-  else
-    return $._LocationCrossFrameImpl$(location$);
-};
-
 $.add$1 = function(receiver, value) {
   if ($.isJsArray(receiver)) {
     $.checkGrowable(receiver, 'add');
@@ -11301,23 +11305,11 @@ $.forEach = function(receiver, f) {
     return $.Collections_forEach(receiver, f);
 };
 
-$._LocationCrossFrameImpl$ = function(_location) {
-  var t1 = new $._LocationCrossFrameImpl(_location);
-  $.setRuntimeTypeInfo(t1, {runtimeType: '_LocationCrossFrameImpl'});
-  return t1;
-};
-
-$.ObservableList$ = function(parent$, T) {
-  var t1 = $.EventBatch_genUid();
-  var t2 = $.ListImplementation_List(null, 'ChangeListener');
-  var t3 = 'ChangeListener';
-  $.setRuntimeTypeInfo(t2, {runtimeType: 'List<' + t3 + '>', 'E': t3});
-  var t4 = $.ListImplementation_List(null, $.getRuntimeTypeInfo(this).T);
-  var t5 = $.getRuntimeTypeInfo(this).T;
-  $.setRuntimeTypeInfo(t4, {runtimeType: 'List<' + t5 + '>', 'E': t5});
-  t2 = new $.ObservableList(t4, t1, parent$, t2);
-  $.setRuntimeTypeInfo(t2, {runtimeType: 'ObservableList<' + T + '>', 'T': T});
-  return t2;
+$.map = function(receiver, f) {
+  if (!$.isJsArray(receiver))
+    return receiver.map$1(f);
+  else
+    return $.Collections_map(receiver, [], f);
 };
 
 $.getRange = function(receiver, start, length$) {
@@ -11344,6 +11336,14 @@ $.getRange = function(receiver, start, length$) {
   return receiver.slice(start, end);
 };
 
+$._LocationCrossFrameImpl__createSafe = function(location$) {
+  var t1 = $.window().get$location();
+  if (location$ == null ? t1 == null : location$ === t1)
+    return location$;
+  else
+    return $._LocationCrossFrameImpl$(location$);
+};
+
 $.indexOf$2 = function(receiver, element, start) {
   if ($.isJsArray(receiver)) {
     if (!(typeof start === 'number' && Math.floor(start) === start))
@@ -11362,10 +11362,41 @@ $.indexOf$2 = function(receiver, element, start) {
   return receiver.indexOf$2(element, start);
 };
 
+$.indexOf$1 = function(receiver, element) {
+  if ($.isJsArray(receiver))
+    return $.Arrays_indexOf(receiver, element, 0, receiver.length);
+  else {
+    $.checkNull(element);
+    if (!(typeof element === 'string'))
+      throw $.$$throw($.ArgumentError$(element));
+    return receiver.indexOf(element);
+  }
+  return receiver.indexOf$1(element);
+};
+
 $.get$last = function(receiver) {
   if (!$.isJsArray(receiver))
     return receiver.get$last();
   return $.index(receiver, $.sub($.get$length(receiver), 1));
+};
+
+$._LocationCrossFrameImpl$ = function(_location) {
+  var t1 = new $._LocationCrossFrameImpl(_location);
+  $.setRuntimeTypeInfo(t1, {runtimeType: '_LocationCrossFrameImpl'});
+  return t1;
+};
+
+$.ObservableList$ = function(parent$, T) {
+  var t1 = $.EventBatch_genUid();
+  var t2 = $.ListImplementation_List(null, 'ChangeListener');
+  var t3 = 'ChangeListener';
+  $.setRuntimeTypeInfo(t2, {runtimeType: 'List<' + t3 + '>', 'E': t3});
+  var t4 = $.ListImplementation_List(null, $.getRuntimeTypeInfo(this).T);
+  var t5 = $.getRuntimeTypeInfo(this).T;
+  $.setRuntimeTypeInfo(t4, {runtimeType: 'List<' + t5 + '>', 'E': t5});
+  t2 = new $.ObservableList(t4, t1, parent$, t2);
+  $.setRuntimeTypeInfo(t2, {runtimeType: 'ObservableList<' + T + '>', 'T': T});
+  return t2;
 };
 
 $.some = function(receiver, f) {
@@ -11589,31 +11620,6 @@ $.startsWith = function(receiver, other) {
   return other == receiver.substring(0, length$);
 };
 
-$.map = function(receiver, f) {
-  if (!$.isJsArray(receiver))
-    return receiver.map$1(f);
-  else
-    return $.Collections_map(receiver, [], f);
-};
-
-$.indexOf$1 = function(receiver, element) {
-  if ($.isJsArray(receiver))
-    return $.Arrays_indexOf(receiver, element, 0, receiver.length);
-  else {
-    $.checkNull(element);
-    if (!(typeof element === 'string'))
-      throw $.$$throw($.ArgumentError$(element));
-    return receiver.indexOf(element);
-  }
-  return receiver.indexOf$1(element);
-};
-
-$.setRange$3 = function(receiver, start, length$, from) {
-  if ($.isJsArray(receiver))
-    return $.setRange$4(receiver, start, length$, from, 0);
-  return receiver.setRange$3(start, length$, from);
-};
-
 $.setRange$4 = function(receiver, start, length$, from, startFrom) {
   if (!$.isJsArray(receiver))
     return receiver.setRange$4(start, length$, from, startFrom);
@@ -11642,6 +11648,12 @@ $.setRange$4 = function(receiver, start, length$, from, startFrom) {
 
 $.main = function() {
   $.UdjApp$().run$0();
+};
+
+$.setRange$3 = function(receiver, start, length$, from) {
+  if ($.isJsArray(receiver))
+    return $.setRange$4(receiver, start, length$, from, 0);
+  return receiver.setRange$3(start, length$, from);
 };
 
 $.window = function() {
@@ -11782,14 +11794,14 @@ $._browserPrefix = function() {
   return $._cachedBrowserPrefix;
 };
 
-$.JsonUnsupportedObjectError$withCause = function(unsupportedObject, cause) {
-  var t1 = new $.JsonUnsupportedObjectError(unsupportedObject, cause);
+$.JsonUnsupportedObjectError$ = function(unsupportedObject) {
+  var t1 = new $.JsonUnsupportedObjectError(unsupportedObject, null);
   $.setRuntimeTypeInfo(t1, {runtimeType: 'JsonUnsupportedObjectError'});
   return t1;
 };
 
-$.JsonUnsupportedObjectError$ = function(unsupportedObject) {
-  var t1 = new $.JsonUnsupportedObjectError(unsupportedObject, null);
+$.JsonUnsupportedObjectError$withCause = function(unsupportedObject, cause) {
+  var t1 = new $.JsonUnsupportedObjectError(unsupportedObject, cause);
   $.setRuntimeTypeInfo(t1, {runtimeType: 'JsonUnsupportedObjectError'});
   return t1;
 };
@@ -11838,11 +11850,13 @@ $._InputElementEventsImpl$ = function(_ptr) {
   return t1;
 };
 
-$._ListRange$ = function(source, offset, length$) {
-  var t1 = length$ == null ? $.sub($.get$length(source), offset) : length$;
-  t1 = new $._ListRange(source, offset, t1);
-  $.setRuntimeTypeInfo(t1, {runtimeType: '_ListRange'});
-  t1._ListRange$3(source, offset, length$);
+$.CompositeView$ = function(_cssName, nestedContainer, scrollable, vertical, showScrollbar) {
+  var t1 = $.HashMapImplementation$('String', 'String');
+  var t2 = $.ListImplementation_List(null, 'View');
+  var t3 = 'View';
+  $.setRuntimeTypeInfo(t2, {runtimeType: 'List<' + t3 + '>', 'E': t3});
+  t1 = new $.CompositeView(t2, null, null, null, _cssName, scrollable, vertical, nestedContainer, showScrollbar, null, null, null, t1);
+  $.setRuntimeTypeInfo(t1, {runtimeType: 'CompositeView'});
   return t1;
 };
 
@@ -11856,12 +11870,6 @@ $.View$html = function(html) {
   var t1 = $.HashMapImplementation$('String', 'String');
   t1 = new $.View($.Element_Element$html(html), null, null, t1);
   $.setRuntimeTypeInfo(t1, {runtimeType: 'View'});
-  return t1;
-};
-
-$._ListRangeIteratorImpl$ = function(_source, _offset, _end) {
-  var t1 = new $._ListRangeIteratorImpl(_source, _offset, _end);
-  $.setRuntimeTypeInfo(t1, {runtimeType: '_ListRangeIteratorImpl'});
   return t1;
 };
 
@@ -11883,6 +11891,20 @@ $.Timer_Timer$repeating = function(milliSeconds, callback) {
   if (t1 == null)
     throw $.$$throw($.UnsupportedError$('Timer interface not supported.'));
   return t1.call$3(milliSeconds, callback, true);
+};
+
+$._ListRangeIteratorImpl$ = function(_source, _offset, _end) {
+  var t1 = new $._ListRangeIteratorImpl(_source, _offset, _end);
+  $.setRuntimeTypeInfo(t1, {runtimeType: '_ListRangeIteratorImpl'});
+  return t1;
+};
+
+$._ListRange$ = function(source, offset, length$) {
+  var t1 = length$ == null ? $.sub($.get$length(source), offset) : length$;
+  t1 = new $._ListRange(source, offset, t1);
+  $.setRuntimeTypeInfo(t1, {runtimeType: '_ListRange'});
+  t1._ListRange$3(source, offset, length$);
+  return t1;
 };
 
 $.double_parse = function(source) {
@@ -12019,12 +12041,6 @@ $.Collections_map = function(source, destination, f) {
   return destination;
 };
 
-$.MetaInfo$ = function(_tag, _tags, _set) {
-  var t1 = new $.MetaInfo(_tag, _tags, _set);
-  $.setRuntimeTypeInfo(t1, {runtimeType: 'MetaInfo'});
-  return t1;
-};
-
 $._FixedSizeListIterator$ = function(array, T) {
   var t1 = new $._FixedSizeListIterator($.get$length(array), array, 0);
   $.setRuntimeTypeInfo(t1, {runtimeType: '_FixedSizeListIterator<' + T + '>', 'T': T});
@@ -12083,6 +12099,12 @@ $.EventSummary$ = function(target) {
   $.setRuntimeTypeInfo(t1, {runtimeType: 'List<' + t2 + '>', 'E': t2});
   t1 = new $.EventSummary(target, t1);
   $.setRuntimeTypeInfo(t1, {runtimeType: 'EventSummary'});
+  return t1;
+};
+
+$.MetaInfo$ = function(_tag, _tags, _set) {
+  var t1 = new $.MetaInfo(_tag, _tags, _set);
+  $.setRuntimeTypeInfo(t1, {runtimeType: 'MetaInfo'});
   return t1;
 };
 
@@ -12186,12 +12208,6 @@ $.Primitives_stringFromCharCodes = function(charCodes) {
   return String.fromCharCode.apply(null, charCodes);
 };
 
-$.CastErrorImplementation$ = function(actualType, expectedType) {
-  var t1 = new $.CastErrorImplementation(actualType, expectedType);
-  $.setRuntimeTypeInfo(t1, {runtimeType: 'CastErrorImplementation'});
-  return t1;
-};
-
 $.Primitives_lazyAsJsDate = function(receiver) {
   if (receiver.date === (void 0))
     receiver.date = new Date(receiver.millisecondsSinceEpoch);
@@ -12224,6 +12240,12 @@ $.Primitives_getSeconds = function(receiver) {
 
 $.Primitives_getMilliseconds = function(receiver) {
   return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCMilliseconds() + 0) : ($.Primitives_lazyAsJsDate(receiver).getMilliseconds() + 0);
+};
+
+$.CastErrorImplementation$ = function(actualType, expectedType) {
+  var t1 = new $.CastErrorImplementation(actualType, expectedType);
+  $.setRuntimeTypeInfo(t1, {runtimeType: 'CastErrorImplementation'});
+  return t1;
 };
 
 $.IndexOutOfRangeException$ = function(_value) {
@@ -12417,16 +12439,16 @@ $._convertNativeToDart_EventTarget = function(e) {
     return e;
 };
 
-$._EventLoop$ = function() {
-  var t1 = new $._EventLoop($.Queue_Queue('_IsolateEvent'));
-  $.setRuntimeTypeInfo(t1, {runtimeType: '_EventLoop'});
-  return t1;
-};
-
 $._Manager$ = function() {
   var t1 = new $._Manager(0, 0, 1, null, null, null, null, null, null, null, null, null);
   $.setRuntimeTypeInfo(t1, {runtimeType: '_Manager'});
   t1._Manager$0();
+  return t1;
+};
+
+$._EventLoop$ = function() {
+  var t1 = new $._EventLoop($.Queue_Queue('_IsolateEvent'));
+  $.setRuntimeTypeInfo(t1, {runtimeType: '_EventLoop'});
   return t1;
 };
 
@@ -12820,7 +12842,7 @@ $.Futures_wait = function(futures) {
 $.joinFutures = function(futures, callback) {
   var t1 = {};
   t1.count_1 = 0;
-  t1 = new $.joinFutures_helper(t1, callback, futures.length);
+  t1 = new $.joinFutures_helper(callback, t1, futures.length);
   for (var t2 = $.iterator(futures); t2.get$hasNext() === true;)
     t2.next$0().then$1(t1);
 };
@@ -12831,22 +12853,22 @@ $.mouseToTouchCallback = function(callback) {
 
 $._addEventListeners = function(node, onStart, onMove, onEnd, onCancel, capture) {
   var t1 = {};
+  t1.onEnd_3 = onEnd;
   t1.onStart_1 = onStart;
   t1.onMove_2 = onMove;
-  t1.onEnd_3 = onEnd;
   t1.removeListeners_4 = null;
   var t2 = new $._addEventListeners_onEndWrapper(t1);
   var t3 = new $._addEventListeners_onLeaveWrapper(t1);
   var t4 = new $._addEventListeners_onCancelWrapper(t1, onCancel);
   if ($.Device_supportsTouch() === true) {
-    t1.removeListeners_4 = new $._addEventListeners_anon(t2, t1, t4, capture, t3);
-    node.get$on().get$touchStart().add$2(new $._addEventListeners_anon0(t2, t1, t4, capture, t3), capture);
+    t1.removeListeners_4 = new $._addEventListeners_anon(t4, t1, capture, t3, t2);
+    node.get$on().get$touchStart().add$2(new $._addEventListeners_anon0(t4, t1, capture, t3, t2), capture);
   } else {
     t1.onStart_1 = $.mouseToTouchCallback(t1.onStart_1);
     t1.onMove_2 = $.mouseToTouchCallback(t1.onMove_2);
     t1.onEnd_3 = $.mouseToTouchCallback(t1.onEnd_3);
-    t1.removeListeners_4 = new $._addEventListeners_anon1(t2, t1, t4, capture);
-    node.get$on().get$mouseDown().add$2(new $._addEventListeners_anon2(t2, t1, t4, capture), capture);
+    t1.removeListeners_4 = new $._addEventListeners_anon1(t4, t1, capture, t2);
+    node.get$on().get$mouseDown().add$2(new $._addEventListeners_anon2(t4, t1, capture, t2), capture);
   }
 };
 
@@ -13081,12 +13103,6 @@ $.SideBarView$ = function(_udjApp, _state) {
   return t1;
 };
 
-$.TopBarState$ = function(_udjApp) {
-  var t1 = new $.TopBarState(_udjApp);
-  $.setRuntimeTypeInfo(t1, {runtimeType: 'TopBarState'});
-  return t1;
-};
-
 $.TopBarView$ = function(_udjApp, _state) {
   var t1 = $.HashMapImplementation$('String', 'String');
   var t2 = $.ListImplementation_List(null, 'View');
@@ -13115,17 +13131,6 @@ $.LibraryState$ = function(_udjApp) {
   return t1;
 };
 
-$.LoginView$ = function(_udjApp, _state) {
-  var t1 = $.HashMapImplementation$('String', 'String');
-  var t2 = $.ListImplementation_List(null, 'View');
-  var t3 = 'View';
-  $.setRuntimeTypeInfo(t2, {runtimeType: 'List<' + t3 + '>', 'E': t3});
-  t1 = new $.LoginView(_udjApp, _state, null, null, t2, null, null, null, 'login-box', false, false, false, false, null, null, null, t1);
-  $.setRuntimeTypeInfo(t1, {runtimeType: 'LoginView'});
-  t1.LoginView$2(_udjApp, _state);
-  return t1;
-};
-
 $.LoginState$ = function(_udjApp) {
   var t1 = new $.LoginState($.ObservableValue$(null, null, 'String'), _udjApp, null);
   $.setRuntimeTypeInfo(t1, {runtimeType: 'LoginState'});
@@ -13137,7 +13142,7 @@ $.PlayerSelectView$ = function(_udjApp, _state) {
   var t2 = $.ListImplementation_List(null, 'View');
   var t3 = 'View';
   $.setRuntimeTypeInfo(t2, {runtimeType: 'List<' + t3 + '>', 'E': t3});
-  t1 = new $.PlayerSelectView(_udjApp, _state, null, null, null, null, null, null, t2, null, null, null, 'player-select', false, false, false, false, null, null, null, t1);
+  t1 = new $.PlayerSelectView(_udjApp, _state, null, null, null, null, null, null, null, t2, null, null, null, 'player-select', false, false, false, false, null, null, null, t1);
   $.setRuntimeTypeInfo(t1, {runtimeType: 'PlayerSelectView'});
   t1.PlayerSelectView$2(_udjApp, _state);
   return t1;
@@ -13155,12 +13160,6 @@ $._FileWriterEventsImpl$ = function(_ptr) {
   return t1;
 };
 
-$.PlayerCreateState$ = function(_udjApp) {
-  var t1 = new $.PlayerCreateState(_udjApp, null);
-  $.setRuntimeTypeInfo(t1, {runtimeType: 'PlayerCreateState'});
-  return t1;
-};
-
 $.PlayerCreateView$ = function(_udjApp, _state) {
   var t1 = $.HashMapImplementation$('String', 'String');
   var t2 = $.ListImplementation_List(null, 'View');
@@ -13172,9 +13171,32 @@ $.PlayerCreateView$ = function(_udjApp, _state) {
   return t1;
 };
 
+$.PlayerCreateState$ = function(_udjApp) {
+  var t1 = new $.PlayerCreateState(_udjApp, null);
+  $.setRuntimeTypeInfo(t1, {runtimeType: 'PlayerCreateState'});
+  return t1;
+};
+
+$.TopBarState$ = function(_udjApp) {
+  var t1 = new $.TopBarState(_udjApp);
+  $.setRuntimeTypeInfo(t1, {runtimeType: 'TopBarState'});
+  return t1;
+};
+
 $._DocumentEventsImpl$ = function(_ptr) {
   var t1 = new $._DocumentEventsImpl(_ptr);
   $.setRuntimeTypeInfo(t1, {runtimeType: '_DocumentEventsImpl'});
+  return t1;
+};
+
+$.LoginView$ = function(_udjApp, _state) {
+  var t1 = $.HashMapImplementation$('String', 'String');
+  var t2 = $.ListImplementation_List(null, 'View');
+  var t3 = 'View';
+  $.setRuntimeTypeInfo(t2, {runtimeType: 'List<' + t3 + '>', 'E': t3});
+  t1 = new $.LoginView(_udjApp, _state, null, null, t2, null, null, null, 'login-box', false, false, false, false, null, null, null, t1);
+  $.setRuntimeTypeInfo(t1, {runtimeType: 'LoginView'});
+  t1.LoginView$2(_udjApp, _state);
   return t1;
 };
 
@@ -13261,13 +13283,6 @@ $._MeasurementScheduler__MeasurementScheduler$best = function(callback) {
   return $._PostMessageScheduler$(callback);
 };
 
-$._MutationObserverScheduler$ = function(callback) {
-  var t1 = new $._MutationObserverScheduler(null, null, false, callback);
-  $.setRuntimeTypeInfo(t1, {runtimeType: '_MutationObserverScheduler'});
-  t1._MutationObserverScheduler$1(callback);
-  return t1;
-};
-
 $._WorkerEventsImpl$ = function(_ptr) {
   var t1 = new $._WorkerEventsImpl(_ptr);
   $.setRuntimeTypeInfo(t1, {runtimeType: '_WorkerEventsImpl'});
@@ -13283,6 +13298,13 @@ $._AbstractWorkerEventsImpl$ = function(_ptr) {
 $._EventsImpl$ = function(_ptr) {
   var t1 = new $._EventsImpl(_ptr);
   $.setRuntimeTypeInfo(t1, {runtimeType: '_EventsImpl'});
+  return t1;
+};
+
+$._MutationObserverScheduler$ = function(callback) {
+  var t1 = new $._MutationObserverScheduler(null, null, false, callback);
+  $.setRuntimeTypeInfo(t1, {runtimeType: '_MutationObserverScheduler'});
+  t1._MutationObserverScheduler$1(callback);
   return t1;
 };
 
@@ -13354,18 +13376,18 @@ $._EventSourceEventsImpl$ = function(_ptr) {
   return t1;
 };
 
-$._WorkerContextEventsImpl$ = function(_ptr) {
-  var t1 = new $._WorkerContextEventsImpl(_ptr);
-  $.setRuntimeTypeInfo(t1, {runtimeType: '_WorkerContextEventsImpl'});
-  return t1;
-};
-
 $.GridLayout$ = function(view) {
   var t1 = view.customStyle;
   var t2 = new $.GridLayout($._GridTrackParser_parse($.index(t1, 'grid-rows')), $._GridTrackParser_parse($.index(t1, 'grid-columns')), $._GridTemplateParser_parse($.index(t1, 'grid-template')), $._GridTrackParser_parseTrackSizing($.index(t1, 'grid-row-sizing')), $._GridTrackParser_parseTrackSizing($.index(t1, 'grid-column-sizing')), null, null, null, null, null, null, null, view, null, null, null, null);
   $.setRuntimeTypeInfo(t2, {runtimeType: 'GridLayout'});
   t2.GridLayout$1(view);
   return t2;
+};
+
+$._WorkerContextEventsImpl$ = function(_ptr) {
+  var t1 = new $._WorkerContextEventsImpl(_ptr);
+  $.setRuntimeTypeInfo(t1, {runtimeType: '_WorkerContextEventsImpl'});
+  return t1;
 };
 
 $.GridTrackList$ = function(tracks, lineNames) {
@@ -13826,7 +13848,7 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
       var ak = a[k];
       var comp = compare.call$2(ak, el2);
       if (typeof comp !== 'number')
-        return $._Sort__dualPivotQuicksort$bailout(2, a, left, right, less, compare, great, k, index1, index5, el2, pivots_are_equal, ak, comp, el4);
+        return $._Sort__dualPivotQuicksort$bailout(2, a, left, right, compare, less, great, k, index1, index5, el2, pivots_are_equal, ak, comp, el4);
       if (comp === 0)
         continue;
       if (comp < 0) {
@@ -14229,15 +14251,15 @@ $._GridTemplateRect$ = function(_char, row, column) {
   return t1;
 };
 
-$._ElementRectImpl$ = function(element) {
-  var t1 = new $._ElementRectImpl($._SimpleClientRect$(element.get$clientLeft(), element.get$clientTop(), element.get$clientWidth(), element.get$clientHeight()), $._SimpleClientRect$(element.get$offsetLeft(), element.get$offsetTop(), element.get$offsetWidth(), element.get$offsetHeight()), $._SimpleClientRect$(element.get$scrollLeft(), element.get$scrollTop(), element.get$scrollWidth(), element.get$scrollHeight()), element.getBoundingClientRect$0(), element.getClientRects$0());
-  $.setRuntimeTypeInfo(t1, {runtimeType: '_ElementRectImpl'});
-  return t1;
-};
-
 $._PeerConnection00EventsImpl$ = function(_ptr) {
   var t1 = new $._PeerConnection00EventsImpl(_ptr);
   $.setRuntimeTypeInfo(t1, {runtimeType: '_PeerConnection00EventsImpl'});
+  return t1;
+};
+
+$._ElementRectImpl$ = function(element) {
+  var t1 = new $._ElementRectImpl($._SimpleClientRect$(element.get$clientLeft(), element.get$clientTop(), element.get$clientWidth(), element.get$clientHeight()), $._SimpleClientRect$(element.get$offsetLeft(), element.get$offsetTop(), element.get$offsetWidth(), element.get$offsetHeight()), $._SimpleClientRect$(element.get$scrollLeft(), element.get$scrollTop(), element.get$scrollWidth(), element.get$scrollHeight()), element.getBoundingClientRect$0(), element.getClientRects$0());
+  $.setRuntimeTypeInfo(t1, {runtimeType: '_ElementRectImpl'});
   return t1;
 };
 
@@ -14458,15 +14480,15 @@ $._Move$ = function(x, y, vx, vy, time) {
   return t1;
 };
 
-$.Env_cancelRequestAnimationFrame = function(id) {
-  $.window().clearTimeout$1(id);
-  $.Env__animationScheduler.cancelRequestAnimationFrame$1(id);
-};
-
 $.Env_requestAnimationFrame = function(callback, element, minTime) {
   if ($.Env__animationScheduler == null)
     $.Env__animationScheduler = $.AnimationScheduler$();
   return $.Env__animationScheduler.requestAnimationFrame$3(callback, element, minTime);
+};
+
+$.Env_cancelRequestAnimationFrame = function(id) {
+  $.window().clearTimeout$1(id);
+  $.Env__animationScheduler.cancelRequestAnimationFrame$1(id);
 };
 
 $.AnimationScheduler$ = function() {
@@ -14532,8 +14554,17 @@ $.ClickBuster__onTouchStart = function(e) {
   $.ClickBuster__toggleTapHighlights(true);
 };
 
-$.ClickBuster__hitTest = function(x, y, eventX, eventY) {
-  return $.ltB($.abs($.sub(eventX, x)), 25) && $.ltB($.abs($.sub(eventY, y)), 25);
+$.ClickBuster__removeCoordinate = function(x, y) {
+  var entry = $.ClickBuster__coordinates.firstEntry$0();
+  for (; !(entry == null);) {
+    if ($.eqB(entry.get$element(), x) && $.eqB(entry.nextEntry$0().get$element(), y)) {
+      entry.nextEntry$0().remove$0();
+      entry.remove$0();
+      return;
+    } else
+      var entry0 = entry.nextEntry$0().nextEntry$0();
+    entry = entry0;
+  }
 };
 
 $.ClickBuster__toggleTapHighlights = function(enable) {
@@ -14568,24 +14599,15 @@ $.ClickBuster_preventGhostClick = function(x, y) {
   }
 };
 
-$.ClickBuster__removeCoordinate = function(x, y) {
-  var entry = $.ClickBuster__coordinates.firstEntry$0();
-  for (; !(entry == null);) {
-    if ($.eqB(entry.get$element(), x) && $.eqB(entry.nextEntry$0().get$element(), y)) {
-      entry.nextEntry$0().remove$0();
-      entry.remove$0();
-      return;
-    } else
-      var entry0 = entry.nextEntry$0().nextEntry$0();
-    entry = entry0;
-  }
+$.ClickBuster__hitTest = function(x, y, eventX, eventY) {
+  return $.ltB($.abs($.sub(eventX, x)), 25) && $.ltB($.abs($.sub(eventY, y)), 25);
 };
 
 $.EventUtil_observe = function(element, listenerList, handler, capture, removeHandlerOnFocus) {
   listenerList.add$2(handler, capture);
   if (removeHandlerOnFocus === true) {
-    $.add$1(element.get$on().get$focus(), new $.EventUtil_observe_anon(listenerList, capture, handler));
-    $.add$1(element.get$on().get$blur(), new $.EventUtil_observe_anon0(listenerList, capture, handler));
+    $.add$1(element.get$on().get$focus(), new $.EventUtil_observe_anon(capture, handler, listenerList));
+    $.add$1(element.get$on().get$blur(), new $.EventUtil_observe_anon0(capture, handler, listenerList));
   }
 };
 
@@ -14650,9 +14672,9 @@ $.Solver_solve = function(fn, targetY, startX, maxIterations) {
       t1 = false;
     if (t1)
       x0 = $.div($.add(minX, maxX), 2);
-    lastY = y;
     lastX = x;
     x = x0;
+    lastY = y;
   }
   $.window().get$console().warn$1('Could not find an exact solution. LastY=' + $.S(lastY) + ',\n        targetY=' + $.S(targetY) + ' lastX=' + $.S(lastX) + ' delta=' + $.S(delta) + '  deltaX=' + $.S(deltaX) + '\n        deltaY=' + $.S(deltaY));
   return x;
@@ -14807,8 +14829,8 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, env0, env1, env2, env3, e
       a = env0;
       left = env1;
       right = env2;
-      less = env3;
-      compare = env4;
+      compare = env3;
+      less = env4;
       great = env5;
       k = env6;
       index1 = env7;
@@ -15135,9 +15157,9 @@ $.Solver_solve$bailout = function(state0, env0, env1, env2, env3, env4) {
           t1 = false;
         if (t1)
           x0 = $.div($.add(minX, maxX), 2);
-        lastY = y;
         lastX = x;
         x = x0;
+        lastY = y;
       }
       $.window().get$console().warn$1('Could not find an exact solution. LastY=' + $.S(lastY) + ',\n        targetY=' + $.S(targetY) + ' lastX=' + $.S(lastX) + ' delta=' + $.S(delta) + '  deltaX=' + $.S(deltaX) + '\n        deltaY=' + $.S(deltaY));
       return x;
@@ -15342,16 +15364,16 @@ $.ChangeEvent_REMOVE = 2;
 $.ChangeEvent_GLOBAL = 3;
 $.Dimension_HEIGHT = Isolate.$isolateProperties.CTC24;
 $.ContentSizeMode_MIN = Isolate.$isolateProperties.CTC25;
-$.ContentSizeMode_MAX = Isolate.$isolateProperties.CTC27;
 $.Dimension_WIDTH = Isolate.$isolateProperties.CTC23;
+$.ContentSizeMode_MAX = Isolate.$isolateProperties.CTC27;
 $._Sort__INSERTION_SORT_THRESHOLD = 32;
 $._Parser_A_BIG = 65;
 $._Parser_Z_BIG = 90;
 $._Parser_A_SMALL = 97;
 $._Parser_Z_SMALL = 122;
+$._Parser_NEW_LINE = 10;
 $._Parser_SPACE = 32;
 $._Parser_LINE_FEED = 13;
-$._Parser_NEW_LINE = 10;
 $._Parser_ZERO = 48;
 $._Parser_TAB = 9;
 $._Parser_NINE = 57;

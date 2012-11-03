@@ -5485,13 +5485,15 @@ body {
 /* player select view */
 .player-select-search {
   float: right;
-  margin-right: 16px;
   margin-bottom: 0; }
 
 /***** new styles ******/
 /* player select view */
+.player-select-actionbar {
+  margin-bottom: 10px; }
+
 .player-select-list .player {
-  padding-bottom: 3px; }
+  margin-bottom: 5px; }
 .player-select-list .player-name {
   font-weight: bold;
   float: left; }

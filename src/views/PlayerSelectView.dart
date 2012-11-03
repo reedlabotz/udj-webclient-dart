@@ -9,6 +9,7 @@ class PlayerSelectView extends CompositeView {
   View _errorMessage;
   View _search;
   View _createPlayer;
+  CompositeView _actionbar;
   
   Player _prevPlayer; // used in changePlayers to allow exiting from player selection
   
@@ -31,13 +32,17 @@ class PlayerSelectView extends CompositeView {
     ''');
     addChild(_playerSelectHeader);
     
+    CompositeView actionbarWrap = new CompositeView('row');
+    _actionbar = new CompositeView('player-select-actionbar');
+    actionbarWrap.addChild(_actionbar);
+    
     _createPlayer = new View.html('''
     <button type="button" id="player-select-create">Create</button>
     ''');
-    addChild(_createPlayer);
+    _actionbar.addChild(_createPlayer);
     
     _search = new View.html('''
-    <form id="player-select-search" class="player-select-search">
+    <form id="player-select-search" class="player-select-search form-search">
       <div class="input-append">
         <input type="text" id="player-select-search-input" class="search-query span2" placeholder="Search">
         <button type="submit" class="btn">
@@ -46,16 +51,25 @@ class PlayerSelectView extends CompositeView {
       </div>
     </form>
     ''');
-    addChild(_search);
-    
+    _actionbar.addChild(_search);
+        
     _errorMessage = new View.html('''
     <div class="alert alert-error"></div>
     ''');
     _errorMessage.hidden = true;
-    addChild(_errorMessage);
+    _actionbar.addChild(_errorMessage);
+    _actionbar.addChild(new View.html('<div class="clearfix"></div>'));
+    
+    addChild(actionbarWrap);
+    
+    CompositeView playersListWrap = new CompositeView('row');
+    CompositeView playersListSpan = new CompositeView('span6 offset3');
+    playersListWrap.addChild(playersListSpan);
     
     _playersList = new PlayerSelectListView(_udjApp, _state);
-    addChild(_playersList);
+    playersListSpan.addChild(_playersList);
+    
+    addChild(playersListWrap);
     
     // TODO: hide exit button if no player is selected
   }
@@ -65,6 +79,8 @@ class PlayerSelectView extends CompositeView {
    */
   void afterRender(Element node){
     addClass('container');
+    _actionbar.addClass('span6');
+    _actionbar.addClass('offset3');
     
     // watching
     watch(_state.hidden, _displayPlayers);
@@ -188,17 +204,17 @@ class PlayerSelectListView extends CompositeView {
     }
     
     View player = new View.html('''
-    <div class="row">
-      <div class="player span6 offset3">
-        <div class="player-name">${p.name}</div>
-        <div class="player-owner dashed">${p.owner.username}</div>
-        <button class="player-join" data-player-id="${p.id}">Join</button>
-        <div class="player-attrs">
-          <span class="player-attr"><i class="icon-user"></i>${p.numActiveUsers}</span>
-          <span class="player-attr"><i class="icon-music"></i>${p.sizeLimit}</span>
-          $password
-        </div>
+    <div class="player">
+      <div class="player-name">${p.name}</div>
+      <div class="player-owner dashed">${p.owner.username}</div>
+      <button class="player-join" data-player-id="${p.id}">Join</button>
+      <div class="player-attrs">
+        <span class="player-attr"><i class="icon-user"></i>${p.numActiveUsers}</span>
+        <span class="player-attr"><i class="icon-music"></i>${p.sizeLimit}</span>
+        $password
       </div>
+
+      <div class="clearfix"></div>
     </div>
     ''');
     
@@ -210,6 +226,7 @@ class PlayerSelectListView extends CompositeView {
    */
   void afterRender(Element node){
     // TODO: move the button onClick event registration here
+    addClass('well');
   }
   
   // events
