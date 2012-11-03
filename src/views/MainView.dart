@@ -18,6 +18,9 @@ class MainView extends CompositeView{
   /// The login view which is shown at login and in case of reauth.
   LoginView _login;
   
+  /// The player select view-model.
+  PlayerSelectState _playerSelectState;
+  
   /// The player select view that is shown if no player is selected.
   PlayerSelectView _playerSelect;
   
@@ -35,8 +38,8 @@ class MainView extends CompositeView{
     addChild(_login);
     
     // Create the player select view
-    PlayerSelectState playerSelectState = new PlayerSelectState(this._udjApp);
-    _playerSelect = new PlayerSelectView(_udjApp, playerSelectState);
+    _playerSelectState = new PlayerSelectState(this._udjApp);
+    _playerSelect = new PlayerSelectView(_udjApp, _playerSelectState);
     addChild(_playerSelect);
     
     // Create the side bar view
@@ -56,6 +59,7 @@ class MainView extends CompositeView{
    */
   void afterRender(Element node){
     watch(_udjApp.state.currentUsername, (e) => _chooseView());
+    watch(_udjApp.state.currentPlayer, (e) => _chooseView());
   }
   
   /**
@@ -67,7 +71,7 @@ class MainView extends CompositeView{
       _topBar.hidden = true;
       _sideBar.hidden = true;
       _library.hidden = true;
-      _playerSelect.hidden = true;
+      _playerSelectState.hidden.value = true;
 
       _login.hidden = false;
     }
@@ -79,15 +83,13 @@ class MainView extends CompositeView{
       _library.hidden = true;
       _login.hidden = true;
       
-      _playerSelect.hidden = false;
-      
-      return;
+      _playerSelectState.hidden.value = false;
     }
     
     // use udj
     else {
       _login.hidden = true;
-      _playerSelect.hidden = true;
+      _playerSelectState.hidden.value = true;
       
       _topBar.hidden = false;
       _sideBar.hidden = false;
