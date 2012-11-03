@@ -248,14 +248,14 @@ $$.HashMapImplementation = {"": ["_keys", "_values", "_loadLimit", "_numberOfEnt
   var t1 = {};
   var list = $.ListImplementation_List($.get$length(this));
   t1.i_10 = 0;
-  this.forEach$1(new $.HashMapImplementation_keys__(t1, list));
+  this.forEach$1(new $.HashMapImplementation_keys__(list, t1));
   return list;
 },
  get$values: function() {
   var t1 = {};
   var list = $.ListImplementation_List($.get$length(this));
   t1.i_1 = 0;
-  this.forEach$1(new $.HashMapImplementation_values__(t1, list));
+  this.forEach$1(new $.HashMapImplementation_values__(list, t1));
   return list;
 },
  containsKey$1: function(key) {
@@ -299,7 +299,7 @@ $$.HashSetImplementation = {"": ["_backingMap"],
 },
  map$1: function(f) {
   var result = $.Set_Set();
-  this._backingMap.forEach$1(new $.HashSetImplementation_map__(f, result));
+  this._backingMap.forEach$1(new $.HashSetImplementation_map__(result, f));
   return result;
 },
  filter$1: function(f) {
@@ -1161,7 +1161,7 @@ $$.ConstantMap = {"": ["length?", "_jsObject", "_lib2_keys"],
   return this._jsObject[key];
 },
  forEach$1: function(f) {
-  $.forEach(this._lib2_keys, new $.ConstantMap_forEach_anon(f, this));
+  $.forEach(this._lib2_keys, new $.ConstantMap_forEach_anon(this, f));
 },
  get$keys: function() {
   return this._lib2_keys;
@@ -2759,7 +2759,7 @@ $$._BaseSendPort = {"": ["_isolateId?"],
 $$._NativeJsSendPort = {"": ["_receivePort?", "_isolateId"],
  "super": "_BaseSendPort",
  send$2: function(message, replyTo) {
-  $._waitForPendingPorts([message, replyTo], new $._NativeJsSendPort_send_anon(this, replyTo, message));
+  $._waitForPendingPorts([message, replyTo], new $._NativeJsSendPort_send_anon(replyTo, message, this));
 },
  send$1: function(message) {
   return this.send$2(message,null)
@@ -2777,7 +2777,7 @@ $$._NativeJsSendPort = {"": ["_receivePort?", "_isolateId"],
 $$._WorkerSendPort = {"": ["_workerId?", "_receivePortId", "_isolateId"],
  "super": "_BaseSendPort",
  send$2: function(message, replyTo) {
-  $._waitForPendingPorts([message, replyTo], new $._WorkerSendPort_send_anon(message, this, replyTo));
+  $._waitForPendingPorts([message, replyTo], new $._WorkerSendPort_send_anon(message, replyTo, this));
 },
  send$1: function(message) {
   return this.send$2(message,null)
@@ -3041,7 +3041,7 @@ $$._Copier = {"": [],
     return t2;
   t1.copy_10 = $.HashMapImplementation$();
   $.indexSet(this._visited, map, t1.copy_10);
-  map.forEach$1(new $._Copier_visitMap_anon(t1, this));
+  map.forEach$1(new $._Copier_visitMap_anon(this, t1));
   return t1.copy_10;
 }
 };
@@ -3205,7 +3205,7 @@ $$._Deserializer = {"": [],
 $$._Timer = {"": ["_once", "_handle"],
  "super": "Object",
  _Timer$repeating$2: function(milliSeconds, callback) {
-  this._handle = $._window0().setInterval$2(new $.anon4(callback, this), milliSeconds);
+  this._handle = $._window0().setInterval$2(new $.anon4(this, callback), milliSeconds);
 },
  _Timer$2: function(milliSeconds, callback) {
   this._handle = $._window0().setTimeout$2(new $.anon3(this, callback), milliSeconds);
@@ -3899,7 +3899,7 @@ $$.UdjService = {"": ["session?", "_loginNeeded?"],
   request.open$3('POST', 'https://www.udjplayer.com/udj/0_6/auth', true);
   var data = $.RequestHelper_encodeMap($.makeLiteralMap(['username', username, 'password', password]));
   request.setRequestHeader$2('Content-type', 'application/x-www-form-urlencode');
-  $.add$1(request.get$on().get$loadEnd(), new $.UdjService_login_anon(request, username, this, callback));
+  $.add$1(request.get$on().get$loadEnd(), new $.UdjService_login_anon(username, this, callback, request));
   request.send$1(data);
 }
 };
@@ -4261,7 +4261,7 @@ $$.AbstractObservable = {"": ["parent?", "listeners?"],
   if (!(t1 == null))
     t1.getEvents$1(this).addEvent$1(event$);
   else
-    $.EventBatch_wrap(new $.AbstractObservable_recordEvent_anon(event$, this)).call$1(null);
+    $.EventBatch_wrap(new $.AbstractObservable_recordEvent_anon(this, event$)).call$1(null);
 }
 };
 
@@ -4630,7 +4630,7 @@ $$.SingleDimensionPhysics = {"": ["customDecelerationFactor", "_minCoord", "_max
   targetOffset = $.round(targetOffset);
   if ($.eqB(t1.initialOffset_1, targetOffset))
     return 0;
-  var t2 = new $.SingleDimensionPhysics_solve_anon(customDecelerationFactor_, t1, this);
+  var t2 = new $.SingleDimensionPhysics_solve_anon(t1, this, customDecelerationFactor_);
   return $.Solver_solve(t2, targetOffset, $.gtB(targetOffset, t1.initialOffset_1) ? 20 : -20, 50);
 },
  _adjustInitialVelocityAndBouncingState$1: function(v) {
@@ -5100,7 +5100,7 @@ $$.Scroller = {"": ["_lib4_element?", "_frame?", "_touchHandler", "_momentum?", 
     contentSizeFuture = this._lib4_element.get$rect();
     contentSizeFuture.then$1(new $.Scroller__resize_anon0(this));
   }
-  $.joinFutures([frameRect, contentSizeFuture], new $.Scroller__resize_anon1(frameRect, this, callback));
+  $.joinFutures([frameRect, contentSizeFuture], new $.Scroller__resize_anon1(frameRect, callback, this));
 },
  _snapToBounds$2: function(x, y) {
   var t1 = this._minPoint.get$x();
@@ -7547,7 +7547,7 @@ $$._convertDartToNative_PrepareForStructuredClone_cleanupSlots = {"": [],
 }
 };
 
-$$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["readSlot_8", "writeSlot_7", "findSlot_6"],
+$$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["writeSlot_8", "readSlot_7", "findSlot_6"],
  "super": "Closure",
  call$1: function(e) {
   var t1 = {};
@@ -7587,12 +7587,12 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["readSlot_8", "wr
     throw $.$$throw($.CTC7);
   if (typeof e === 'object' && e !== null && e.is$Map()) {
     var slot = this.findSlot_6.call$1(e);
-    t1.copy_1 = this.readSlot_8.call$1(slot);
+    t1.copy_1 = this.readSlot_7.call$1(slot);
     var t2 = t1.copy_1;
     if (!(t2 == null))
       return t2;
     t1.copy_1 = {};
-    this.writeSlot_7.call$2(slot, t1.copy_1);
+    this.writeSlot_8.call$2(slot, t1.copy_1);
     e.forEach$1(new $._convertDartToNative_PrepareForStructuredClone_walk_anon(t1, this));
     return t1.copy_1;
   }
@@ -7601,17 +7601,17 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["readSlot_8", "wr
       return this.call$1$bailout(1, e, 0, 0, 0, 0, 0, 0);
     var length$ = e.length;
     slot = this.findSlot_6.call$1(e);
-    t2 = this.readSlot_8;
+    t2 = this.readSlot_7;
     var copy = t2.call$1(slot);
     if (!(copy == null)) {
       if (true === copy) {
         copy = new Array(length$);
-        this.writeSlot_7.call$2(slot, copy);
+        this.writeSlot_8.call$2(slot, copy);
       }
       return copy;
     }
     t1 = e instanceof Array && !!!(e.immutable$list);
-    var t3 = this.writeSlot_7;
+    var t3 = this.writeSlot_8;
     if (t1) {
       t3.call$2(slot, true);
       for (var i = 0; i < length$; ++i) {
@@ -7725,12 +7725,12 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["readSlot_8", "wr
         throw $.$$throw($.CTC7);
       if (typeof e === 'object' && e !== null && e.is$Map()) {
         var slot = this.findSlot_6.call$1(e);
-        t1.copy_1 = this.readSlot_8.call$1(slot);
+        t1.copy_1 = this.readSlot_7.call$1(slot);
         var t2 = t1.copy_1;
         if (!(t2 == null))
           return t2;
         t1.copy_1 = {};
-        this.writeSlot_7.call$2(slot, t1.copy_1);
+        this.writeSlot_8.call$2(slot, t1.copy_1);
         e.forEach$1(new $._convertDartToNative_PrepareForStructuredClone_walk_anon(t1, this));
         return t1.copy_1;
       }
@@ -7742,17 +7742,17 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["readSlot_8", "wr
             state0 = 0;
             var length$ = $.get$length(e);
             slot = this.findSlot_6.call$1(e);
-            t2 = this.readSlot_8;
+            t2 = this.readSlot_7;
             var copy = t2.call$1(slot);
             if (!(copy == null)) {
               if (true === copy) {
                 copy = new Array(length$);
-                this.writeSlot_7.call$2(slot, copy);
+                this.writeSlot_8.call$2(slot, copy);
               }
               return copy;
             }
             t1 = e instanceof Array && !!!(e.immutable$list);
-            var t3 = this.writeSlot_7;
+            var t3 = this.writeSlot_8;
           case 2:
             if (state0 === 2 || state0 === 0 && t1)
               switch (state0) {
@@ -7815,7 +7815,7 @@ $$._convertDartToNative_PrepareForStructuredClone_walk_anon = {"": ["box_0", "wa
 }
 };
 
-$$.HashMapImplementation_values__ = {"": ["box_0", "list_2"],
+$$.HashMapImplementation_values__ = {"": ["list_2", "box_0"],
  "super": "Closure",
  call$2: function(key, value) {
   var t1 = this.list_2;
@@ -7876,17 +7876,17 @@ $$.ConstantMap_values_anon = {"": ["this_1", "result_0"],
 }
 };
 
-$$.ConstantMap_forEach_anon = {"": ["f_1", "this_0"],
+$$.ConstantMap_forEach_anon = {"": ["this_1", "f_0"],
  "super": "Closure",
  call$1: function(key) {
-  return this.f_1.call$2(key, $.index(this.this_0, key));
+  return this.f_0.call$2(key, $.index(this.this_1, key));
 }
 };
 
-$$.AbstractObservable_recordEvent_anon = {"": ["event_1", "this_0"],
+$$.AbstractObservable_recordEvent_anon = {"": ["this_1", "event_0"],
  "super": "Closure",
  call$1: function(ignore) {
-  this.this_0.recordEvent$1(this.event_1);
+  this.this_1.recordEvent$1(this.event_0);
 }
 };
 
@@ -7940,7 +7940,7 @@ $$._convertNativeToDart_AcceptStructuredClone_writeSlot = {"": ["copies_3"],
 }
 };
 
-$$._convertNativeToDart_AcceptStructuredClone_walk = {"": ["mustCopy_7", "readSlot_6", "findSlot_5", "writeSlot_4"],
+$$._convertNativeToDart_AcceptStructuredClone_walk = {"": ["readSlot_7", "findSlot_6", "mustCopy_5", "writeSlot_4"],
  "super": "Closure",
  call$1: function(e) {
   if (typeof e !== 'object' || e === null || (e.constructor !== Array || !!e.immutable$list) && !e.is$JavaScriptIndexingBehavior())
@@ -7950,8 +7950,8 @@ $$._convertNativeToDart_AcceptStructuredClone_walk = {"": ["mustCopy_7", "readSl
   if (e instanceof RegExp)
     throw $.$$throw($.CTC2);
   if ($._isJavaScriptSimpleObject(e)) {
-    var slot = this.findSlot_5.call$1(e);
-    var copy = this.readSlot_6.call$1(slot);
+    var slot = this.findSlot_6.call$1(e);
+    var copy = this.readSlot_7.call$1(slot);
     if (!(copy == null))
       return copy;
     copy = $.makeLiteralMap([]);
@@ -7970,12 +7970,12 @@ $$._convertNativeToDart_AcceptStructuredClone_walk = {"": ["mustCopy_7", "readSl
     return copy;
   }
   if (e instanceof Array) {
-    slot = this.findSlot_5.call$1(e);
-    copy = this.readSlot_6.call$1(slot);
+    slot = this.findSlot_6.call$1(e);
+    copy = this.readSlot_7.call$1(slot);
     if (!(copy == null))
       return copy;
     var length$ = e.length;
-    if (this.mustCopy_7 === true)
+    if (this.mustCopy_5 === true)
       copy = new Array(length$);
     else
       copy = e;
@@ -8031,8 +8031,8 @@ $$._convertNativeToDart_AcceptStructuredClone_walk = {"": ["mustCopy_7", "readSl
       if (state0 === 2 || state0 === 0 && $._isJavaScriptSimpleObject(e))
         switch (state0) {
           case 0:
-            var slot = this.findSlot_5.call$1(e);
-            var copy = this.readSlot_6.call$1(slot);
+            var slot = this.findSlot_6.call$1(e);
+            var copy = this.readSlot_7.call$1(slot);
             if (!(copy == null))
               return copy;
             copy = $.makeLiteralMap([]);
@@ -8049,12 +8049,12 @@ $$._convertNativeToDart_AcceptStructuredClone_walk = {"": ["mustCopy_7", "readSl
       if (state0 === 3 || state0 === 0 && e instanceof Array)
         switch (state0) {
           case 0:
-            slot = this.findSlot_5.call$1(e);
-            copy = this.readSlot_6.call$1(slot);
+            slot = this.findSlot_6.call$1(e);
+            copy = this.readSlot_7.call$1(slot);
             if (!(copy == null))
               return copy;
             var length$ = $.get$length(e);
-            copy = this.mustCopy_7 === true ? new Array(length$) : e;
+            copy = this.mustCopy_5 === true ? new Array(length$) : e;
           case 3:
             state0 = 0;
             this.writeSlot_4.call$2(slot, copy);
@@ -8260,17 +8260,17 @@ $$.Scroller__resize_anon0 = {"": ["this_1"],
 }
 };
 
-$$.Scroller__resize_anon1 = {"": ["frameRect_4", "this_3", "callback_2"],
+$$.Scroller__resize_anon1 = {"": ["frameRect_4", "callback_3", "this_2"],
  "super": "Closure",
  call$0: function() {
   var t1 = this.frameRect_4;
   var t2 = $.Size$(t1.get$value().get$offset().get$width(), t1.get$value().get$offset().get$height());
-  var t3 = this.this_3;
+  var t3 = this.this_2;
   t3.set$_scrollSize(t2);
   var adjusted = t3._getAdjustedContentSize$0();
   t3.set$_maxPoint($.Coordinate$($.neg(t3.get$_maxOffset().get$x()), $.neg(t3.get$_maxOffset().get$y())));
   t3.set$_minPoint($.Coordinate$($.min($.add($.sub(t3.get$_scrollSize().get$width(), adjusted.get$width()), t3.get$_minOffset().get$x()), t3.get$_maxPoint().get$x()), $.min($.add($.sub(t3.get$_scrollSize().get$height(), adjusted.get$height()), t3.get$_minOffset().get$y()), t3.get$_maxPoint().get$y())));
-  this.callback_2.call$0();
+  this.callback_3.call$0();
 }
 };
 
@@ -8374,20 +8374,20 @@ $$.AnimationScheduler_cancelRequestAnimationFrame_anon = {"": ["id_0"],
 }
 };
 
-$$.SingleDimensionPhysics_solve_anon = {"": ["customDecelerationFactor__3", "box_0", "this_2"],
+$$.SingleDimensionPhysics_solve_anon = {"": ["box_0", "this_3", "customDecelerationFactor__2"],
  "super": "Closure",
  call$1: function(velocity_) {
-  var t1 = this.this_2;
-  t1.configure$5(null, null, $.round(this.box_0.initialOffset_1), this.customDecelerationFactor__3, velocity_);
+  var t1 = this.this_3;
+  t1.configure$5(null, null, $.round(this.box_0.initialOffset_1), this.customDecelerationFactor__2, velocity_);
   t1.stepAll$0();
   return t1.get$_currentOffset();
 }
 };
 
-$$._ElementImpl_getComputedStyle_anon = {"": ["pseudoElement_1", "this_0"],
+$$._ElementImpl_getComputedStyle_anon = {"": ["this_1", "pseudoElement_0"],
  "super": "Closure",
  call$0: function() {
-  return $._window().$dom_getComputedStyle$2(this.this_0, this.pseudoElement_1);
+  return $._window().$dom_getComputedStyle$2(this.this_1, this.pseudoElement_0);
 }
 };
 
@@ -8437,7 +8437,7 @@ $$._addEventListeners_onLeaveWrapper = {"": ["box_0"],
 }
 };
 
-$$._addEventListeners_onCancelWrapper = {"": ["box_0", "onCancel_5"],
+$$._addEventListeners_onCancelWrapper = {"": ["onCancel_5", "box_0"],
  "super": "Closure",
  call$1: function(e) {
   this.box_0.removeListeners_4.call$0();
@@ -8445,7 +8445,7 @@ $$._addEventListeners_onCancelWrapper = {"": ["box_0", "onCancel_5"],
 }
 };
 
-$$._addEventListeners_anon = {"": ["box_0", "onCancelWrapper_9", "capture_8", "onLeaveWrapper_7", "onEndWrapper_6"],
+$$._addEventListeners_anon = {"": ["onCancelWrapper_9", "capture_8", "onLeaveWrapper_7", "box_0", "onEndWrapper_6"],
  "super": "Closure",
  call$0: function() {
   var t1 = $.document().get$on().get$touchMove();
@@ -8458,7 +8458,7 @@ $$._addEventListeners_anon = {"": ["box_0", "onCancelWrapper_9", "capture_8", "o
 }
 };
 
-$$._addEventListeners_anon0 = {"": ["box_0", "onCancelWrapper_13", "capture_12", "onLeaveWrapper_11", "onEndWrapper_10"],
+$$._addEventListeners_anon0 = {"": ["onCancelWrapper_13", "capture_12", "onLeaveWrapper_11", "box_0", "onEndWrapper_10"],
  "super": "Closure",
  call$1: function(e) {
   var t1 = $.document().get$on().get$touchMove();
@@ -8473,7 +8473,7 @@ $$._addEventListeners_anon0 = {"": ["box_0", "onCancelWrapper_13", "capture_12",
 }
 };
 
-$$._addEventListeners_anon1 = {"": ["box_0", "onCancelWrapper_16", "capture_15", "onEndWrapper_14"],
+$$._addEventListeners_anon1 = {"": ["onCancelWrapper_16", "capture_15", "box_0", "onEndWrapper_14"],
  "super": "Closure",
  call$0: function() {
   var t1 = $.document().get$on().get$mouseMove();
@@ -8485,7 +8485,7 @@ $$._addEventListeners_anon1 = {"": ["box_0", "onCancelWrapper_16", "capture_15",
 }
 };
 
-$$._addEventListeners_anon2 = {"": ["box_0", "onCancelWrapper_19", "capture_18", "onEndWrapper_17"],
+$$._addEventListeners_anon2 = {"": ["onCancelWrapper_19", "capture_18", "box_0", "onEndWrapper_17"],
  "super": "Closure",
  call$1: function(e) {
   var t1 = $.document().get$on().get$mouseMove();
@@ -8799,7 +8799,7 @@ $$.GridLayout__hasContentSizedTracks_anon = {"": [],
 }
 };
 
-$$.HashMapImplementation_keys__ = {"": ["box_0", "list_2"],
+$$.HashMapImplementation_keys__ = {"": ["list_2", "box_0"],
  "super": "Closure",
  call$2: function(key, value) {
   var t1 = this.list_2;
@@ -8898,16 +8898,16 @@ $$._JsonStringifier_stringifyJsonValue_anon = {"": ["box_0", "this_2"],
 }
 };
 
-$$.UdjService_login_anon = {"": ["request_3", "username_2", "this_1", "callback_0"],
+$$.UdjService_login_anon = {"": ["username_3", "this_2", "callback_1", "request_0"],
  "super": "Closure",
  call$1: function(e) {
-  var t1 = this.request_3;
+  var t1 = this.request_0;
   var t2 = $.eqB(t1.get$status(), 200);
-  var t3 = this.callback_0;
+  var t3 = this.callback_1;
   if (t2) {
     var data = $.JSON_parse(t1.get$responseText());
-    t2 = $.Session$($.index(data, 'ticket_hash'), $.index(data, 'user_id'), this.username_2);
-    this.this_1.get$session().set$value(t2);
+    t2 = $.Session$($.index(data, 'ticket_hash'), $.index(data, 'user_id'), this.username_3);
+    this.this_2.get$session().set$value(t2);
     t3.call$1(true);
   } else
     t3.call$1(false);
@@ -8939,10 +8939,10 @@ $$.LinkedHashMapImplementation_keys__ = {"": ["box_0", "list_2"],
 }
 };
 
-$$.HashSetImplementation_map__ = {"": ["f_1", "result_0"],
+$$.HashSetImplementation_map__ = {"": ["result_1", "f_0"],
  "super": "Closure",
  call$2: function(key, value) {
-  $.add$1(this.result_0, this.f_1.call$1(key));
+  $.add$1(this.result_1, this.f_0.call$1(key));
 }
 };
 
@@ -8975,11 +8975,11 @@ $$._BaseSendPort_call_anon = {"": ["completer_1", "port_0"],
 }
 };
 
-$$._WorkerSendPort_send_anon = {"": ["message_2", "this_1", "replyTo_0"],
+$$._WorkerSendPort_send_anon = {"": ["message_2", "replyTo_1", "this_0"],
  "super": "Closure",
  call$0: function() {
-  var t1 = this.this_1;
-  var t2 = this.replyTo_0;
+  var t1 = this.this_0;
+  var t2 = this.replyTo_1;
   t1._checkReplyTo$1(t2);
   var workerMessage = $._serializeMessage($.makeLiteralMap(['command', 'message', 'port', t1, 'msg', this.message_2, 'replyTo', t2]));
   t2 = $._globalState().get$isWorker() === true;
@@ -9034,12 +9034,12 @@ $$._PendingSendPortFinder_visitList_anon = {"": ["this_0"],
 }
 };
 
-$$._NativeJsSendPort_send_anon = {"": ["this_5", "replyTo_4", "message_3"],
+$$._NativeJsSendPort_send_anon = {"": ["replyTo_5", "message_4", "this_3"],
  "super": "Closure",
  call$0: function() {
   var t1 = {};
-  var t2 = this.this_5;
-  var t3 = this.replyTo_4;
+  var t2 = this.this_3;
+  var t3 = this.replyTo_5;
   t2._checkReplyTo$1(t3);
   var isolate = $.index($._globalState().get$isolates(), t2.get$_isolateId());
   if (isolate == null)
@@ -9047,23 +9047,23 @@ $$._NativeJsSendPort_send_anon = {"": ["this_5", "replyTo_4", "message_3"],
   if (t2.get$_receivePort().get$_lib8_callback() == null)
     return;
   var shouldSerialize = !($._globalState().get$currentContext() == null) && !$.eqB($._globalState().get$currentContext().get$id(), t2.get$_isolateId());
-  var msg = this.message_3;
+  var msg = this.message_4;
   t1.msg_1 = msg;
   t1.reply_2 = t3;
   if (shouldSerialize) {
     t1.msg_1 = $._serializeMessage(t1.msg_1);
     t1.reply_2 = $._serializeMessage(t1.reply_2);
   }
-  $._globalState().get$topEventLoop().enqueue$3(isolate, new $._NativeJsSendPort_send_anon0(t2, shouldSerialize, t1), 'receive ' + $.S(msg));
+  $._globalState().get$topEventLoop().enqueue$3(isolate, new $._NativeJsSendPort_send_anon0(shouldSerialize, t1, t2), 'receive ' + $.S(msg));
 }
 };
 
-$$._NativeJsSendPort_send_anon0 = {"": ["this_7", "shouldSerialize_6", "box_0"],
+$$._NativeJsSendPort_send_anon0 = {"": ["shouldSerialize_7", "box_0", "this_6"],
  "super": "Closure",
  call$0: function() {
-  var t1 = this.this_7;
+  var t1 = this.this_6;
   if (!(t1.get$_receivePort().get$_lib8_callback() == null)) {
-    if (this.shouldSerialize_6 === true) {
+    if (this.shouldSerialize_7 === true) {
       var t2 = this.box_0;
       t2.msg_1 = $._deserializeMessage(t2.msg_1);
       t2.reply_2 = $._deserializeMessage(t2.reply_2);
@@ -9075,7 +9075,7 @@ $$._NativeJsSendPort_send_anon0 = {"": ["this_7", "shouldSerialize_6", "box_0"],
 }
 };
 
-$$._Copier_visitMap_anon = {"": ["box_0", "this_2"],
+$$._Copier_visitMap_anon = {"": ["this_2", "box_0"],
  "super": "Closure",
  call$2: function(key, val) {
   var t1 = this.box_0.copy_10;
@@ -9108,10 +9108,10 @@ $$.anon3 = {"": ["this_1", "callback_0"],
 }
 };
 
-$$.anon4 = {"": ["callback_1", "this_0"],
+$$.anon4 = {"": ["this_1", "callback_0"],
  "super": "Closure",
  call$0: function() {
-  return this.callback_1.call$1(this.this_0);
+  return this.callback_0.call$1(this.this_1);
 }
 };
 
@@ -9374,15 +9374,12 @@ $.and = function(a, b) {
   return a.operator$and$1(b);
 };
 
-$.ge = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? a >= b : $.ge$slow(a, b);
+$.leB = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? a <= b : $.le$slow(a, b) === true;
 };
 
-$._ListRange$ = function(source, offset, length$) {
-  var t1 = length$ == null ? $.sub($.get$length(source), offset) : length$;
-  t1 = new $._ListRange(source, offset, t1);
-  t1._ListRange$3(source, offset, length$);
-  return t1;
+$.ge = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? a >= b : $.ge$slow(a, b);
 };
 
 $.neg = function(a) {
@@ -9496,10 +9493,6 @@ $.toStringWrapper = function() {
   return $.toString(this.dartException);
 };
 
-$.leB = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? a <= b : $.le$slow(a, b) === true;
-};
-
 $.div = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? a / b : $.div$slow(a, b);
 };
@@ -9593,6 +9586,13 @@ $.le = function(a, b) {
 
 $._ListRangeIteratorImpl$ = function(_source, _offset, _end) {
   return new $._ListRangeIteratorImpl(_source, _offset, _end);
+};
+
+$._ListRange$ = function(source, offset, length$) {
+  var t1 = length$ == null ? $.sub($.get$length(source), offset) : length$;
+  t1 = new $._ListRange(source, offset, t1);
+  t1._ListRange$3(source, offset, length$);
+  return t1;
 };
 
 $.listTypeCast = function(value) {
@@ -9864,10 +9864,6 @@ $.regExpMatchStart = function(m) {
   return m.index;
 };
 
-$.MetaInfo$ = function(_tag, _tags, _set) {
-  return new $.MetaInfo(_tag, _tags, _set);
-};
-
 $.allMatchesInStringUnchecked = function(needle, haystack) {
   var result = $.ListImplementation_List(null);
   var length$ = $.get$length(haystack);
@@ -9936,6 +9932,10 @@ $.add$1 = function(receiver, value) {
     return;
   }
   return receiver.add$1(value);
+};
+
+$.MetaInfo$ = function(_tag, _tags, _set) {
+  return new $.MetaInfo(_tag, _tags, _set);
 };
 
 $.removeLast = function(receiver) {
@@ -10476,14 +10476,14 @@ $._InputElementEventsImpl$ = function(_ptr) {
   return new $._InputElementEventsImpl(_ptr);
 };
 
-$.double_parse = function(source) {
-  return $.Primitives_parseDouble(source);
-};
-
 $.OfflineSyncService$ = function(_udjApp, _service) {
   var t1 = new $.OfflineSyncService(_udjApp, _service, null, null, null, $.HashMapImplementation$());
   t1.OfflineSyncService$2(_udjApp, _service);
   return t1;
+};
+
+$.double_parse = function(source) {
+  return $.Primitives_parseDouble(source);
 };
 
 $.EventBatch$_internal = function() {
@@ -10526,13 +10526,13 @@ $._IDBVersionChangeRequestEventsImpl$ = function(_ptr) {
   return new $._IDBVersionChangeRequestEventsImpl(_ptr);
 };
 
+$._IDBRequestEventsImpl$ = function(_ptr) {
+  return new $._IDBRequestEventsImpl(_ptr);
+};
+
 $.Collections_forEach = function(iterable, f) {
   for (var t1 = $.iterator(iterable); t1.get$hasNext() === true;)
     f.call$1(t1.next$0());
-};
-
-$._IDBRequestEventsImpl$ = function(_ptr) {
-  return new $._IDBRequestEventsImpl(_ptr);
 };
 
 $.Collections_some = function(iterable, f) {
@@ -10689,18 +10689,6 @@ $.Primitives_parseDouble = function(string) {
   return result;
 };
 
-$.Primitives_parseInt = function(string) {
-  $.checkString(string);
-  var match = /^\s*[+-]?(?:0(x)[a-f0-9]+|\d+)\s*$/i.exec(string);
-  if (match == null)
-    throw $.$$throw($.FormatException$(string));
-  var base = !($.index(match, 1) == null) ? 16 : 10;
-  var result = parseInt(string, base);
-  if ($.get$isNaN(result) === true)
-    throw $.$$throw($.FormatException$(string));
-  return result;
-};
-
 $.Primitives_objectTypeName = function(object) {
   var name$ = $.constructorNameFallback(object);
   if ($.eqB(name$, 'Object')) {
@@ -10735,32 +10723,28 @@ $.Primitives_lazyAsJsDate = function(receiver) {
   return receiver.date;
 };
 
-$.Primitives_getDay = function(receiver) {
-  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCDate() + 0) : ($.Primitives_lazyAsJsDate(receiver).getDate() + 0);
-};
-
-$.Primitives_getMinutes = function(receiver) {
-  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCMinutes() + 0) : ($.Primitives_lazyAsJsDate(receiver).getMinutes() + 0);
-};
-
-$.Primitives_getMilliseconds = function(receiver) {
-  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCMilliseconds() + 0) : ($.Primitives_lazyAsJsDate(receiver).getMilliseconds() + 0);
-};
-
 $.Primitives_getMonth = function(receiver) {
   return receiver.isUtc === true ? $.Primitives_lazyAsJsDate(receiver).getUTCMonth() + 1 : $.Primitives_lazyAsJsDate(receiver).getMonth() + 1;
-};
-
-$.Primitives_getSeconds = function(receiver) {
-  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCSeconds() + 0) : ($.Primitives_lazyAsJsDate(receiver).getSeconds() + 0);
 };
 
 $.Primitives_getHours = function(receiver) {
   return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCHours() + 0) : ($.Primitives_lazyAsJsDate(receiver).getHours() + 0);
 };
 
-$.Primitives_getYear = function(receiver) {
-  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCFullYear() + 0) : ($.Primitives_lazyAsJsDate(receiver).getFullYear() + 0);
+$.Primitives_getSeconds = function(receiver) {
+  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCSeconds() + 0) : ($.Primitives_lazyAsJsDate(receiver).getSeconds() + 0);
+};
+
+$.Primitives_getMilliseconds = function(receiver) {
+  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCMilliseconds() + 0) : ($.Primitives_lazyAsJsDate(receiver).getMilliseconds() + 0);
+};
+
+$.Primitives_getMinutes = function(receiver) {
+  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCMinutes() + 0) : ($.Primitives_lazyAsJsDate(receiver).getMinutes() + 0);
+};
+
+$.Primitives_getDay = function(receiver) {
+  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCDate() + 0) : ($.Primitives_lazyAsJsDate(receiver).getDate() + 0);
 };
 
 $.Primitives_stringFromCharCodes = function(charCodes) {
@@ -10770,6 +10754,22 @@ $.Primitives_stringFromCharCodes = function(charCodes) {
       throw $.$$throw($.ArgumentError$(t2));
   }
   return String.fromCharCode.apply(null, charCodes);
+};
+
+$.Primitives_getYear = function(receiver) {
+  return receiver.isUtc === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCFullYear() + 0) : ($.Primitives_lazyAsJsDate(receiver).getFullYear() + 0);
+};
+
+$.Primitives_parseInt = function(string) {
+  $.checkString(string);
+  var match = /^\s*[+-]?(?:0(x)[a-f0-9]+|\d+)\s*$/i.exec(string);
+  if (match == null)
+    throw $.$$throw($.FormatException$(string));
+  var base = !($.index(match, 1) == null) ? 16 : 10;
+  var result = parseInt(string, base);
+  if ($.get$isNaN(result) === true)
+    throw $.$$throw($.FormatException$(string));
+  return result;
 };
 
 $.IndexOutOfRangeException$ = function(_value) {
@@ -10905,9 +10905,9 @@ $._completeMeasurementFutures = function() {
       t1.next$0().call$0();
 };
 
-$._Timer$ = function(milliSeconds, callback) {
-  var t1 = new $._Timer(true, null);
-  t1._Timer$2(milliSeconds, callback);
+$._Timer$repeating = function(milliSeconds, callback) {
+  var t1 = new $._Timer(false, null);
+  t1._Timer$repeating$2(milliSeconds, callback);
   return t1;
 };
 
@@ -10919,9 +10919,9 @@ $._addMeasurementFrameCallback = function(callback) {
   $.add$1($._pendingMeasurementFrameCallbacks, callback);
 };
 
-$._Timer$repeating = function(milliSeconds, callback) {
-  var t1 = new $._Timer(false, null);
-  t1._Timer$repeating$2(milliSeconds, callback);
+$._Timer$ = function(milliSeconds, callback) {
+  var t1 = new $._Timer(true, null);
+  t1._Timer$2(milliSeconds, callback);
   return t1;
 };
 
@@ -10957,7 +10957,7 @@ $._convertDartToNative_PrepareForStructuredClone = function(value) {
   var t2 = new $._convertDartToNative_PrepareForStructuredClone_readSlot(copies);
   var t3 = new $._convertDartToNative_PrepareForStructuredClone_writeSlot(copies);
   var t4 = new $._convertDartToNative_PrepareForStructuredClone_cleanupSlots();
-  var copy = new $._convertDartToNative_PrepareForStructuredClone_walk(t2, t3, t1).call$1(value);
+  var copy = new $._convertDartToNative_PrepareForStructuredClone_walk(t3, t2, t1).call$1(value);
   t4.call$0();
   return copy;
 };
@@ -10966,7 +10966,7 @@ $._convertNativeToDart_AcceptStructuredClone = function(object, mustCopy) {
   var values = [];
   var copies = [];
   var t1 = new $._convertNativeToDart_AcceptStructuredClone_findSlot(copies, values);
-  return new $._convertNativeToDart_AcceptStructuredClone_walk(mustCopy, new $._convertNativeToDart_AcceptStructuredClone_readSlot(copies), t1, new $._convertNativeToDart_AcceptStructuredClone_writeSlot(copies)).call$1(object);
+  return new $._convertNativeToDart_AcceptStructuredClone_walk(new $._convertNativeToDart_AcceptStructuredClone_readSlot(copies), t1, mustCopy, new $._convertNativeToDart_AcceptStructuredClone_writeSlot(copies)).call$1(object);
 };
 
 $.Queue_Queue = function() {
@@ -10981,8 +10981,8 @@ $._isMutationObserverSupported = function() {
   return !!(window.MutationObserver || window.WebKitMutationObserver);
 };
 
-$._MainManagerStub$ = function() {
-  return new $._MainManagerStub();
+$._IsolateEvent$ = function(isolate, fn, message) {
+  return new $._IsolateEvent(isolate, fn, message);
 };
 
 $._callInIsolate = function(isolate, function$) {
@@ -11003,8 +11003,18 @@ $._fillStatics = function(context) {
   $static_init();
 };
 
+$._MainManagerStub$ = function() {
+  return new $._MainManagerStub();
+};
+
 $._globalState0 = function(val) {
   $globalState = val;
+};
+
+$._JsSerializer$ = function() {
+  var t1 = new $._JsSerializer(0, $._MessageTraverserVisitedMap$());
+  t1._JsSerializer$0();
+  return t1;
 };
 
 $.startRootIsolate = function(entry) {
@@ -11046,16 +11056,12 @@ $._deserializeMessage = function(message) {
     return message;
 };
 
-$._MessageTraverser_isPrimitive = function(x) {
-  return x == null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
-};
-
 $._window0 = function() {
   return typeof window != "undefined" ? window : null;
 };
 
-$._IsolateEvent$ = function(isolate, fn, message) {
-  return new $._IsolateEvent(isolate, fn, message);
+$._MessageTraverser_isPrimitive = function(x) {
+  return x == null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
 };
 
 $._timerFactory = function(millis, callback, repeating) {
@@ -11105,12 +11111,6 @@ $._uriEncode = function(canonical, text) {
 
 $._NativeJsSendPort$ = function(_receivePort, isolateId) {
   return new $._NativeJsSendPort(_receivePort, isolateId);
-};
-
-$._JsSerializer$ = function() {
-  var t1 = new $._JsSerializer(0, $._MessageTraverserVisitedMap$());
-  t1._JsSerializer$0();
-  return t1;
 };
 
 $._WorkerSendPort$ = function(_workerId, isolateId, _receivePortId) {
@@ -11308,29 +11308,29 @@ $._FutureImpl__FutureImpl$immediate = function(value) {
   return res;
 };
 
-$.mouseToTouchCallback = function(callback) {
-  return new $.mouseToTouchCallback_anon(callback);
-};
-
 $._addEventListeners = function(node, onStart, onMove, onEnd, onCancel, capture) {
   var t1 = {};
+  t1.onEnd_3 = onEnd;
   t1.onStart_1 = onStart;
   t1.onMove_2 = onMove;
-  t1.onEnd_3 = onEnd;
   t1.removeListeners_4 = null;
   var t2 = new $._addEventListeners_onEndWrapper(t1);
   var t3 = new $._addEventListeners_onLeaveWrapper(t1);
-  var t4 = new $._addEventListeners_onCancelWrapper(t1, onCancel);
+  var t4 = new $._addEventListeners_onCancelWrapper(onCancel, t1);
   if ($.Device_supportsTouch() === true) {
-    t1.removeListeners_4 = new $._addEventListeners_anon(t1, t4, capture, t3, t2);
-    node.get$on().get$touchStart().add$2(new $._addEventListeners_anon0(t1, t4, capture, t3, t2), capture);
+    t1.removeListeners_4 = new $._addEventListeners_anon(t4, capture, t3, t1, t2);
+    node.get$on().get$touchStart().add$2(new $._addEventListeners_anon0(t4, capture, t3, t1, t2), capture);
   } else {
     t1.onStart_1 = $.mouseToTouchCallback(t1.onStart_1);
     t1.onMove_2 = $.mouseToTouchCallback(t1.onMove_2);
     t1.onEnd_3 = $.mouseToTouchCallback(t1.onEnd_3);
-    t1.removeListeners_4 = new $._addEventListeners_anon1(t1, t4, capture, t2);
-    node.get$on().get$mouseDown().add$2(new $._addEventListeners_anon2(t1, t4, capture, t2), capture);
+    t1.removeListeners_4 = new $._addEventListeners_anon1(t4, capture, t1, t2);
+    node.get$on().get$mouseDown().add$2(new $._addEventListeners_anon2(t4, capture, t1, t2), capture);
   }
+};
+
+$.mouseToTouchCallback = function(callback) {
+  return new $.mouseToTouchCallback_anon(callback);
 };
 
 $.FutureAlreadyCompleteException$ = function() {
@@ -11429,16 +11429,16 @@ $.HashMapImplementation__nextProbe = function(currentProbe, numberOfProbes, leng
   return (currentProbe + numberOfProbes & length$ - 1) >>> 0;
 };
 
+$._DOMWindowCrossFrameImpl$ = function(_window) {
+  return new $._DOMWindowCrossFrameImpl(_window);
+};
+
 $._DOMWindowCrossFrameImpl__createSafe = function(w) {
   var t1 = $.window();
   if (w == null ? t1 == null : w === t1)
     return w;
   else
     return $._DOMWindowCrossFrameImpl$(w);
-};
-
-$._DOMWindowCrossFrameImpl$ = function(_window) {
-  return new $._DOMWindowCrossFrameImpl(_window);
 };
 
 $.int_parse = function(source) {
@@ -11494,13 +11494,6 @@ $._ChildNodeListLazy$ = function(_this) {
   return new $._ChildNodeListLazy(_this);
 };
 
-$.TopBarView$ = function(_udjApp) {
-  var t1 = $.HashMapImplementation$();
-  t1 = new $.TopBarView(_udjApp, null, null, $.ListImplementation_List(null), null, null, null, 'top-bar', false, false, false, false, null, null, null, t1);
-  t1.TopBarView$1(_udjApp);
-  return t1;
-};
-
 $.SideBarView$ = function() {
   var t1 = $.HashMapImplementation$();
   t1 = new $.SideBarView($.ListImplementation_List(null), null, null, null, 'sidebar-box', false, false, false, false, null, null, null, t1);
@@ -11531,6 +11524,13 @@ $.Element_Element$html = function(html) {
 
 $.Element_Element$tag = function(tag) {
   return $._ElementFactoryProvider_createElement_tag(tag);
+};
+
+$.TopBarView$ = function(_udjApp) {
+  var t1 = $.HashMapImplementation$();
+  t1 = new $.TopBarView(_udjApp, null, null, $.ListImplementation_List(null), null, null, null, 'top-bar', false, false, false, false, null, null, null, t1);
+  t1.TopBarView$1(_udjApp);
+  return t1;
 };
 
 $.Scroller$ = function(scrollableElem, verticalEnabled, horizontalEnabled, momentumEnabled, lookupContentSizeDelegate, defaultDecelerationFactor, scrollTechnique, capture) {
@@ -11564,15 +11564,15 @@ $.ViewLayout$ = function(view) {
   return new $.ViewLayout(null, null, view, null, null, null, null);
 };
 
+$.ViewLayout_hasCustomLayout = function(view) {
+  return $.eq($.index(view.customStyle, 'display'), '-dart-grid');
+};
+
 $.ViewLayout_ViewLayout$fromView = function(view) {
   if ($.ViewLayout_hasCustomLayout(view) === true)
     return $.GridLayout$(view);
   else
     return $.ViewLayout$(view);
-};
-
-$.ViewLayout_hasCustomLayout = function(view) {
-  return $.eq($.index(view.customStyle, 'display'), '-dart-grid');
 };
 
 $._FileReaderEventsImpl$ = function(_ptr) {
@@ -11699,14 +11699,14 @@ $.GridTrackList$ = function(tracks, lineNames) {
   return new $.GridTrackList(tracks, lineNames);
 };
 
+$.TrackSizing$ = function(min, max) {
+  return new $.TrackSizing(min, max);
+};
+
 $.GridTemplate$ = function(rows) {
   var t1 = new $.GridTemplate($.HashMapImplementation$(), rows.length);
   t1.GridTemplate$1(rows);
   return t1;
-};
-
-$.TrackSizing$ = function(min, max) {
-  return new $.TrackSizing(min, max);
 };
 
 $.GridTrack$ = function(sizing) {
@@ -12050,7 +12050,7 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
       var ak = a[k];
       var comp = compare.call$2(ak, el2);
       if (typeof comp !== 'number')
-        return $._Sort__dualPivotQuicksort$bailout(2, a, left, right, compare, less, great, index1, index5, el2, pivots_are_equal, ak, comp, el4, k);
+        return $._Sort__dualPivotQuicksort$bailout(2, k, a, left, compare, right, less, great, index1, index5, el2, pivots_are_equal, ak, comp, el4);
       if (comp === 0)
         continue;
       if (comp < 0) {
@@ -12293,6 +12293,10 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
     $._Sort__doSort(a, less, great, compare);
 };
 
+$._TextTrackCueEventsImpl$ = function(_ptr) {
+  return new $._TextTrackCueEventsImpl(_ptr);
+};
+
 $._Sort_insertionSort_ = function(a, left, right, compare) {
   if (typeof a !== 'object' || a === null || (a.constructor !== Array || !!a.immutable$list) && !a.is$JavaScriptIndexingBehavior())
     return $._Sort_insertionSort_$bailout(1, a, left, right, compare);
@@ -12338,10 +12342,6 @@ $._Sort_insertionSort_ = function(a, left, right, compare) {
       throw $.ioore(j);
     a[j] = el;
   }
-};
-
-$._TextTrackCueEventsImpl$ = function(_ptr) {
-  return new $._TextTrackCueEventsImpl(_ptr);
 };
 
 $._DedicatedWorkerContextEventsImpl$ = function(_ptr) {
@@ -12452,15 +12452,6 @@ $._GridTrackParser$_internal = function(src) {
   return new $._GridTrackParser($.ListImplementation_List(null), $.HashMapImplementation$(), src, 0);
 };
 
-$._GridTrackParser_parse = function(str) {
-  if (str == null)
-    return;
-  var p = $._GridTrackParser$_internal(str);
-  var result = p._parseTrackList$0();
-  p._eatEnd$0();
-  return result;
-};
-
 $._RTCDataChannelEventsImpl$ = function(_ptr) {
   return new $._RTCDataChannelEventsImpl(_ptr);
 };
@@ -12470,6 +12461,15 @@ $._GridTrackParser_parseTrackSizing = function(str) {
     str = 'auto';
   var p = $._GridTrackParser$_internal(str);
   var result = p._parseTrackMinmax$0();
+  p._eatEnd$0();
+  return result;
+};
+
+$._GridTrackParser_parse = function(str) {
+  if (str == null)
+    return;
+  var p = $._GridTrackParser$_internal(str);
+  var result = p._parseTrackList$0();
   p._eatEnd$0();
   return result;
 };
@@ -12544,16 +12544,16 @@ $.TimeoutMomentum$ = function(_delegate, defaultDecelerationFactor) {
   return new $.TimeoutMomentum($.SingleDimensionPhysics$(), $.SingleDimensionPhysics$(), null, t1, null, false, _delegate, null, null, null, null, null, defaultDecelerationFactor);
 };
 
-$.Coordinate$fromClient = function(input) {
-  return new $.Coordinate(input.get$clientX(), input.get$clientY());
-};
-
 $.Coordinate$ = function(x, y) {
   return new $.Coordinate(x, y);
 };
 
 $.ScrollWatcher$ = function(scroller) {
   return new $.ScrollWatcher(scroller, $.ListImplementation_List(null), null);
+};
+
+$.Coordinate$fromClient = function(input) {
+  return new $.Coordinate(input.get$clientX(), input.get$clientY());
 };
 
 $.Device_userAgent = function() {
@@ -12707,12 +12707,26 @@ $._LocalWindowEventsImpl$ = function(_ptr) {
   return new $._LocalWindowEventsImpl(_ptr);
 };
 
-$.ClickBuster__onTouchStart = function(e) {
-  var coord = $.Coordinate$fromClient($.index(e.get$touches(), 0));
-  $.add$1($.ClickBuster__coordinates, coord.x);
-  $.add$1($.ClickBuster__coordinates, coord.y);
-  $.window().setTimeout$2(new $.ClickBuster__onTouchStart_anon(coord), 2500);
-  $.ClickBuster__toggleTapHighlights(true);
+$.ClickBuster__onClick = function(e) {
+  if ($.gtB($.sub($.Date_Date$now().get$millisecondsSinceEpoch(), $.ClickBuster__lastPreventedTime), 2500))
+    return;
+  var coord = $.Coordinate$fromClient(e);
+  var entry = $.ClickBuster__coordinates.firstEntry$0();
+  for (; !(entry == null);) {
+    if ($.ClickBuster__hitTest(entry.get$element(), entry.nextEntry$0().get$element(), coord.x, coord.y)) {
+      entry.nextEntry$0().remove$0();
+      entry.remove$0();
+      return;
+    } else
+      var entry0 = entry.nextEntry$0().nextEntry$0();
+    entry = entry0;
+  }
+  e.stopPropagation$0();
+  e.preventDefault$0();
+};
+
+$.ClickBuster__hitTest = function(x, y, eventX, eventY) {
+  return $.ltB($.abs($.sub(eventX, x)), 25) && $.ltB($.abs($.sub(eventY, y)), 25);
 };
 
 $.ClickBuster__removeCoordinate = function(x, y) {
@@ -12760,26 +12774,12 @@ $.ClickBuster_preventGhostClick = function(x, y) {
   }
 };
 
-$.ClickBuster__onClick = function(e) {
-  if ($.gtB($.sub($.Date_Date$now().get$millisecondsSinceEpoch(), $.ClickBuster__lastPreventedTime), 2500))
-    return;
-  var coord = $.Coordinate$fromClient(e);
-  var entry = $.ClickBuster__coordinates.firstEntry$0();
-  for (; !(entry == null);) {
-    if ($.ClickBuster__hitTest(entry.get$element(), entry.nextEntry$0().get$element(), coord.x, coord.y)) {
-      entry.nextEntry$0().remove$0();
-      entry.remove$0();
-      return;
-    } else
-      var entry0 = entry.nextEntry$0().nextEntry$0();
-    entry = entry0;
-  }
-  e.stopPropagation$0();
-  e.preventDefault$0();
-};
-
-$.ClickBuster__hitTest = function(x, y, eventX, eventY) {
-  return $.ltB($.abs($.sub(eventX, x)), 25) && $.ltB($.abs($.sub(eventY, y)), 25);
+$.ClickBuster__onTouchStart = function(e) {
+  var coord = $.Coordinate$fromClient($.index(e.get$touches(), 0));
+  $.add$1($.ClickBuster__coordinates, coord.x);
+  $.add$1($.ClickBuster__coordinates, coord.y);
+  $.window().setTimeout$2(new $.ClickBuster__onTouchStart_anon(coord), 2500);
+  $.ClickBuster__toggleTapHighlights(true);
 };
 
 $.EventUtil_observe = function(element, listenerList, handler, capture, removeHandlerOnFocus) {
@@ -12902,14 +12902,14 @@ $._LocationCrossFrameImpl__createSafe = function(location$) {
     return $._LocationCrossFrameImpl$(location$);
 };
 
-$.Session$ = function(ticket_hash, user_id, username) {
-  return new $.Session(ticket_hash, user_id, username);
-};
-
 $.Session$fromJson = function(data) {
   var t1 = new $.Session(null, null, null);
   t1.Session$fromJson$1(data);
   return t1;
+};
+
+$.Session$ = function(ticket_hash, user_id, username) {
+  return new $.Session(ticket_hash, user_id, username);
 };
 
 $._BodyElementEventsImpl$ = function(_ptr) {
@@ -12922,16 +12922,6 @@ $.JSON_parse = function(json) {
 
 $.JSON_stringify = function(object) {
   return $._JsonStringifier_stringify(object);
-};
-
-$._JsonStringifier$ = function(sb) {
-  return new $._JsonStringifier(sb, []);
-};
-
-$._JsonStringifier_stringify = function(object) {
-  var output = $.StringBuffer_StringBuffer('');
-  $._JsonStringifier$(output).stringifyValue$1(object);
-  return $.toString(output);
 };
 
 $._JsonStringifier_escape = function(sb, s) {
@@ -13016,6 +13006,16 @@ $._JsonStringifier_escape = function(sb, s) {
   $.add$1(sb, needsEscape ? $.StringImplementation_String$fromCharCodes(charCodes) : s);
 };
 
+$._JsonStringifier$ = function(sb) {
+  return new $._JsonStringifier(sb, []);
+};
+
+$._JsonStringifier_stringify = function(object) {
+  var output = $.StringBuffer_StringBuffer('');
+  $._JsonStringifier$(output).stringifyValue$1(object);
+  return $.toString(output);
+};
+
 $.JsonUnsupportedObjectError$ = function(unsupportedObject) {
   return new $.JsonUnsupportedObjectError(unsupportedObject, null);
 };
@@ -13032,18 +13032,6 @@ $._JsonParser$ = function(json) {
   var t1 = new $._JsonParser(json, $.get$length(json), 0);
   t1._JsonParser$1(json);
   return t1;
-};
-
-$.contains$1$bailout = function(state0, receiver, other) {
-  if (typeof receiver === 'string')
-    return $.contains$2(receiver, other, 0);
-  else if ($.isJsArray(receiver)) {
-    for (var i = 0; $.ltB(i, $.get$length(receiver)); ++i)
-      if ($.eqB(other, $.index(receiver, i)))
-        return true;
-    return false;
-  }
-  return receiver.contains$1(other);
 };
 
 $.Arrays_copy$bailout = function(state0, src, srcStart, dst, dstStart, count) {
@@ -13182,6 +13170,21 @@ $._addToEncoding$bailout = function(state0, offset, bytes, value, buffer) {
   return value;
 };
 
+$._Sort_insertionSort_$bailout = function(state0, a, left, right, compare) {
+  for (var i = left + 1; $.leB(i, right); ++i) {
+    var el = $.index(a, i);
+    var j = i;
+    while (true) {
+      if (!(j > left && $.gtB(compare.call$2($.index(a, j - 1), el), 0)))
+        break;
+      var j0 = j - 1;
+      $.indexSet(a, j, $.index(a, j0));
+      j = j0;
+    }
+    $.indexSet(a, j, el);
+  }
+};
+
 $._Sort__dualPivotQuicksort$bailout = function(state0, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11, env12, env13) {
   switch (state0) {
     case 1:
@@ -13191,20 +13194,20 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, env0, env1, env2, env3, e
       var compare = env3;
       break;
     case 2:
-      a = env0;
-      left = env1;
-      right = env2;
+      k = env0;
+      a = env1;
+      left = env2;
       compare = env3;
-      less = env4;
-      great = env5;
-      index1 = env6;
-      index5 = env7;
-      el2 = env8;
-      pivots_are_equal = env9;
-      ak = env10;
-      comp = env11;
-      el4 = env12;
-      k = env13;
+      right = env4;
+      less = env5;
+      great = env6;
+      index1 = env7;
+      index5 = env8;
+      el2 = env9;
+      pivots_are_equal = env10;
+      ak = env11;
+      comp = env12;
+      el4 = env13;
       break;
   }
   switch (state0) {
@@ -13419,21 +13422,6 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, env0, env1, env2, env3, e
   }
 };
 
-$._Sort_insertionSort_$bailout = function(state0, a, left, right, compare) {
-  for (var i = left + 1; $.leB(i, right); ++i) {
-    var el = $.index(a, i);
-    var j = i;
-    while (true) {
-      if (!(j > left && $.gtB(compare.call$2($.index(a, j - 1), el), 0)))
-        break;
-      var j0 = j - 1;
-      $.indexSet(a, j, $.index(a, j0));
-      j = j0;
-    }
-    $.indexSet(a, j, el);
-  }
-};
-
 $.StringImplementation__toJsStringArray$bailout = function(state0, strings) {
   $.checkNull(strings);
   var length$ = $.get$length(strings);
@@ -13482,6 +13470,18 @@ $._Lists_getRange$bailout = function(state0, a, start, length$, accumulator) {
   for (var i = start; $.ltB(i, end); i = $.add(i, 1))
     accumulator.push($.index(a, i));
   return accumulator;
+};
+
+$.contains$1$bailout = function(state0, receiver, other) {
+  if (typeof receiver === 'string')
+    return $.contains$2(receiver, other, 0);
+  else if ($.isJsArray(receiver)) {
+    for (var i = 0; $.ltB(i, $.get$length(receiver)); ++i)
+      if ($.eqB(other, $.index(receiver, i)))
+        return true;
+    return false;
+  }
+  return receiver.contains$1(other);
 };
 
 $.typeNameInChrome.call$1 = $.typeNameInChrome;
@@ -13559,8 +13559,8 @@ $.EventBatch_current = null;
 $.EventBatch_nextUid = null;
 $.Primitives_hashCodeSeed = 0;
 $.Primitives_DOLLAR_CHAR_VALUE = 36;
-$._TimerFactory__factory = null;
 $._pendingRequests = null;
+$._TimerFactory__factory = null;
 $._pendingMeasurementFrameCallbacks = null;
 $._measurementScheduler = null;
 $.UNICODE_VALID_RANGE_MAX = 1114111;
@@ -14984,7 +14984,7 @@ $.$defineNativeClass('Element', {"": ["hidden=", "id?", "innerHTML!", "clientHei
   return this.getComputedStyle$1('');
 },
  getComputedStyle$1: function(pseudoElement) {
-  return $._createMeasurementFuture(new $._ElementImpl_getComputedStyle_anon(pseudoElement, this), $.Completer_Completer());
+  return $._createMeasurementFuture(new $._ElementImpl_getComputedStyle_anon(this, pseudoElement), $.Completer_Completer());
 },
  get$on: function() {
   if (Object.getPrototypeOf(this).hasOwnProperty('get$on')) {
