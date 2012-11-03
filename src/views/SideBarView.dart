@@ -3,12 +3,16 @@ part of udjlib;
 class SideBarView extends CompositeView {
   final UdjApp _udjApp;
   
+  final SideBarState _state;
+  
   /// Information about the player a user is currently in.
   View _playerInfo;
   
+  QueueView _queueView;
+  
   // constructors
   
-  SideBarView(this._udjApp):super('sidebar-box'){
+  SideBarView(this._udjApp,this._state):super('sidebar-box'){
     _playerInfo = new View.html('''
       <div class="player-box">
         <div class="player-name"></div>
@@ -18,8 +22,6 @@ class SideBarView extends CompositeView {
     ''');
     addChild(_playerInfo);
     
-    // player info watching
-    watch(_udjApp.state.currentPlayer, _changeCurrentPlayer);
     
     View temp2 = new View.html('''
       <div class="now-playing-box">
@@ -30,15 +32,14 @@ class SideBarView extends CompositeView {
     ''');
     addChild(temp2);
     
-    View temp3 = new View.html('''
-      <div class="queue-box">
-        <div class="song-box">
-          <div class="song-box-name">Friday</div>
-          <div class="song-box-artist">Rebecca Black</div><div class="song-box-album">Friday</div>
-        </div>
-      </div>
-    ''');
-    addChild(temp3);
+    _queueView = new QueueView(_udjApp,_state);
+    addChild(_queueView);
+  }
+  
+  void afterRender(Element node){
+    // player info watching
+    watch(_udjApp.state.currentPlayer, _changeCurrentPlayer);
+    watch(_udjApp.state.queue,(e) => _queueView.rerender());
   }
   
   // watchers
@@ -75,4 +76,25 @@ class SideBarView extends CompositeView {
     }
   }
   
+}
+
+class QueueView extends CompositeView{
+  final UdjApp _udjApp;
+  
+  final SideBarState _state;
+  
+  QueueView(this._udjApp,this._state):super('queue-box'){
+    rerender();
+  }
+  
+  void rerender(){
+    removeAllChildren();
+    if(_udjApp.state.queue.value != null){
+      for(var s in _udjApp.state.queue.value){
+        View song = new SongView(_udjApp,s);
+        addChild(song);
+      }
+    }
+    
+  }
 }

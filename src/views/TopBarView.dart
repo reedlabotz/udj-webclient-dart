@@ -6,6 +6,8 @@ class TopBarView extends CompositeView {
   /// reference to the main app
   final UdjApp _udjApp;
   
+  final TopBarState _state;
+  
   /// The menue at the top to choose library section
   SliderMenu _librarySelectView;
   
@@ -15,7 +17,7 @@ class TopBarView extends CompositeView {
   /**
    * Main constructor initalizes child views
    */
-  TopBarView(this._udjApp):super('top-bar'){
+  TopBarView(this._udjApp,this._state):super('top-bar'){
     // Create the logo holder
     var logoView = new View.html('''
       <div class="logo-holder"><img src="assets/img/logo.png"></div>

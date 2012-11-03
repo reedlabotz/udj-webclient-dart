@@ -64,14 +64,20 @@ class UdjService {
         });
   }
   
+  void pollPlayer(String playerId, Function callback){
+    authGetRequest('/players/${playerId}/active_playlist',{},(HttpRequest request){
+      callback({'success':true,'data':JSON.parse(request.responseText)});
+    });
+  }
+  
   void voteSong(String action,String playerId, String songId, Function callback){
-    authPutRequest('/players/${playerId}/active_playlist/${songId}/${action}',{},(HttpRequest response){
+    authPutRequest('/players/${playerId}/active_playlist/songs/${songId}/${action}',{},(HttpRequest request){
       
     });
   }
   
   void addSong(String playerId, String songId, Function callback){
-    authPutRequest('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest response){
+    authPutRequest('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest request){
       
     });
   }

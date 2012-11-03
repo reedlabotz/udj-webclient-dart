@@ -1,6 +1,7 @@
 library udjlib;
 import 'dart:html';
 import 'dart:json';
+import 'dart:isolate';
 import 'lib/framework.dart';
 import 'lib/ui/base/base.dart';
 import 'lib/ui/view/view.dart';
@@ -10,11 +11,12 @@ import 'lib/ui/util/utilslib.dart';
 import 'lib/requestHelper.dart';
 
 part 'UdjConstants.dart';
-part 'OfflineSyncService.dart';
+part 'services/OfflineSyncService.dart';
+part 'services/PollService.dart';
 
 // app level 
 part 'UdjApp.dart';
-part 'UdjService.dart';
+part 'services/UdjService.dart';
 part 'UdjStructs.dart';
 
 // views
@@ -31,3 +33,5 @@ part 'view_models/UdjState.dart';
 part 'view_models/LoginState.dart';
 part 'view_models/PlayerSelectState.dart';
 part 'view_models/LibraryState.dart';
+part 'view_models/TopBarState.dart';
+part 'view_models/SideBarState.dart';

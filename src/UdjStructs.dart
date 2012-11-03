@@ -81,11 +81,13 @@ class QueueSong extends Song{
   List<User> upvoters;
   List<User> downvoters;
   
-  QueueSong.fromJson(Map data):super.fromJson(data){
+  QueueSong.fromJson(Map data):super.fromJson(data['song']){
+    upvoters = new List<User>();
     for(var u in data['upvoters']){
       upvoters.add(new User.fromJson(u));
     }
     
+    downvoters = new List<User>();
     for(var d in data['downvoters']){
       downvoters.add(new User.fromJson(d));
     }

@@ -8,8 +8,10 @@ class MainView extends CompositeView{
   
   /// The top bar which holds the library view select and search.
   TopBarView _topBar;
+  TopBarState _topBarState;
   
   /// The side bar which holds current player info box, now playing box, and queue
+  SideBarState _sideBarState;
   SideBarView _sideBar;
   
   /// The library view to hold the library
@@ -29,7 +31,8 @@ class MainView extends CompositeView{
    */
   MainView(this._udjApp):super('all-hold'){
     // Create the top bar
-    _topBar = new TopBarView(_udjApp);
+    _topBarState = new TopBarState(_udjApp);
+    _topBar = new TopBarView(_udjApp,_topBarState);
     addChild(_topBar);
     
     // Create the login view
@@ -43,7 +46,8 @@ class MainView extends CompositeView{
     addChild(_playerSelect);
     
     // Create the side bar view
-    _sideBar = new SideBarView(this._udjApp);
+    _sideBarState = new SideBarState(_udjApp);
+    _sideBar = new SideBarView(_udjApp,_sideBarState);
     addChild(_sideBar);
     
     // Create the library view

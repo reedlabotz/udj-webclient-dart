@@ -20,7 +20,10 @@ class UdjApp extends App{
   MainView _mainView;
   
   /// Service that keeps ofline in sync
-  OfflineSyncService offlineSync;
+  OfflineSyncService _offlineSync;
+  
+  /// Service to poll the server for changes to queue and now playing
+  PollService _pollService;
   
   UdjApp():super(), 
     onLoadFired = false,
@@ -28,7 +31,8 @@ class UdjApp extends App{
  {
     state = new UdjState(this);
     service = new UdjService(_loginNeeded);
-    offlineSync = new OfflineSyncService(this,service);
+    _offlineSync = new OfflineSyncService(this,service);
+    _pollService = new PollService(this);
     setupApp();
   }
   
@@ -63,7 +67,24 @@ class UdjApp extends App{
   
   void _showApp() {
     _mainView.addToDocument(document.body);
+    _pollService.start();
     eraseSplashScreen();
+  }
+  
+  void pollPlayer(Timer t){
+    if(state.currentPlayer.value != null){
+      service.pollPlayer(state.currentPlayer.value.id,(Map data){
+        if(data['success']){
+          state.playerState.value = data['data']['state'];
+          state.nowPlaying.value = new QueueSong.fromJson(data['data']['current_song']);
+          List queue = new List<QueueSong>();
+          for(var s in data['data']['active_playlist']){
+            queue.add(new QueueSong.fromJson(s));
+          }
+          state.queue.value = queue;
+        }
+      });
+    }
   }
   
   /**
