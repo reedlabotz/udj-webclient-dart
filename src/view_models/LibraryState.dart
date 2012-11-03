@@ -15,6 +15,8 @@ class LibraryState extends UIState {
     if(_udjApp.state.currentPlayer.value != null){
       if(_udjApp.state.libraryView.value == "Random"){
         _udjApp.service.getRandomLibrary(_udjApp.state.currentPlayer.value.id, _processLibraryResults); 
+      }else if(_udjApp.state.libraryView.value == "Recent"){
+        _udjApp.service.getRecentLibrary(_udjApp.state.currentPlayer.value.id, _processLibraryResults);
       }
     }
   }

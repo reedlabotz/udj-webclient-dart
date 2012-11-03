@@ -39,10 +39,19 @@ class UdjService {
     request.send(data);
   }
   
-  void getRandomLibrary(String playerId,Function callback){
+  void getRandomLibrary(String playerId, Function callback){
     auth_get_request('/players/${playerId}/available_music/random_songs', 
         {'max_randoms':'50'}, (HttpRequest request){
           List data = JSON.parse(request.responseText);
+          callback({'success':true,'data':data});
+        });
+  }
+  
+  void getRecentLibrary(String playerId, Function callback){
+    auth_get_request('/players/${playerId}/recently_played',
+        {'max_randoms':'50'}, (HttpRequest request){
+          List data = JSON.parse(request.responseText);
+          data = data.map((i) => i['song']);
           callback({'success':true,'data':data});
         });
   }
