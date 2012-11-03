@@ -110,6 +110,16 @@ class UdjService {
     });
   }
   
+  void setPlayerState(String playerID, String playerState, Function callback) {
+    authPostRequest("/players/$playerID/state", {'state': playerState}, (HttpRequest request) {
+      if (request.status == 200) {
+        callback( {'success': true} );
+      }
+      //TODO: else handle errors
+
+    });
+  }
+  
   /**
    * 
    */
