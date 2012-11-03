@@ -46,9 +46,8 @@ class PlayerSelectState extends UIState{
    * Attempt to join a player.
    */
   void joinPlayer(String playerID) {
-    _udjApp.service.auth_put_request('/players/$playerID/users/user', {}, (HttpRequest req) {
-      // 201 is success, 400 is you own it
-      if (req.status == 201 || req.status == 400) {
+    _udjApp.service.joinPlayer(playerID, (Map status) {
+      if (status['success'] == true) {
         for (Player p in players.value) {
           if (p.id == playerID) {
             _udjApp.state.currentPlayer.value = p;
@@ -58,15 +57,16 @@ class PlayerSelectState extends UIState{
       } else {
         // TODO: test errors - currently the server responds correctly but the browser gives an error:
         // Refused to get unsafe header "X-Udj-Forbidden-Reason"
+        var error = status['error'];
         
-        if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
+        if (error == Errors.PLAYER_FULL) {
           errorMessage.value = "The server is full.";
           
-        } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
+        } else if (error == Errors.PLAYER_BANNED) {
           errorMessage.value = "You have been banned from this server.";
           // TODO: reload the players list from the server- filter should be applied
           
-        } else {
+        } else { // error == Errors.UNKOWN
           errorMessage.value = "There was an error joining the server.";
         
         }

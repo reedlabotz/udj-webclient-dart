@@ -60,6 +60,38 @@ class UdjService {
   }
   
   /**
+   * 
+   */
+  void joinPlayer(String playerID, Function callback){
+    auth_put_request('/players/$playerID/users/user', {}, (HttpRequest req) {
+      // 201 is success, 400 is you own it
+     if (req.status == 201 || req.status == 400) {
+        callback( {'success': true} );
+        
+      } else {
+        String error = 'unkown';
+        if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
+          error = Errors.PLAYER_FULL;
+          
+        } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
+          error = Errors.PLAYER_BANNED;
+          
+        } else {
+          error = Errors.UNKOWN;
+        
+        }
+        
+        callback({
+          'success': false,
+          'error': error
+        });
+        
+      }
+
+    });
+  }
+  
+  /**
    * A GET request with auth token.
    */
   void auth_get_request(String url,Map data,Function callback){
