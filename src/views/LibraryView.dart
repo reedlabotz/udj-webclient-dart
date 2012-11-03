@@ -50,7 +50,7 @@ class LibraryListView extends CompositeView{
   
   final LibraryState _state;
   
-  LibraryListView(this._udjApp,this._state):super('library-box-results'){
+  LibraryListView(this._udjApp,this._state):super('library-box-results',true,true,true,true){
     rerender();
   }
   

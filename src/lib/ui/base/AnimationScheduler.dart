@@ -99,7 +99,7 @@ class AnimationScheduler {
         try {
           // TODO(jacobr): passing in document should not be required.
           _intervalId = window.webkitRequestAnimationFrame(
-              (int ignored) { _step(); });
+              (double ignored) { _step(); });
               // TODO(jacobr) fix this odd type error.
         } catch (e) {
           _webkitAnimationFrameMaybeAvailable = false;

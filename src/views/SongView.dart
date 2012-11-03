@@ -14,7 +14,7 @@ class SongView extends CompositeView{
         <div class="song-vote" data-song-id="${song.id}">
           <div class="song-vote-up"><i class="icon-chevron-up"></i></div>
           <div class="song-vote-count">
-            <span class="song-vote-count-up">+${song.upvoters.length}</span>/<span class="song-vote-count-down">${song.downvoters.length}</span>
+            <span class="song-vote-count-up">+${song.upvoters.length}</span>/<span class="song-vote-count-down">-${song.downvoters.length}</span>
           </div>
           <div class="song-vote-down"><i class="icon-chevron-down"></i></div>
         </div>
@@ -45,6 +45,7 @@ class SongView extends CompositeView{
     ''');
     
     addChild(info);
+    addChild(new View.html('<div class="clearfix"></div>'));
   }
   
   void afterRender(Element node){
