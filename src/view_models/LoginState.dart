@@ -8,9 +8,13 @@ class LoginState extends UIState{
   
   final UdjApp _udjApp;
   
+  // constructors
+  
   LoginState(this._udjApp):
     super(),
     errorMessage = new ObservableValue<String>(null);
+  
+  // methods
   
   void login(String username, String password){
     print("login");

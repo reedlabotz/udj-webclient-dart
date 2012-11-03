@@ -7,13 +7,15 @@ class PlayerSelectState extends UIState{
   
   final ObservableValue<bool> loading;
   
+  // constructors
+  
   PlayerSelectState(this._udjApp):super(),
     loading = new ObservableValue<bool>(false),
-    players = new ObservableList<Player>(null){
+    players = new ObservableList<Player>(null);
     
-  }
+  // getters / setters
     
-  void getPlayers(){
+  void getPlayers(e){
     window.navigator.geolocation.getCurrentPosition(
       (Geoposition position){
         _udjApp.service.auth_get_request('/players/${position.coords.latitude}/${position.coords.longitude}',{},
