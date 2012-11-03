@@ -121,6 +121,10 @@ body{
 
 /* player select view */
 .player-select-list {
+  .player {
+    padding-bottom: 3px;
+  }
+  
   .player-name {
     font-weight: bold;
     float: left;
@@ -137,6 +141,16 @@ body{
   
   .player-attrs {
     float: right;
+  }
+  
+  .player-attr {
+    min-width: 25px;
+    padding-right: 5px;
+    display: inline-block;
+    
+    i {
+      padding-right: 5px;
+    }
   }
   
   .player-join {

@@ -5490,6 +5490,8 @@ body {
 
 /***** new styles ******/
 /* player select view */
+.player-select-list .player {
+  padding-bottom: 3px; }
 .player-select-list .player-name {
   font-weight: bold;
   float: left; }
@@ -5500,6 +5502,12 @@ body {
     padding-left: 3px; }
 .player-select-list .player-attrs {
   float: right; }
+.player-select-list .player-attr {
+  min-width: 25px;
+  padding-right: 5px;
+  display: inline-block; }
+  .player-select-list .player-attr i {
+    padding-right: 5px; }
 .player-select-list .player-join {
   float: right; }
 

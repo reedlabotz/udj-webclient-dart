@@ -180,10 +180,10 @@ class PlayerSelectListView extends CompositeView {
   }
   
   View _makePlayerSelector(Player p) {
-    String password = "";
+    String password = '<span class="player-attr"></span>';
     if (p.hasPassword) {
       password = '''
-      <span class="player-protected"><i class="icon-lock"></i></span>
+      <span class="player-attr"><i class="icon-lock"></i></span>
       ''';
     }
     
@@ -194,8 +194,8 @@ class PlayerSelectListView extends CompositeView {
         <div class="player-owner dashed">${p.owner.username}</div>
         <button class="player-join" data-player-id="${p.id}">Join</button>
         <div class="player-attrs">
-          <span class="player-curUsers">${p.numActiveUsers}</span>
-          <span class="player-maxUsers">${p.sizeLimit}</span>
+          <span class="player-attr"><i class="icon-user"></i>${p.numActiveUsers}</span>
+          <span class="player-attr"><i class="icon-music"></i>${p.sizeLimit}</span>
           $password
         </div>
       </div>
