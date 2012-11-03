@@ -70,6 +70,7 @@ class LoginView extends CompositeView{
   void _showErrorMessage(e){
     InputElement passwordInput = _loginForm.node.query("#password");
     passwordInput.value = "";
+    // TODO: maybe don't erase password? Select all? Ex. Apple Login
     if(_state.errorMessage.value != null){
       _errorMessage.node.text = _state.errorMessage.value;
       _errorMessage.hidden = false;

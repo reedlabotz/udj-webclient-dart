@@ -6,6 +6,7 @@ class PlayerSelectView extends CompositeView {
   
   View _playerSelectHeader;
   PlayerSelectListView _playersList;
+  View _errorMessage;
   
   // constructors
   
@@ -26,6 +27,12 @@ class PlayerSelectView extends CompositeView {
     ''');
     addChild(_playerSelectHeader);
     
+    _errorMessage = new View.html('''
+    <div class="alert alert-error"></div>
+    ''');
+    _errorMessage.hidden = true;
+    addChild(_errorMessage);
+    
     _playersList = new PlayerSelectListView(_udjApp, _state);
     addChild(_playersList);
     
@@ -33,20 +40,17 @@ class PlayerSelectView extends CompositeView {
     
     watch(_state.hidden, _displayPlayers);
     watch(_state.players, _updatePlayers);
+    watch(_state.errorMessage, _displayErrorMsg);
   }
   
   // drawing
   
-  /**
-   * Add listeners after render is done.
-   */
-  void afterRender(Element node){
-  }
+
 
   // watchers
   
   /**
-   * 
+   * Hide or show the player.
    */
   void _displayPlayers(e) {
     if (_state.hidden.value == true) { // hide
@@ -62,6 +66,20 @@ class PlayerSelectView extends CompositeView {
    */
   void _updatePlayers(e) {
     _playersList.rerender();
+  }
+  
+  /**
+   * Hide the error message, or update the error text and show it.
+   */
+  void _displayErrorMsg(e) {
+    if (_state.errorMessage.value == null) {
+      _errorMessage.hidden = true;
+      
+    } else {
+      _errorMessage.node.text = _state.errorMessage.value;
+      _errorMessage.hidden = false;
+      
+    }
   }
 
 }
@@ -104,6 +122,15 @@ class PlayerSelectListView extends CompositeView {
     
   }
   
+  /**
+   * Add listeners after render is done.
+   */
+  void afterRender(Element node){
+    // TODO: move the button onClick event registration here
+  }
+  
+  // events
+  
   void _joinPlayer(Event e) {
     // find the right element
     Element target = e.target;
@@ -122,7 +149,19 @@ class PlayerSelectListView extends CompositeView {
         }
         
       } else {
-        // TODO: show an error
+        // TODO: test errors
+        
+        if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
+          _state.errorMessage.value = "The server is full.";
+          
+        } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
+          _state.errorMessage.value = "You have been banned from this server.";
+          // TODO: reload the players list from the server- filter should be applied
+          
+        } else {
+          _state.errorMessage.value = "There was an error joining the server.";
+        
+        }
       }
     });
   }
