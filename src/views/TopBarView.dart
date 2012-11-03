@@ -54,7 +54,7 @@ class TopBarView extends CompositeView {
   void _searchFormSubmitted(Event e){
     e.preventDefault();
     InputElement searchBox = _searchBoxView.node.query("#search-input");
-    _udjApp.state.searchTerm.value = searchBox.value;
+    _udjApp.state.searchQuery.value = searchBox.value;
   }
   
   /**

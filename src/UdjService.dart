@@ -56,6 +56,14 @@ class UdjService {
         });
   }
   
+  void getSearchLibrary(String playerId, String query, Function callback){
+    auth_get_request('/players/${playerId}/available_music',
+        {'max_randoms':'50','query':query}, (HttpRequest request){
+          List data = JSON.parse(request.responseText);
+          callback({'success':true,'data':data});
+        });
+  }
+  
   void voteSong(String action,String playerId, String songId, Function callback){
     auth_put_request('/players/${playerId}/active_playlist/${songId}/${action}',{},(HttpRequest response){
       

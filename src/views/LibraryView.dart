@@ -16,6 +16,7 @@ class LibraryView extends CompositeView {
   void afterRender(Element node){
     watch(_udjApp.state.libraryView,_setLibraryView);
     watch(_udjApp.state.currentPlayer,_resetLibraryView);
+    watch(_udjApp.state.searchQuery,_setSearchView);
     watch(_state.results,_updateResults);
     super.afterRender(node);
   }
@@ -31,6 +32,16 @@ class LibraryView extends CompositeView {
   
   void _setLibraryView(e){
     _state.setLibraryView();
+  }
+  
+  void _setSearchView(e){
+    if(_udjApp.state.searchQuery.value != null && _udjApp.state.searchQuery.value != ""){
+      // set to null so that a new search will still trigger the change of view event.
+      _udjApp.state.libraryView.value = null;
+      _udjApp.state.libraryView.value = "Search";
+    }else{
+      _udjApp.state.libraryView.value = Constants.DEFAULT_LIBRARY_VIEW;
+    }
   }
 }
 
