@@ -7,15 +7,14 @@ class PlayerSelectView extends CompositeView {
   View _playerSelectHeader;
   PlayerSelectListView _playersList;
   View _errorMessage;
+  View _search;
   
   // constructors
   
   /**
    * The constructor to build the player selector.
    */
-  PlayerSelectView(this._udjApp, this._state):super('player-select'){
-    addClass('container');
-    
+  PlayerSelectView(this._udjApp, this._state):super('player-select'){    
     // create player select box
     _playerSelectHeader = new View.html('''
         <div class="row">
@@ -26,6 +25,18 @@ class PlayerSelectView extends CompositeView {
         </div>
     ''');
     addChild(_playerSelectHeader);
+    
+    _search = new View.html('''
+    <form id="player-select-search" class="player-select-search">
+      <div class="input-append">
+        <input type="text" id="player-select-search-input" class="search-query span2" placeholder="Search">
+        <button type="submit" class="btn">
+          <i class="icon-search"></i>
+        </button>
+      </div>
+    </form>
+    ''');
+    addChild(_search);
     
     _errorMessage = new View.html('''
     <div class="alert alert-error"></div>
@@ -41,6 +52,22 @@ class PlayerSelectView extends CompositeView {
     watch(_state.hidden, _displayPlayers);
     watch(_state.players, _updatePlayers);
     watch(_state.errorMessage, _displayErrorMsg);
+  }
+  
+  /**
+   * Add listeners after render is done.
+   */
+  void afterRender(Element node){
+    addClass('container');
+    _search.node.on.submit.add(_searchFormSubmit);
+  }
+  
+  // events
+  
+  void _searchFormSubmit(Event e) {
+    e.preventDefault();
+    InputElement searchBox = _search.node.query("#player-select-search-input");
+    _state.searchPlayer(searchBox.value);
   }
 
   // watchers
@@ -86,7 +113,7 @@ class PlayerSelectListView extends CompositeView {
   
   // constructors
   
-  PlayerSelectListView(this._udjApp, this._state):super('player-select-box'){
+  PlayerSelectListView(this._udjApp, this._state):super('player-select-list'){
     rerender();
   }
   
@@ -97,18 +124,7 @@ class PlayerSelectListView extends CompositeView {
     
     if (_state.players.value != null) {
       for (Player p in _state.players.value) {
-        View player = new View.html('''
-        <div class="player">
-          <div class="player-name">${p.name}</div>
-          <div class="player-owner">${p.owner.username}</div>
-          <div class="player-attrs">
-            <span class="player-name">${p.numActiveUsers}</span>
-            <span class="player-curUsers">${p.numActiveUsers}</span>
-            <span class="player-maxUsers">${p.sizeLimit}</span>
-          </div>
-          <button class="player-join" data-player-id="${p.id}">Join</button>
-        </div>
-        ''');
+        View player = _makePlayerSelector(p);
         addChild(player);
         
         View button = new View.fromNode( player.node.query(".player-join") );
@@ -116,6 +132,32 @@ class PlayerSelectListView extends CompositeView {
       } 
     }
     
+  }
+  
+  View _makePlayerSelector(Player p) {
+    String password = "";
+    if (p.hasPassword) {
+      password = '''
+      <span class="player-protected"><i class="icon-lock"></i></span>
+      ''';
+    }
+    
+    View player = new View.html('''
+    <div class="row">
+      <div class="player span6 offset3">
+        <div class="player-name">${p.name}</div>
+        <div class="player-owner dashed">${p.owner.username}</div>
+        <button class="player-join" data-player-id="${p.id}">Join</button>
+        <div class="player-attrs">
+          <span class="player-curUsers">${p.numActiveUsers}</span>
+          <span class="player-maxUsers">${p.sizeLimit}</span>
+          $password
+        </div>
+      </div>
+    </div>
+    ''');
+    
+    return player;
   }
   
   /**

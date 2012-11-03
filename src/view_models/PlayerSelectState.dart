@@ -29,18 +29,16 @@ class PlayerSelectState extends UIState{
         _udjApp.service.authGetRequest('/players/${position.coords.latitude}/${position.coords.longitude}',{},
           (HttpRequest request){
             List playerData = JSON.parse(request.responseText);
-            List<Player> playersTmp = new List<Player>();
-            for (var data in playerData) {
-              playersTmp.add(new Player.fromJson(data));
-            }
+            players.value = _buildPlayers(playerData);
             
-            players.value = playersTmp;
         });
       }, 
       (e){
         print("error getting position");
       });
   }
+  
+  // methods
   
   /**
    * Attempt to join a player.
@@ -72,6 +70,26 @@ class PlayerSelectState extends UIState{
         }
       }
     });
+  }
+  
+  void searchPlayer(String search) {
+    _udjApp.service.getSearchPlayer(search, _searchPlayerComplete);
+  }
+  
+  void _searchPlayerComplete(Map status) {
+    if (status['success']) {
+      players.value = _buildPlayers(status['players']);
+    
+    }
+  }
+  
+  List<Player> _buildPlayers(List playersData) {
+    List<Player> players = new List<Player>();
+    for (var data in playersData) {
+      players.add(new Player.fromJson(data));
+    }
+    
+    return players;
   }
   
 }

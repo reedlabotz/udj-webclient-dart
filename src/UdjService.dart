@@ -76,6 +76,15 @@ class UdjService {
     });
   }
   
+  void getSearchPlayer(String search, Function callback){
+    authGetRequest('/players',
+      {'name': search, 'max_results': Constants.MAX_RESULTS},
+      (HttpRequest request) {
+        List data = JSON.parse(request.responseText);
+        callback({'success': true, 'players': data});
+      });
+  }
+  
   /**
    * 
    */
