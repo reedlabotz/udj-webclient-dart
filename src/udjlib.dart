@@ -24,8 +24,10 @@ part 'views/LoginView.dart';
 part 'views/PlayerSelectView.dart';
 part 'views/LibraryView.dart';
 part 'views/SideBarView.dart';
+part 'views/SongView.dart';
 
 // view models
 part 'view_models/UdjState.dart';
 part 'view_models/LoginState.dart';
 part 'view_models/PlayerSelectState.dart';
+part 'view_models/LibraryState.dart';

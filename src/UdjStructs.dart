@@ -68,11 +68,28 @@ class Song{
   String title;
   String artist;
   String album;
+  
+  Song.fromJson(Map data){
+    id = data['id'];
+    title = data['title'];
+    artist = data['artist'];
+    album = data['album'];
+  }
 }
 
 class QueueSong extends Song{
   List<User> upvoters;
   List<User> downvoters;
+  
+  QueueSong.fromJson(Map data):super.fromJson(data){
+    for(var u in data['upvoters']){
+      upvoters.add(new User.fromJson(u));
+    }
+    
+    for(var d in data['downvoters']){
+      downvoters.add(new User.fromJson(d));
+    }
+  }
 }
 
 class Session{

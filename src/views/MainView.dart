@@ -14,15 +14,15 @@ class MainView extends CompositeView{
   
   /// The library view to hold the library
   LibraryView _library;
+  LibraryState _libraryState;
   
   /// The login view which is shown at login and in case of reauth.
   LoginView _login;
-  
-  /// The player select view-model.
-  PlayerSelectState _playerSelectState;
+  LoginState _loginState;
   
   /// The player select view that is shown if no player is selected.
   PlayerSelectView _playerSelect;
+  PlayerSelectState _playerSelectState;
   
   /*
    * Initialize the view and create all the child views.
@@ -33,12 +33,12 @@ class MainView extends CompositeView{
     addChild(_topBar);
     
     // Create the login view
-    LoginState loginState = new LoginState(_udjApp);
-    _login = new LoginView(_udjApp, loginState);
+    _loginState = new LoginState(_udjApp);
+    _login = new LoginView(_udjApp, _loginState);
     addChild(_login);
     
     // Create the player select view
-    _playerSelectState = new PlayerSelectState(this._udjApp);
+    _playerSelectState = new PlayerSelectState(_udjApp);
     _playerSelect = new PlayerSelectView(_udjApp, _playerSelectState);
     addChild(_playerSelect);
     
@@ -47,7 +47,8 @@ class MainView extends CompositeView{
     addChild(_sideBar);
     
     // Create the library view
-    _library = new LibraryView();
+    _libraryState = new LibraryState(_udjApp);
+    _library = new LibraryView(_udjApp,_libraryState);
     addChild(_library);
     
     // Call [_swapLoggedInView] to get initial view setup correctly
