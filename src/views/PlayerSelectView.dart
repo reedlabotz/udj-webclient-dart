@@ -9,17 +9,21 @@ class PlayerSelectView extends CompositeView {
   View _errorMessage;
   View _search;
   
+  Player _prevPlayer; // used in changePlayers to allow exiting from player selection
+  
   // constructors
   
   /**
    * The constructor to build the player selector.
    */
-  PlayerSelectView(this._udjApp, this._state):super('player-select'){    
+  PlayerSelectView(this._udjApp, this._state):super('player-select'){
+    _prevPlayer = null;
+    
     // create player select box
     _playerSelectHeader = new View.html('''
         <div class="row">
           <div class="span6 offset3">
-            <button type="button" class="close" aria-hidden="true">&times;</button>
+            <button type="button" id="player-select-close" class="close" aria-hidden="true">&times;</button>
             <h3>Select Player</h3>
           </div>
         </div>
@@ -48,10 +52,6 @@ class PlayerSelectView extends CompositeView {
     addChild(_playersList);
     
     // TODO: hide exit button if no player is selected
-    
-    watch(_state.hidden, _displayPlayers);
-    watch(_state.players, _updatePlayers);
-    watch(_state.errorMessage, _displayErrorMsg);
   }
   
   /**
@@ -59,7 +59,22 @@ class PlayerSelectView extends CompositeView {
    */
   void afterRender(Element node){
     addClass('container');
+    
+    // watching
+    watch(_state.hidden, _displayPlayers);
+    watch(_state.players, _updatePlayers);
+    watch(_state.errorMessage, _displayErrorMsg);
+    watch(_udjApp.state.currentPlayer, _changePlayer);
+    
+    // events
     _search.node.on.submit.add(_searchFormSubmit);
+    _playerSelectHeader.node.query("#player-select-close").on.click.add((Event e) {
+      if (_prevPlayer != null) {
+        _udjApp.state.currentPlayer.value = _prevPlayer;
+        _state.hidden.value = true;
+      }
+      // TODO: handle else?  x should be hidden if no prev player
+    });
   }
   
   // events
@@ -76,11 +91,29 @@ class PlayerSelectView extends CompositeView {
    * Hide or show the player.
    */
   void _displayPlayers(e) {
+    if (_prevPlayer == null) {
+      _playerSelectHeader.node.query("#player-select-close").style.display = "none";
+    } else {
+      _playerSelectHeader.node.query("#player-select-close").style.display = "";
+    }
+    
     if (_state.hidden.value == true) { // hide
       hidden = true;
     } else { // show
       _state.getPlayers();
       hidden = false;
+    }
+  }
+  
+  /**
+   *
+   */
+  void _changePlayer(EventSummary e) {
+    if (e.events.isEmpty == false) {
+      _prevPlayer = e.events[0].oldValue;
+      
+      // TODO: check if current player is null?
+      _state.hidden.value = false;
     }
   }
   

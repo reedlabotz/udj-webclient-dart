@@ -16,8 +16,11 @@ class SideBarView extends CompositeView {
   
   SideBarView(this._udjApp,this._state):super('sidebar-box'){
     _playerInfo = new View.html('''
-      <div class="player-box">
-        <div class="player-name"></div>
+      <div class="player">
+        <div class="player-current">
+          <span class="player-name"></span>
+          <button id="player-change" class="player-change btn"><i class="icon-caret-down"></i></button>
+        </div>
         <div class="player-user-count"><i class="icon-user"></i></div>
         <div class="player-queue-count"><i class="icon-music"></i></div>
       </div>
@@ -45,6 +48,11 @@ class SideBarView extends CompositeView {
     watch(_udjApp.state.queue,_updateQueueCount);
     watch(_udjApp.state.nowPlaying,_changeNowPlaying);
     watch(_udjApp.state.playerState,_changePlayerState);
+    
+    // events
+    _playerInfo.node.query("#player-change").on.click.add((Event e) {
+      _udjApp.state.currentPlayer.value = null;
+    });
   }
   
   // watchers
