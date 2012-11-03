@@ -19,8 +19,8 @@ class User{
     var data = {
       'id': id,
       'username': username,
-      'firstName': firstName,
-      'lastName': lastName
+      'first_name': firstName,
+      'last_name': lastName
     };
     return data;
   }
@@ -54,10 +54,10 @@ class Player{
       'id': id,
       'owner': owner,
       'name': name,
-      'numActiveUsers': numActiveUsers,
-      'hasPassword': hasPassword,
+      'num_active_users': numActiveUsers,
+      'has_password': hasPassword,
       'admins': admins,
-      'sizeLimit': sizeLimit
+      'size_limit': sizeLimit
     };
     return data;
   }

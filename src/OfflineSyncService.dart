@@ -39,6 +39,7 @@ class OfflineSyncService extends View{
       _service.joinPlayer(playerData['id'], (Map status) {
         if (status['success'] == true) {
           _udjApp.state.currentPlayer.value = new Player.fromJson(playerData);
+          print("joined: $playerData");
         
         } else {
           _udjApp.state.currentPlayer.value = null;
@@ -47,6 +48,10 @@ class OfflineSyncService extends View{
         
         _joinPlayerComplete.value = true;
       });
+      
+    } else {
+      _joinPlayerComplete.value = true;
+      
     }
     
   }
@@ -68,10 +73,14 @@ class OfflineSyncService extends View{
     }
   }
   
-  void _saveCurrentPlayer(e){
+  void _saveCurrentPlayer(EventSummary e){
+    print(e.events.toString());
     if(_udjApp.state.currentPlayer.value == null){
+      print("1");
       window.localStorage.remove('player'); 
     }else{
+      print("test");
+      print(JSON.stringify(_udjApp.state.currentPlayer.value));
       window.localStorage['player'] = JSON.stringify(_udjApp.state.currentPlayer.value);
     }
   }
