@@ -48,13 +48,22 @@ class UdjService {
   // Player Search
   // --------------------------------------------------------------------------
   
+  /**
+   * Search for players based on position.
+   */
   void getPlayersByPosition(Geoposition position, Function callback) {
     authGetRequest('/players/${position.coords.latitude}/${position.coords.longitude}',{},
-      (HttpRequest request){
-        List playerData = JSON.parse(request.responseText);
-        List data = JSON.parse(request.responseText);
-        callback({'success': true, 'players': data});
-        // TODO: handle error cases    
+      (HttpRequest req){
+        if (req.status == 200) {
+          callback({'success': true, 'players': JSON.parse(req.responseText)});
+        } else {
+          String error = Errors.UNKOWN;
+          if (req.status == 406 && req.getResponseHeader('X-Not-Acceptable-Reason') == "bad_radius") {
+            error = Errors.BAD_RADIUS;
+          }
+          
+          callback({'success': false, 'error': error});
+        }
     });
   }
   
@@ -64,10 +73,15 @@ class UdjService {
   void getSearchPlayer(String search, Function callback){
     authGetRequest('/players',
       {'name': search, 'max_results': Constants.MAX_RESULTS},
-      (HttpRequest request) {
-        List data = JSON.parse(request.responseText);
-        callback({'success': true, 'players': data});
-        // TODO: handle error cases
+      (HttpRequest req) {
+        if (req.status == 200) {
+          callback({'success': true, 'players': JSON.parse(req.responseText)});
+        } else {
+          String error = Errors.UNKOWN;
+          // no expected server errors to handle
+          
+          callback({'success': false, 'error': error});
+        }
       });
   }
   
@@ -140,15 +154,33 @@ class UdjService {
           error = Errors.PLAYER_BANNED;
         }
         
-        callback({
-          'success': false,
-          'error': error
-        });
+        callback({'success': false, 'error': error});
+        
       }
     });
   }
   
-  // TODO: leave the player
+  /**
+   * Leave a player.
+   */
+  void leavePlayer(String playerID, Function callback) {
+    authDeleteRequest('/players/$playerID/users/user', {}, (HttpRequest req) {
+      if (req.status == 200) {
+        callback({'success': true});
+        
+      } else {
+        String error = Errors.UNKOWN;
+        if (req.status == 404 && req.getResponseHeader('X-Udj-Missing-Resource') == 'user') {
+          error = Errors.NOT_IN_PLAYER;
+        } else if (req.status == 400) {
+          error = Errors.OWNS_PLAYER;
+        }
+        
+        callback({'success': false, 'error': error});
+        
+      }
+    });
+  }
   
   void getSearchLibrary(String playerId, String query, Function callback){
     authGetRequest('/players/${playerId}/available_music',
@@ -213,6 +245,18 @@ class UdjService {
   }
   
   /**
+   * A POST request with auth token
+   */
+  void authPostRequest(String url,Map data,Function callback){
+    HttpRequest request;
+    request = new HttpRequest();
+    String query = RequestHelper.encodeMap(data);
+    request.open("POST",'${Constants.API_URL}${url}');
+    request.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
+    this.authRequest(request, query, callback);
+  }
+  
+  /**
    * A PUT request with auth token and application/x-www-form-urlencode Content-type.
    */
   void authPutRequestForm(String url,Map data,Function callback) {
@@ -238,13 +282,13 @@ class UdjService {
   }
   
   /**
-   * A POST request with auth token
+   * A DELETE request with auth token.
    */
-  void authPostRequest(String url,Map data,Function callback){
+  void authDeleteRequest(String url, Map data, Function callback) {
     HttpRequest request;
     request = new HttpRequest();
     String query = RequestHelper.encodeMap(data);
-    request.open("POST",'${Constants.API_URL}${url}');
+    request.open("DELETE",'${Constants.API_URL}${url}');
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
     this.authRequest(request, query, callback);
   }

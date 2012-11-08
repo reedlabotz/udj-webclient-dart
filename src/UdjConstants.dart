@@ -29,13 +29,18 @@ class Errors{
   static const String PLAYER_BANNED = "player-banned";
   static const String PLAYER_FULL = "player-full";
   
+  // leaving a player
+  static const String NOT_IN_PLAYER = "not-in-player";
+  static const String OWNS_PLAYER = "owns-player";
+  
   // creating a player
   static const String CREATE_PLAYER_NO_NAME = "no-name";
   static const String CREATE_PLAYER_NAME_TAKEN = "name-taken";
   static const String CREATE_PLAYER_INVALID_PSWD = "invalid-password";
   static const String CREATE_PLAYER_UNKOWN_SORT = "unkown-sorting-algorithm";
 
-  
+  // searching for players
+  static const String BAD_RADIUS = "bad-radius";
   
       
 }

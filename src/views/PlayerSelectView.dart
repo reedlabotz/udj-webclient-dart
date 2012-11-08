@@ -15,10 +15,7 @@ class PlayerSelectView extends CompositeView {
 
   /// Other states this view can access.
   final PlayerSelectState _state;
-  
-  /// The currently joined player (when changing players).
-  Player _prevPlayer;
-  
+    
   /// Display the view's title and an exit button. 
   View _playerSelectHeader;
   
@@ -37,9 +34,7 @@ class PlayerSelectView extends CompositeView {
   /**
    * The constructor to build the player selector.
    */
-  PlayerSelectView(this._udjApp, this._state):super('player-select'){
-    _prevPlayer = null;
-    
+  PlayerSelectView(this._udjApp, this._state):super('player-select'){    
     // header
     _playerSelectHeader = new View.html('''
         <div class="row">
@@ -112,8 +107,8 @@ class PlayerSelectView extends CompositeView {
     _search.node.on.submit.add(_searchFormSubmit);
     
     _playerSelectHeader.node.query("#player-select-close").on.click.add((Event e) {
-      if (_prevPlayer != null) {
-        _udjApp.state.currentPlayer.value = _prevPlayer;
+      if (_state.prevPlayer.value != null) {
+        _udjApp.state.currentPlayer.value = _state.prevPlayer.value;
         _state.hidden.value = true;
       }
       // TODO: handle else?  x should be hidden if no prev player
@@ -141,7 +136,7 @@ class PlayerSelectView extends CompositeView {
    * Hide or show the [PlayerSelectView].
    */
   void _displayPlayers(e) {
-    if (_prevPlayer == null) {
+    if (_state.prevPlayer.value == null) {
       _playerSelectHeader.node.query("#player-select-close").style.display = "none";
     } else {
       _playerSelectHeader.node.query("#player-select-close").style.display = "";
@@ -160,7 +155,7 @@ class PlayerSelectView extends CompositeView {
    */
   void _changePlayer(EventSummary e) {
     if (e.events.isEmpty == false) {
-      _prevPlayer = e.events[0].oldValue;
+      _state.prevPlayer.value = e.events[0].oldValue;
       
       // TODO: check if current player is null rather than assuming it isn't?
       _state.hidden.value = false;

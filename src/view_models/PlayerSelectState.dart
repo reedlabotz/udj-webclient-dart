@@ -9,6 +9,7 @@ class PlayerSelectState extends UIState{
   
   /// Variables to watch.
   final ObservableValue<List<Player>> players;
+  final ObservableValue<Player> prevPlayer;
   final ObservableValue<bool> loading;
   final ObservableValue<bool> hidden;
   final ObservableValue<String> errorMessage;
@@ -21,6 +22,7 @@ class PlayerSelectState extends UIState{
    */
   PlayerSelectState(this._udjApp):super(),
     players = new ObservableValue<List<Player>>(null),
+    prevPlayer = new ObservableValue<Player>(null),
     loading = new ObservableValue<bool>(false),
     hidden = new ObservableValue<bool>(true),
     errorMessage = new ObservableValue<String>(null);
@@ -38,13 +40,15 @@ class PlayerSelectState extends UIState{
       (Geoposition position){
         _udjApp.service.getPlayersByPosition(position, function(Map status) {
           if (status['success']) {
-            players.value = _buildPlayers(status['playerData']);
+            players.value = _buildPlayers(status['players']);
+          } else {
+            // TODO: handle errors more specifically
+            errorMessage.value = "Geolocation lookup failed.  Please search for a player.";
           }
-          // TODO: handle errors w/ else
         });
       }, 
       (e){
-        print("error getting position");
+        errorMessage.value = "Geolocation lookup failed.  Please search for a player.";
       });
   }
 
@@ -55,8 +59,11 @@ class PlayerSelectState extends UIState{
     _udjApp.service.getSearchPlayer(search, function(Map status) {
       if (status['success']) {
         players.value = _buildPlayers(status['players']);
+      } else {
+        // TODO: handle errors more specifically
+        // TODO: fall back to geolocation??? At least allow the users to get back to geolocation resutls.
+        errorMessage.value = "Search lookup failed.  Please refresh the page and try again.";
       }
-      // TODO: handle errors w/ else
     });
   }
   
@@ -76,6 +83,11 @@ class PlayerSelectState extends UIState{
    * Attempt to join a player.
    */
   void joinPlayer(String playerID) {
+    // TODO: should we be leaving then joining the same player?
+    if (prevPlayer.value != null) {
+      _udjApp.service.leavePlayer(prevPlayer.value.id, (Map status) {}); // empty callback since this is just a courtesy
+    }
+    
     _udjApp.service.joinPlayer(playerID, (Map status) {
       if (status['success'] == true) {
         for (Player p in players.value) {
