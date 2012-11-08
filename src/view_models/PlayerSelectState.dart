@@ -36,12 +36,11 @@ class PlayerSelectState extends UIState{
     
     window.navigator.geolocation.getCurrentPosition(
       (Geoposition position){
-        // TODO: move this call to services/UdjServices
-        _udjApp.service.authGetRequest('/players/${position.coords.latitude}/${position.coords.longitude}',{},
-          (HttpRequest request){
-            List playerData = JSON.parse(request.responseText);
-            players.value = _buildPlayers(playerData);
-            
+        _udjApp.service.getPlayersByPosition(position, function(Map status) {
+          if (status['success']) {
+            players.value = _buildPlayers(status['playerData']);
+          }
+          // TODO: handle errors w/ else
         });
       }, 
       (e){

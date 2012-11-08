@@ -1,5 +1,8 @@
 part of udjlib;
 
+// UdjService
+// ============================================================================
+
 /**
  * The udj service that talks to the server.
  */
@@ -15,6 +18,9 @@ class UdjService {
    * that prompts for user to authenticate.
    */
   UdjService(this._loginNeeded):session = new ObservableValue<Session>(null);
+  
+  // Authentication
+  // --------------------------------------------------------------------------
   
   /**
    * Login the user using a [username] and [password]
@@ -39,60 +45,36 @@ class UdjService {
     request.send(data);
   }
   
-  void getRandomLibrary(String playerId, Function callback){
-    authGetRequest('/players/${playerId}/available_music/random_songs', 
-        {'max_randoms':'50'}, (HttpRequest request){
-          List data = JSON.parse(request.responseText);
-          callback({'success':true,'data':data});
-        });
-  }
+  // Player Search
+  // --------------------------------------------------------------------------
   
-  void getRecentLibrary(String playerId, Function callback){
-    authGetRequest('/players/${playerId}/recently_played',
-        {'max_randoms':'50'}, (HttpRequest request){
-          List data = JSON.parse(request.responseText);
-          data = data.map((i) => i['song']);
-          callback({'success':true,'data':data});
-        });
-  }
-  
-  void getSearchLibrary(String playerId, String query, Function callback){
-    authGetRequest('/players/${playerId}/available_music',
-        {'max_randoms':'50','query':query}, (HttpRequest request){
-          List data = JSON.parse(request.responseText);
-          callback({'success':true,'data':data});
-        });
-  }
-  
-  void pollPlayer(String playerId, Function callback){
-    authGetRequest('/players/${playerId}/active_playlist',{},(HttpRequest request){
-      callback({'success':true,'data':JSON.parse(request.responseText)});
+  void getPlayersByPosition(Geoposition position, Function callback) {
+    authGetRequest('/players/${position.coords.latitude}/${position.coords.longitude}',{},
+      (HttpRequest request){
+        List playerData = JSON.parse(request.responseText);
+        List data = JSON.parse(request.responseText);
+        callback({'success': true, 'players': data});
+        // TODO: handle error cases    
     });
   }
   
-  void voteSong(String action,String playerId, String songId, Function callback){
-    songId = songId.replaceFirst('://', '%3A%2F%2F');
-    authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}/${action}',{},(HttpRequest request){
-      
-    });
-  }
-  
-  void addSong(String playerId, String songId, Function callback){
-    songId = songId.replaceFirst('://', '%3A%2F%2F');
-    authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest request){
-      
-    });
-  }
-  
+  /**
+   * Search for players based on name.
+   */
   void getSearchPlayer(String search, Function callback){
     authGetRequest('/players',
       {'name': search, 'max_results': Constants.MAX_RESULTS},
       (HttpRequest request) {
         List data = JSON.parse(request.responseText);
         callback({'success': true, 'players': data});
+        // TODO: handle error cases
       });
   }
   
+  
+  // Player Creation
+  // --------------------------------------------------------------------------
+
   void createPlayer(Map playerAttrs, Function callback) {
     authPutRequestJson('/players/player', playerAttrs, (HttpRequest request) {
       if (request.status == 201) {
@@ -112,6 +94,9 @@ class UdjService {
     });
   }
   
+  // Player Administration
+  // --------------------------------------------------------------------------
+
   void setPlayerState(String playerID, String playerState, Function callback) {
     authPostRequest("/players/$playerID/state", {'state': playerState}, (HttpRequest request) {
       if (request.status == 200) {
@@ -135,8 +120,11 @@ class UdjService {
     });
   }
   
+  // Player Interaction
+  // --------------------------------------------------------------------------
+  
   /**
-   * 
+   * Join a player.
    */
   void joinPlayer(String playerID, Function callback){
     authPutRequestForm('/players/$playerID/users/user', {}, (HttpRequest req) {
@@ -148,21 +136,70 @@ class UdjService {
         String error = Errors.UNKOWN;
         if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
           error = Errors.PLAYER_FULL;
-          
         } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
           error = Errors.PLAYER_BANNED;
-          
         }
         
         callback({
           'success': false,
           'error': error
         });
-        
       }
-
     });
   }
+  
+  // TODO: leave the player
+  
+  void getSearchLibrary(String playerId, String query, Function callback){
+    authGetRequest('/players/${playerId}/available_music',
+        {'max_randoms':'50','query':query}, (HttpRequest request){
+          List data = JSON.parse(request.responseText);
+          callback({'success':true,'data':data});
+        });
+  }
+  
+  void getRecentLibrary(String playerId, Function callback){
+    authGetRequest('/players/${playerId}/recently_played',
+        {'max_randoms':'50'}, (HttpRequest request){
+          List data = JSON.parse(request.responseText);
+          data = data.map((i) => i['song']);
+          callback({'success':true,'data':data});
+        });
+  }
+  
+  void getRandomLibrary(String playerId, Function callback){
+    authGetRequest('/players/${playerId}/available_music/random_songs', 
+        {'max_randoms':'50'}, (HttpRequest request){
+          List data = JSON.parse(request.responseText);
+          callback({'success':true,'data':data});
+        });
+  }
+  
+  // Player Interaction - active playlist
+  // --------------------------------------------------------------------------
+  
+  void pollPlayer(String playerId, Function callback){
+    authGetRequest('/players/${playerId}/active_playlist',{},(HttpRequest request){
+      callback({'success':true,'data':JSON.parse(request.responseText)});
+    });
+  }
+  
+  void addSong(String playerId, String songId, Function callback){
+    songId = songId.replaceFirst('://', '%3A%2F%2F');
+    authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}',{},(HttpRequest request){
+      
+    });
+  }
+  
+  void voteSong(String action,String playerId, String songId, Function callback){
+    songId = songId.replaceFirst('://', '%3A%2F%2F');
+    authPutRequestForm('/players/${playerId}/active_playlist/songs/${songId}/${action}',{},(HttpRequest request){
+      
+    });
+  }
+  
+  // Requesters
+  // --------------------------------------------------------------------------
   
   /**
    * A GET request with auth token.
@@ -188,7 +225,10 @@ class UdjService {
   void authPutRequestJson(String url, Map data, Function callback) {
     authPutRequest(url, JSON.stringify(data), callback, 'text/json');
   }
-  
+
+  /**
+   * A PUT request with auth token and a given Content-type.
+   */
   void authPutRequest(String url, String query, Function callback, String contentType) {
     HttpRequest request;
     request = new HttpRequest();
