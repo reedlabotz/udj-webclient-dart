@@ -1,19 +1,38 @@
 part of udjlib;
 
+// PlayerSelectView
+// ============================================================================
+
+/**
+ * The [PlayerSelectView] allows users to find information about players and
+ * join them.  If the user is already in a player, the have the option to exit
+ * the [PlayerSelectView].  Finally, the view should provide a way for the user
+ * to access the [PlayerCreateView].
+ */
 class PlayerSelectView extends CompositeView {
-  final UdjApp _udjApp;  
+  /// The [UdjApp] (which provides access to the [UdjState]).
+  final UdjApp _udjApp;
+
+  /// Other states this view can access.
   final PlayerSelectState _state;
   
+  /// The currently joined player (when changing players).
+  Player _prevPlayer;
+  
+  /// Display the view's title and an exit button. 
   View _playerSelectHeader;
-  PlayerSelectListView _playersList;
-  View _errorMessage;
-  View _search;
-  View _createPlayer;
+  
+  /// A collection of view UI utilities, including search, error messages, and create player button.
   CompositeView _actionbar;
-  
-  Player _prevPlayer; // used in changePlayers to allow exiting from player selection
-  
-  // constructors
+  View _search;
+  View _errorMessage;
+  View _createPlayer;
+
+  /// A list of players.
+  PlayerSelectListView _playersList;
+    
+  // Constructors
+  // --------------------------------------------------------------------------
   
   /**
    * The constructor to build the player selector.
@@ -21,7 +40,7 @@ class PlayerSelectView extends CompositeView {
   PlayerSelectView(this._udjApp, this._state):super('player-select'){
     _prevPlayer = null;
     
-    // create player select box
+    // header
     _playerSelectHeader = new View.html('''
         <div class="row">
           <div class="span6 offset3">
@@ -31,7 +50,9 @@ class PlayerSelectView extends CompositeView {
         </div>
     ''');
     addChild(_playerSelectHeader);
+    // TODO: hide exit button if no player is selected
     
+    // action bar
     CompositeView actionbarWrap = new CompositeView('row');
     _actionbar = new CompositeView('player-select-actionbar');
     actionbarWrap.addChild(_actionbar);
@@ -62,6 +83,7 @@ class PlayerSelectView extends CompositeView {
     
     addChild(actionbarWrap);
     
+    // players list
     CompositeView playersListWrap = new CompositeView('row');
     CompositeView playersListSpan = new CompositeView('span6 offset3');
     playersListWrap.addChild(playersListSpan);
@@ -70,8 +92,6 @@ class PlayerSelectView extends CompositeView {
     playersListSpan.addChild(_playersList);
     
     addChild(playersListWrap);
-    
-    // TODO: hide exit button if no player is selected
   }
   
   /**
@@ -105,18 +125,20 @@ class PlayerSelectView extends CompositeView {
     
   }
   
-  // event handlers
+  // Event Handlers & Watchers
+  // --------------------------------------------------------------------------
   
+  /**
+   * Search for a player.
+   */
   void _searchFormSubmit(Event e) {
     e.preventDefault();
     InputElement searchBox = _search.node.query("#player-select-search-input");
     _state.searchPlayer(searchBox.value);
   }
-
-  // watchers
   
   /**
-   * Hide or show the player.
+   * Hide or show the [PlayerSelectView].
    */
   void _displayPlayers(e) {
     if (_prevPlayer == null) {
@@ -134,13 +156,13 @@ class PlayerSelectView extends CompositeView {
   }
   
   /**
-   *
+   * Show the [PlayerSelectView] to allow the user to change a player.
    */
   void _changePlayer(EventSummary e) {
     if (e.events.isEmpty == false) {
       _prevPlayer = e.events[0].oldValue;
       
-      // TODO: check if current player is null?
+      // TODO: check if current player is null rather than assuming it isn't?
       _state.hidden.value = false;
     }
   }
@@ -168,18 +190,42 @@ class PlayerSelectView extends CompositeView {
 
 }
 
+
+// PlayerSelectListView
+// ============================================================================
+
+/**
+ * The [PlayerSelectListView] provides a list of [Player]s the user can try to
+ * join.
+ */
 class PlayerSelectListView extends CompositeView {
   final UdjApp _udjApp;
   final PlayerSelectState _state;
   
-  // constructors
+  // Constructors
+  // --------------------------------------------------------------------------
   
+  /**
+   * Build the list of [Player]s.
+   */
   PlayerSelectListView(this._udjApp, this._state):super('player-select-list'){
     rerender();
   }
   
-  // drawing
+  /**
+   * Add listeners after render is done.
+   */
+  void afterRender(Element node){
+    // TODO: move the button onClick event registration here
+    addClass('well');
+  }
   
+  // Drawing
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Build the list of [Player]s.
+   */
   void rerender() {
     removeAllChildren();
     
@@ -195,6 +241,9 @@ class PlayerSelectListView extends CompositeView {
     
   }
   
+  /**
+   * Add an individual [Player]'s display into the list.
+   */
   View _makePlayerSelector(Player p) {
     String password = '<span class="player-attr"></span>';
     if (p.hasPassword) {
@@ -221,16 +270,12 @@ class PlayerSelectListView extends CompositeView {
     return player;
   }
   
+  // Events & Watchers
+  // --------------------------------------------------------------------------
+  
   /**
-   * Add listeners after render is done.
+   * Tell the [PlayerSelectState] when the user joings a player.
    */
-  void afterRender(Element node){
-    // TODO: move the button onClick event registration here
-    addClass('well');
-  }
-  
-  // events
-  
   void _joinPlayer(Event e) {
     // find the right element
     Element target = e.target;

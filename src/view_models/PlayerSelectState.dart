@@ -1,31 +1,42 @@
 part of udjlib;
 
+// PlayerSelectState
+// ============================================================================
+
 class PlayerSelectState extends UIState{
+  /// The [UdjApp] (which provides access to the [UdjState]).
   final UdjApp _udjApp;
   
-  final ObservableValue<List<Player>> players; 
-  
+  /// Variables to watch.
+  final ObservableValue<List<Player>> players;
   final ObservableValue<bool> loading;
-  
   final ObservableValue<bool> hidden;
-  
   final ObservableValue<String> errorMessage;
   
-  // constructors
+  // Constructors
+  // --------------------------------------------------------------------------
   
+  /**
+   * Create the [PlayerSelectState].
+   */
   PlayerSelectState(this._udjApp):super(),
     players = new ObservableValue<List<Player>>(null),
     loading = new ObservableValue<bool>(false),
     hidden = new ObservableValue<bool>(true),
     errorMessage = new ObservableValue<String>(null);
-    
-  // getters / setters
-    
+  
+  // Methods
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Get the players by geolocation.
+   */
   void getPlayers(){
     errorMessage.value = null;
     
     window.navigator.geolocation.getCurrentPosition(
       (Geoposition position){
+        // TODO: move this call to services/UdjServices
         _udjApp.service.authGetRequest('/players/${position.coords.latitude}/${position.coords.longitude}',{},
           (HttpRequest request){
             List playerData = JSON.parse(request.responseText);
@@ -37,8 +48,30 @@ class PlayerSelectState extends UIState{
         print("error getting position");
       });
   }
+
+  /**
+   * Get the player by searching (for its name).
+   */
+  void searchPlayer(String search) {
+    _udjApp.service.getSearchPlayer(search, function(Map status) {
+      if (status['success']) {
+        players.value = _buildPlayers(status['players']);
+      }
+      // TODO: handle errors w/ else
+    });
+  }
   
-  // methods
+  /**
+   * Build a list of players from json.
+   */
+  List<Player> _buildPlayers(List playersData) {
+    List<Player> players = new List<Player>();
+    for (var data in playersData) {
+      players.add(new Player.fromJson(data));
+    }
+    
+    return players;
+  }
   
   /**
    * Attempt to join a player.
@@ -70,26 +103,6 @@ class PlayerSelectState extends UIState{
         }
       }
     });
-  }
-  
-  void searchPlayer(String search) {
-    _udjApp.service.getSearchPlayer(search, _searchPlayerComplete);
-  }
-  
-  void _searchPlayerComplete(Map status) {
-    if (status['success']) {
-      players.value = _buildPlayers(status['players']);
-    
-    }
-  }
-  
-  List<Player> _buildPlayers(List playersData) {
-    List<Player> players = new List<Player>();
-    for (var data in playersData) {
-      players.add(new Player.fromJson(data));
-    }
-    
-    return players;
   }
   
 }
