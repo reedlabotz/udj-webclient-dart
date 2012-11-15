@@ -28,6 +28,7 @@ class Errors{
   // joining a player
   static const String PLAYER_BANNED = "player-banned";
   static const String PLAYER_FULL = "player-full";
+  static const String PLAYER_PROTECTED = "player-protected";
   
   // leaving a player
   static const String NOT_IN_PLAYER = "not-in-player";

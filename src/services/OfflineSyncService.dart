@@ -1,5 +1,8 @@
 part of udjlib;
 
+// OfflineSyncService
+// ============================================================================
+
 /**
  * Service that will keep important information synced offline.
  * We extend [View] so that we get the watch functionality.
@@ -12,6 +15,13 @@ class OfflineSyncService extends View{
   // async bools
   final ObservableValue<bool> _joinPlayerComplete;
   
+  // Constructor
+  // --------------------------------------------------------------------------
+  
+  /**
+   * The constructor that builds the OfflineSyncService.  It also performs
+   * an initial load.
+   */
   OfflineSyncService(this._udjApp,this._service):
   _joinPlayerComplete = new ObservableValue<bool>(false)
   {
@@ -23,6 +33,12 @@ class OfflineSyncService extends View{
     watch(_joinPlayerComplete, _checkLoadComplete);
   }
   
+  // Load
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Try to load saved info, if it's still valid.
+   */
   void _loadFromStorage(){
     // must come first, so other functions that require a user to be logged in
     // will have the necessary session info
@@ -34,20 +50,42 @@ class OfflineSyncService extends View{
     // must come before player-related actions, so functions that requre a
     // player will have the necessary player info
     if(window.localStorage.containsKey('player')){
+      // TODO: check for 'has_password' and decouple calls to joinPlayer and joinProtectedPlayer
+      
       Map playerData = JSON.parse(window.localStorage['player']);
       _service.joinPlayer(playerData['id'], (Map status) {
         if (status['success'] == true) {
           _udjApp.state.currentPlayer.value = new Player.fromJson(playerData);
-        
+          _joinPlayerComplete.value = true;
+
         } else {
-          _udjApp.state.currentPlayer.value = null;
+          // if the player requires a password, try to join it with one
+          if (status['error'] == Errors.PLAYER_PROTECTED) {
+            // TODO: ask for user for player password
+            String password = '';
+            
+            _service.joinProtectedPlayer(playerData['id'], password, (Map status) {
+              if (status['success']) {
+                _udjApp.state.currentPlayer.value = new Player.fromJson(playerData);
+                _joinPlayerComplete.value = true;
+              } else {
+                _udjApp.state.currentPlayer.value = null;
+                _joinPlayerComplete.value = true;
+              }
+              
+            });
+            
+          } else {
+            _udjApp.state.currentPlayer.value = null;
+            _joinPlayerComplete.value = true;
+          }
           
         }
         
-        _joinPlayerComplete.value = true;
       });
       
     } else {
+      _udjApp.state.currentPlayer.value = null;
       _joinPlayerComplete.value = true;
       
     }
@@ -63,6 +101,12 @@ class OfflineSyncService extends View{
     }
   }
   
+  // Save
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Save the current session (user info).
+   */
   void _saveSession(e){
     if(_service.session.value == null){
       window.localStorage.remove('session');
@@ -71,6 +115,9 @@ class OfflineSyncService extends View{
     }
   }
   
+  /**
+   * Save the currently joined player.
+   */
   void _saveCurrentPlayer(EventSummary e){
     if(_udjApp.state.currentPlayer.value == null){
       window.localStorage.remove('player');

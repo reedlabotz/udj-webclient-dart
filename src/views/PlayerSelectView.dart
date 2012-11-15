@@ -34,7 +34,7 @@ class PlayerSelectView extends CompositeView {
   /**
    * The constructor to build the player selector.
    */
-  PlayerSelectView(this._udjApp, this._state):super('player-select'){    
+  PlayerSelectView(this._udjApp, this._state):super('player-select'){ 
     // header
     _playerSelectHeader = new View.html('''
         <div class="row">
@@ -49,8 +49,11 @@ class PlayerSelectView extends CompositeView {
     
     // action bar
     CompositeView actionbarWrap = new CompositeView('row');
+    CompositeView actionbarSpan = new CompositeView('span6 offset3');
+    actionbarWrap.addChild(actionbarSpan);
+    
     _actionbar = new CompositeView('player-select-actionbar');
-    actionbarWrap.addChild(_actionbar);
+    actionbarSpan.addChild(_actionbar);
     
     _createPlayer = new View.html('''
     <button type="button" id="player-select-create">Create</button>
@@ -94,8 +97,6 @@ class PlayerSelectView extends CompositeView {
    */
   void afterRender(Element node){
     addClass('container');
-    _actionbar.addClass('span6');
-    _actionbar.addClass('offset3');
     
     // watching
     watch(_state.hidden, _displayPlayers);
@@ -230,7 +231,11 @@ class PlayerSelectListView extends CompositeView {
         addChild(player);
         
         View button = new View.fromNode( player.node.query(".player-join") );
-        button.addOnClick(_joinPlayer);
+        if (p.hasPassword) {
+          button.addOnClick(_joinProtectedPlayer);
+        } else {
+          button.addOnClick(_joinPlayer);
+        }
       } 
     }
     
@@ -269,7 +274,7 @@ class PlayerSelectListView extends CompositeView {
   // --------------------------------------------------------------------------
   
   /**
-   * Tell the [PlayerSelectState] when the user joings a player.
+   * Tell the [PlayerSelectState] when the user joins a player.
    */
   void _joinPlayer(Event e) {
     // find the right element
@@ -280,6 +285,22 @@ class PlayerSelectListView extends CompositeView {
     
     _state.joinPlayer( target.dataAttributes['player-id'] );
 
+  }
+  
+  /**
+   * Tell the [PlayerSelectState] when the user joings a player.
+   */
+  void _joinProtectedPlayer(Event e) {
+    // find the right element
+    Element target = e.target;
+    while (target.tagName != "BUTTON") {
+      target = target.parent;
+    }
+    
+    // TODO: ask for user for player password
+    String password = '';
+    
+    _state.joinProtectedPlayer( target.dataAttributes['player-id'], password );
   }
   
 }

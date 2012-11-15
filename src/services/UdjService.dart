@@ -142,22 +142,52 @@ class UdjService {
    */
   void joinPlayer(String playerID, Function callback){
     authPutRequestForm('/players/$playerID/users/user', {}, (HttpRequest req) {
-      // 201 is success, 400 is you own it
-     if (req.status == 201 || req.status == 400) {
-        callback( {'success': true} );
-        
-      } else {
-        String error = Errors.UNKOWN;
-        if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
-          error = Errors.PLAYER_FULL;
-        } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
-          error = Errors.PLAYER_BANNED;
-        }
-        
-        callback({'success': false, 'error': error});
-        
-      }
+      _handleJoining(callback, req);
     });
+  }
+  
+  /**
+   * Join a protected player.
+   */
+  void joinProtectedPlayer(String playerID, String password,  Function callback) {
+    String url = '/players/$playerID/users/user';
+    String contentType = 'application/x-www-form-urlencode';
+    String query = JSON.stringify( {} );
+    
+    // copied from authPutRequest, except *
+    HttpRequest request;
+    request = new HttpRequest();
+    request.open("PUT",'${Constants.API_URL}${url}');
+    request.setRequestHeader('Content-type', contentType);
+    
+    // *set password
+    request.setRequestHeader('X-Udj-Player-Password', password);
+    
+    this.authRequest(request, query, callback);
+    
+    authPutRequestForm('/players/$playerID/users/user', {}, (HttpRequest req) {
+      _handleJoining(callback, req);
+    });
+  }
+  
+  void _handleJoining(Function callback, HttpRequest req) {
+    // 201 is success, 400 is you own it
+    if (req.status == 201 || req.status == 400) {
+      callback( {'success': true} );
+      
+    } else {
+      String error = Errors.UNKOWN;
+      if (req.status == 401 && req.getResponseHeader('WWW-Authenticate') == "player-password") {
+        error = Errors.PLAYER_PROTECTED;
+      } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "player-full") {
+        error = Errors.PLAYER_FULL;
+      } else if (req.status == 403 && req.getResponseHeader('X-Udj-Forbidden-Reason') == "banned") {
+        error = Errors.PLAYER_BANNED;
+      }
+      
+      callback({'success': false, 'error': error});
+      
+    }
   }
   
   /**

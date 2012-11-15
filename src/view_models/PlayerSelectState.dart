@@ -82,38 +82,65 @@ class PlayerSelectState extends UIState{
   /**
    * Attempt to join a player.
    */
+  void joinProtectedPlayer(String playerID, String password) {
+    // TODO: should we be leaving then joining the same player?
+    leavePlayer(playerID);
+    
+    _udjApp.service.joinProtectedPlayer(playerID, password, (Map status) {
+      _handleJoining(playerID, status);
+    });
+  }
+  
+  /**
+   * Attempt to join a player.
+   */
   void joinPlayer(String playerID) {
+    // TODO: should we be leaving then joining the same player?
+    leavePlayer(playerID);
+    
+    _udjApp.service.joinPlayer(playerID, (Map status) {
+      _handleJoining(playerID, status);
+    });
+  }
+  
+  /**
+   * Handle joining the player.
+   */
+  void _handleJoining(String playerID, Map status) {
+    if (status['success'] == true) {
+      for (Player p in players.value) {
+        if (p.id == playerID) {
+          _udjApp.state.currentPlayer.value = p;
+        }
+      }
+      
+    } else {
+      // TODO: test errors - currently the server responds correctly but the browser gives an error:
+      // Refused to get unsafe header "X-Udj-Forbidden-Reason"
+      var error = status['error'];
+      
+      if (error == Errors.PLAYER_FULL) {
+        errorMessage.value = "The server is full.";
+        
+      } else if (error == Errors.PLAYER_BANNED) {
+        errorMessage.value = "You have been banned from this server.";
+        // TODO: reload the players list from the server- filter should be applied
+        
+      } else { // error == Errors.UNKOWN
+        errorMessage.value = "There was an error joining the server.";
+        
+      }
+    }
+  }
+  
+  /**
+   * Attempt to leave a player.
+   */
+  void leavePlayer(String playerID) {
     // TODO: should we be leaving then joining the same player?
     if (prevPlayer.value != null) {
       _udjApp.service.leavePlayer(prevPlayer.value.id, (Map status) {}); // empty callback since this is just a courtesy
     }
-    
-    _udjApp.service.joinPlayer(playerID, (Map status) {
-      if (status['success'] == true) {
-        for (Player p in players.value) {
-          if (p.id == playerID) {
-            _udjApp.state.currentPlayer.value = p;
-          }
-        }
-        
-      } else {
-        // TODO: test errors - currently the server responds correctly but the browser gives an error:
-        // Refused to get unsafe header "X-Udj-Forbidden-Reason"
-        var error = status['error'];
-        
-        if (error == Errors.PLAYER_FULL) {
-          errorMessage.value = "The server is full.";
-          
-        } else if (error == Errors.PLAYER_BANNED) {
-          errorMessage.value = "You have been banned from this server.";
-          // TODO: reload the players list from the server- filter should be applied
-          
-        } else { // error == Errors.UNKOWN
-          errorMessage.value = "There was an error joining the server.";
-        
-        }
-      }
-    });
   }
   
 }
