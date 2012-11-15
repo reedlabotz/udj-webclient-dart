@@ -5399,16 +5399,20 @@ conveyor-view without setting "overflow: visible"?
   height: 7px;
   bottom: 1px; }
 
+/* Appwide Styles
+============================================================================ */
 body {
   background: url("../img/cream_dust.png");
   width: 100%;
   height: 100%;
   overflow: hidden; }
 
-/* logged out view */
-.logged-out-view {
-  display: none; }
-
+/* Modular (Reusable) Styles
+============================================================================ */
+/* View Specific Styles
+============================================================================ */
+/* LoginView
+---------------------------------------------------------------------------- */
 .loggin-box {
   height: 300px;
   position: absolute;
@@ -5418,79 +5422,41 @@ body {
 .loggin-box-inner {
   text-align: center; }
 
-/* logged in view */
-.logged-in-view {
-  display: none; }
+/* SongView
+---------------------------------------------------------------------------- */
+.song {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 0;
+  margin: 5px 0; }
+  .song .song-title {
+    font-weight: bold; }
+  .song .song-album {
+    font-style: italic; }
+  .song .song-vote, .song .song-add {
+    text-align: center;
+    width: 50px;
+    float: left;
+    height: 100%; }
+  .song .song-add {
+    padding-top: 7px; }
+  .song .song-vote-count {
+    color: #ccc;
+    font-size: 12px;
+    text-align: center; }
+  .song .song-vote-count-up {
+    color: #468847;
+    font-size: 12px; }
+  .song .song-vote-count-down {
+    color: #B94A48;
+    font-size: 12px; }
 
-.logo {
-  height: 22px;
-  width: 22px; }
-
-.main-search {
-  margin-bottom: 0; }
-
-/* player */
-.queue-holder ul {
-  margin: 0; }
-
-.queue-holder li {
-  list-style: none;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ffffff; }
-
-.player-status {
-  font-size: 30px;
-  float: left; }
-
-.current-song {
-  margin-left: 50px; }
-
-.song-title {
-  font-weight: bold; }
-
-.song-album {
-  font-style: italic; }
-
-.player-vote-button-holder {
-  float: left; }
-
-.player-vote-button-holder button {
-  font-size: 12px;
-  padding-left: 8px;
-  padding-right: 8px; }
-
-.song-vote-count {
-  color: #ccc;
-  font-size: 12px;
-  text-align: center; }
-
-.song-upvote-count {
-  color: #468847;
-  font-size: 12px; }
-
-.song-downvote-count {
-  color: #B94A48;
-  font-size: 12px; }
-
-.queue-song-info-holder {
-  margin-left: 50px; }
-
-/* library view */
-.library-results .btn {
-  font-size: 12px;
-  padding-left: 8px;
-  padding-right: 8px; }
-
-/* player select view */
-.player-select-search {
-  float: right;
-  margin-bottom: 0; }
-
-/***** new styles ******/
-/* player select view */
+/* PlayerSelectView
+---------------------------------------------------------------------------- */
 .player-select-actionbar {
   margin-bottom: 10px; }
+  .player-select-actionbar .player-select-search {
+    float: right;
+    margin-bottom: 0; }
   .player-select-actionbar .alert {
     margin-top: 15px;
     margin-bottom: 10px; }
@@ -5505,18 +5471,19 @@ body {
   .player-select-list .player-owner.dashed:before {
     content: "- ";
     padding-left: 3px; }
-.player-select-list .player-attrs {
-  float: right; }
-.player-select-list .player-attr {
-  min-width: 25px;
-  padding-right: 5px;
-  display: inline-block; }
-  .player-select-list .player-attr i {
-    padding-right: 5px; }
 .player-select-list .player-join {
   float: right; }
+.player-select-list .player-attrs {
+  float: right; }
+  .player-select-list .player-attrs .player-attr {
+    min-width: 25px;
+    padding-right: 5px;
+    display: inline-block; }
+    .player-select-list .player-attrs .player-attr i {
+      padding-right: 5px; }
 
-/* player create */
+/* PlayerCreateView
+---------------------------------------------------------------------------- */
 .player-create-wrap {
   top: 50%;
   position: absolute;
@@ -5529,6 +5496,8 @@ body {
   .player-create-form button[type='submit'] {
     margin-top: 10px; }
 
+/* Top Bar View
+---------------------------------------------------------------------------- */
 .top-bar {
   position: absolute;
   top: 0px;
@@ -5557,6 +5526,8 @@ body {
     right: 20px;
     z-index: 9; }
 
+/* Side Bar View
+---------------------------------------------------------------------------- */
 .sidebar-box {
   width: 280px;
   position: absolute;
@@ -5576,32 +5547,8 @@ body {
     top: 200px;
     bottom: 10px; }
 
-.player-box .player-name {
-  font-size: 32px;
-  text-align: center; }
-
-.song {
-  border-bottom: 1px solid #ccc;
-  padding: 5px 0;
-  margin: 5px 0; }
-  .song .song-vote, .song .song-add {
-    text-align: center;
-    width: 50px;
-    float: left;
-    height: 100%; }
-  .song .song-add {
-    padding-top: 7px; }
-  .song .song-vote-count {
-    color: #ccc;
-    font-size: 12px;
-    text-align: center; }
-  .song .song-vote-count-up {
-    color: #468847;
-    font-size: 12px; }
-  .song .song-vote-count-down {
-    color: #B94A48;
-    font-size: 12px; }
-
+/* Library View
+---------------------------------------------------------------------------- */
 .library-box {
   overflow-y: hidden;
   position: absolute;
