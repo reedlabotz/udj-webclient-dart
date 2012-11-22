@@ -297,10 +297,10 @@ class PlayerSelectListView extends CompositeView {
       target = target.parent;
     }
     
-    // TODO: ask for user for player password
-    String password = '';
-    
-    _state.joinProtectedPlayer( target.dataAttributes['player-id'], password );
+    String password = window.prompt("Enter the player's password", '');
+    if (password != null) {
+      _state.joinProtectedPlayer( target.dataAttributes['player-id'], password );
+    }
   }
   
 }

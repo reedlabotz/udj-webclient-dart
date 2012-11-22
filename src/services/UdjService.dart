@@ -142,7 +142,7 @@ class UdjService {
    */
   void joinPlayer(String playerID, Function callback){
     authPutRequestForm('/players/$playerID/users/user', {}, (HttpRequest req) {
-      _handleJoining(callback, req);
+      _handleJoining(req, callback);
     });
   }
   
@@ -166,11 +166,14 @@ class UdjService {
     this.authRequest(request, query, callback);
     
     authPutRequestForm('/players/$playerID/users/user', {}, (HttpRequest req) {
-      _handleJoining(callback, req);
+      _handleJoining(req, callback);
     });
   }
   
-  void _handleJoining(Function callback, HttpRequest req) {
+  /**
+   * Parse the HttpRequest 
+   */
+  void _handleJoining(HttpRequest req, Function callback) {
     // 201 is success, 400 is you own it
     if (req.status == 201 || req.status == 400) {
       callback( {'success': true} );

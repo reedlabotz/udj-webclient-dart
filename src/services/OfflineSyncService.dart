@@ -61,19 +61,19 @@ class OfflineSyncService extends View{
         } else {
           // if the player requires a password, try to join it with one
           if (status['error'] == Errors.PLAYER_PROTECTED) {
-            // TODO: ask for user for player password
-            String password = '';
-            
-            _service.joinProtectedPlayer(playerData['id'], password, (Map status) {
-              if (status['success']) {
-                _udjApp.state.currentPlayer.value = new Player.fromJson(playerData);
-                _joinPlayerComplete.value = true;
-              } else {
-                _udjApp.state.currentPlayer.value = null;
-                _joinPlayerComplete.value = true;
-              }
+            String password = window.prompt("Enter the player's password", '');
+            if (password != null) {
+              _service.joinProtectedPlayer(playerData['id'], password, (Map status) {
+                if (status['success']) {
+                  _udjApp.state.currentPlayer.value = new Player.fromJson(playerData);
+                  _joinPlayerComplete.value = true;
+                } else {
+                  _udjApp.state.currentPlayer.value = null;
+                  _joinPlayerComplete.value = true;
+                }   
               
-            });
+              });
+            }
             
           } else {
             _udjApp.state.currentPlayer.value = null;
