@@ -245,13 +245,23 @@ class PlayerSelectListView extends CompositeView {
    * Add an individual [Player]'s display into the list.
    */
   View _makePlayerSelector(Player p) {
+    String admin = '<span class="player-attr"></span>';
+    bool isAdmin = p.admins.some((User admin) {
+      admin.username == _udjApp.state.currentUsername.value;
+    });
+    if (isAdmin) {
+      admin = '''
+      <span class="player-attr"><i class="icon-legal"></i></span>
+      ''';
+    }
+    
     String password = '<span class="player-attr"></span>';
     if (p.hasPassword) {
       password = '''
       <span class="player-attr"><i class="icon-lock"></i></span>
       ''';
     }
-    
+   
     View player = new View.html('''
     <div class="player">
       <div class="player-name">${p.name}</div>
@@ -260,6 +270,7 @@ class PlayerSelectListView extends CompositeView {
       <div class="player-attrs">
         <span class="player-attr"><i class="icon-user"></i>${p.numActiveUsers}</span>
         <span class="player-attr"><i class="icon-music"></i>${p.sizeLimit}</span>
+        $admin
         $password
       </div>
 
