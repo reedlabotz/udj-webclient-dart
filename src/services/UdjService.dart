@@ -134,6 +134,22 @@ class UdjService {
     });
   }
   
+  void playPlayer(String playerID, Function callback) {
+    // TODO
+  }
+  
+  void pausePlayer(String playerID, Function callback) {
+    // TODO
+  }
+  
+  void increasePlayerVolume(String playerID, int amount, Function callback) {
+    // TODO
+  }
+  
+  void decreasePlayerVolume(String playerID, int amount, Function callback) {
+    // TODO
+  }
+  
   // Player Interaction
   // --------------------------------------------------------------------------
   
