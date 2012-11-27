@@ -1,9 +1,9 @@
 part of udjlib;
 
-class PlayerControlState extends UIState {
+class AdminPlayerState extends UIState {
   UdjApp _udjApp;
   
-  PlayerControlState(this._udjApp){
+  AdminPlayerState(this._udjApp){
     
   }
   

@@ -3,24 +3,24 @@ part of udjlib;
 class PlayerControlView extends CompositeView {
   final UdjApp _udjApp;
   
-  final PlayerControlState _controls;
+  final AdminPlayerState _controls;
   
   View _playPause;
   View _volume;
   
-  PlayerControlView(this._udjApp,this._controls):super('controls'){
+  PlayerControlView(this._udjApp,this._controls):super('playeradmin'){
     _playPause = new View.html('''
-    <div class="controls-playPause">
-      <span class="controls-play"><i class="icon-play"></i></span>
-      <span class="controls-pause"><i class="icon-pause"></i></span>
+    <div class="playeradmin-playPause">
+      <span class="playeradmin-play"><i class="icon-play"></i></span>
+      <span class="playeradmin-pause"><i class="icon-pause"></i></span>
     </div>
     ''');
     addChild(_playPause);
     
     _volume = new View.html('''
-    <div class="controls-volume">
-      <span id="controls-volumeUp" class="controls-volumeUp"><i class="icon-volume-up"></i></span>
-      <span id="controls-volumeDown" class="controls-volumeDown"><i class="icon-volume-down"></i></span>
+    <div class="playeradmin-volume">
+      <span id="playeradmin-volumeUp" class="playeradmin-volumeUp"><i class="icon-volume-up"></i></span>
+      <span id="playeradmin-volumeDown" class="playeradmin-volumeDown"><i class="icon-volume-down"></i></span>
     </div>
     ''');
     addChild(_volume);
