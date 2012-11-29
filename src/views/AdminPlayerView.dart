@@ -40,10 +40,10 @@ class AdminPlayerView extends CompositeView {
     });
     
     _volume.node.query("#controls-volumeUp").on.click.add((Event e) {
-      _controls.increaseVolume(1);
+      _controls.changeVolume(1);
     });
     _volume.node.query("#controls-volumeDown").on.click.add((Event e) {
-      _controls.decreaseVolume(1);
+      _controls.changeVolume(-1);
     });
     
     // watchers

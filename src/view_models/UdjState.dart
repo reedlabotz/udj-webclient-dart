@@ -8,6 +8,8 @@ class UdjState extends UIState {
   
   final ObservableValue<String> playerState;
   
+  final ObservableValue<int> playerVolume;
+  
   final ObservableValue<Player> currentPlayer;
   
   final ObservableValue<Player> localPlayer;
@@ -32,6 +34,7 @@ class UdjState extends UIState {
     super(), 
     currentUsername = new ObservableValue<String>(null),
     playerState = new ObservableValue<String>(null),
+    playerVolume = new ObservableValue<int>(null),
     currentPlayer = new ObservableValue<Player>(null),
     localPlayer = new ObservableValue<Player>(null),
     nowPlaying = new ObservableValue<QueueSong>(null),

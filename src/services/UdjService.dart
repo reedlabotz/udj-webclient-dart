@@ -142,12 +142,14 @@ class UdjService {
     // TODO
   }
   
-  void increasePlayerVolume(String playerID, int amount, Function callback) {
-    // TODO
-  }
-  
-  void decreasePlayerVolume(String playerID, int amount, Function callback) {
-    // TODO
+  void setPlayerVolume(String playerID, int level, Function callback) {
+    // TODO: precondition- 0 <= level <= 10
+    authPostRequest("/udj/0_6/players/$playerID/volume", {"volume": level}, (HttpRequest req) {
+      if (req.status == 200) {
+        callback( {'success': true} );
+      }
+      // TODO: else handle errors
+    });
   }
   
   // Player Interaction

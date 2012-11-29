@@ -49,27 +49,19 @@ class AdminPlayerState extends UIState {
     }
   }
   
-  void increaseVolume(int amount) {
+  void changeVolume(int amount) {
     if (canAdmin()) {
-      
-      // try to turn the volume up by amount
-      //  - requires previous amount
+      int newVolume = _udjApp.state.playerVolume.value + amount;
+      _udjApp.service.setPlayerVolume(_udjApp.state.currentPlayer.value.id, newVolume, (Map status) {
+        if (status['success']) {
+          _udjApp.state.playerVolume.value = newVolume;
+        }
+      });
+
     } else {
       // error msg
       
     }
-  }
-  
-  void decreaseVolume(int amount) {
-    if (canAdmin()) {
-  
-      // try to turn the volume down by amount
-      //  - requires previous amount
-    } else {
-      // error msg
-      
-    }
-    
   }
   
   /**

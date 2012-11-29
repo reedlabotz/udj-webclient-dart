@@ -17,6 +17,7 @@ class SideBarView extends CompositeView {
   // constructors
   
   SideBarView(this._udjApp,this._state):super('sidebar-box'){
+    // TODO: show player volume
     _playerInfo = new View.html('''
       <div class="player">
         <div class="player-current">
