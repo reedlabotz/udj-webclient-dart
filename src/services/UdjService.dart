@@ -111,6 +111,9 @@ class UdjService {
   // Player Administration
   // --------------------------------------------------------------------------
 
+  /**
+   * Set the player state to play or pause (or inactive- not implemented yet).
+   */
   void setPlayerState(String playerID, String playerState, Function callback) {
     authPostRequest("/players/$playerID/state", {'state': playerState}, (HttpRequest request) {
       if (request.status == 200) {
@@ -134,14 +137,9 @@ class UdjService {
     });
   }
   
-  void playPlayer(String playerID, Function callback) {
-    // TODO
-  }
-  
-  void pausePlayer(String playerID, Function callback) {
-    // TODO
-  }
-  
+  /**
+   * Set the player volume to a specific level.
+   */
   void setPlayerVolume(String playerID, int level, Function callback) {
     // TODO: precondition- 0 <= level <= 10
     authPostRequest("/udj/0_6/players/$playerID/volume", {"volume": level}, (HttpRequest req) {
@@ -189,7 +187,7 @@ class UdjService {
   }
   
   /**
-   * Parse the HttpRequest 
+   * Parse the joining HttpRequest.
    */
   void _handleJoining(HttpRequest req, Function callback) {
     // 201 is success, 400 is you own it
@@ -230,6 +228,21 @@ class UdjService {
         callback({'success': false, 'error': error});
         
       }
+    });
+  }
+  
+  /**
+   * List the users in a given player.
+   */
+  void getCurrentUsers(String playerID, Function callback) {
+    authGetRequest('/udj/0_6/players/$playerID/users', {}, (HttpRequest req) {
+      if (req.status == 200) {
+        callback({'success': true, 'users': JSON.parse(req.responseText)});
+      } else {
+        String error = Errors.UNKOWN;
+        callback({'success': false, 'error': error}); // TODO: make a function to format this
+      }
+      
     });
   }
   

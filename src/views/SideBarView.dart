@@ -10,6 +10,8 @@ class SideBarView extends CompositeView {
   
   AdminPlayerView _controls;
   
+  AdminUserView _users;
+  
   View _nowPlaying;
     
   QueueView _queueView;
@@ -30,10 +32,17 @@ class SideBarView extends CompositeView {
     ''');
     addChild(_playerInfo);
     
+    // admin
+    
     AdminPlayerState controlsState = new AdminPlayerState(_udjApp);
-    _controls = new AdminPlayerView(this._udjApp, controlsState);
+    _controls = new AdminPlayerView(_udjApp, controlsState);
+    
+    AdminUserState usersState = new AdminUserState(_udjApp);
+    _users = new AdminUserView(_udjApp, usersState);
+    
     if (_udjApp.state.canAdmin()) {
       addChild(_controls);
+      addChild(_users);
     }
     
     _nowPlaying = new View.html('''
