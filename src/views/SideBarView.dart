@@ -8,8 +8,10 @@ class SideBarView extends CompositeView {
   /// Information about the player a user is currently in.
   View _playerInfo;
   
-  View _nowPlaying;
+  AdminPlayerView _controls;
   
+  View _nowPlaying;
+    
   QueueView _queueView;
   
   // constructors
@@ -27,6 +29,11 @@ class SideBarView extends CompositeView {
     ''');
     addChild(_playerInfo);
     
+    AdminPlayerState controlsState = new AdminPlayerState(_udjApp);
+    _controls = new AdminPlayerView(this._udjApp, controlsState);
+    if (controlsState.canAdmin()) {
+      addChild(_controls);
+    }
     
     _nowPlaying = new View.html('''
       <div class="now-playing-box">
@@ -98,6 +105,7 @@ class SideBarView extends CompositeView {
   }
   
   void _changePlayerState(e){
+    // TODO: refactor to a constant
     if(_udjApp.state.playerState == "Playing"){
       _nowPlaying.node.query(".now-playing-status").innerHTML = '<i class="icon-play"></i>';
     }else{
