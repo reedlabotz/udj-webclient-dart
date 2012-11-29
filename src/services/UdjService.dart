@@ -145,8 +145,12 @@ class UdjService {
     authPostRequest("/udj/0_6/players/$playerID/volume", {"volume": level}, (HttpRequest req) {
       if (req.status == 200) {
         callback( {'success': true} );
+      } else {
+        String error = Errors.UNKOWN;
+        if (req.status == 400) {
+          error = Errors.BAD_VOLUME;
+        }
       }
-      // TODO: else handle errors
     });
   }
   

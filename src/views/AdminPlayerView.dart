@@ -1,5 +1,8 @@
 part of udjlib;
 
+// AdminPlayerView
+// ============================================================================
+
 class AdminPlayerView extends CompositeView {
   final UdjApp _udjApp;
   
@@ -8,6 +11,12 @@ class AdminPlayerView extends CompositeView {
   View _playPause;
   View _volume;
   
+  // Constructors
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Create the [AdminPlayerView].
+   */
   AdminPlayerView(this._udjApp,this._controls):super('playeradmin'){
     _playPause = new View.html('''
     <div class="playeradmin-playPause">
@@ -28,7 +37,7 @@ class AdminPlayerView extends CompositeView {
   }
   
   /**
-   * Callback after the node has been rendered. Add watchers and callbacks.
+   * Add watchers and event callbacks.
    */
   void afterRender(Element node){
     // events

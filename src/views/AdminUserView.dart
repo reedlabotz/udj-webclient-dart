@@ -42,16 +42,27 @@ class AdminUserView extends CompositeView {
     _controls.getCurrentUsers((List<User> users) {
       _users.removeAllChildren();
       
-      for (User user in users) {
+      if (users != null) {
+        for (User user in users) {
+          _users.addChild(new View.html('''
+          <div class="useradmin-users-user">
+            <span>${user.username}</span>
+          </div>
+          '''));
+        } 
+      } else {
         _users.addChild(new View.html('''
-        <div class="useradmin-users-user">
-          <span>${user.username}</span>
-        </div>
+          <div class="error">There was an error loading the list of users in this player.</div>
         '''));
       }
+      // TODO: handle error message with a watcher?
+      // TODO: handle users and admins list as separate CompositeView child classes?
+      // TODO: make generic CompositeView child class to handle list of things, with an input list(List<T>) method?
+      
     });
     
     // events
+    
     // watchers 
   }
   

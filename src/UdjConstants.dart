@@ -43,5 +43,6 @@ class Errors{
   // searching for players
   static const String BAD_RADIUS = "bad-radius";
   
-      
+  // player admin
+  static const String BAD_VOLUME = "bad-volume";
 }
