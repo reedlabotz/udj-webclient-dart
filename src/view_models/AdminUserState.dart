@@ -39,4 +39,21 @@ class AdminUserState extends UIState {
     });
   }
   
+  // Methods
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Kicks a user with the given id.
+   */
+  void kickUser(String userID, Function callback) {
+    _udjApp.service.kickUser(_udjApp.state.currentPlayer.value.id, userID, (Map status) {
+      if (status['success'] || status['error'] == Errors.USER_NOT_IN_PLAYER) {
+        callback(); // change to watcher
+      } else {
+        // notify user of errors?
+        // do nothing, fail silently
+      }
+    });
+  }
+  
 }

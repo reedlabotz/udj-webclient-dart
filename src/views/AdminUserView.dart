@@ -24,6 +24,9 @@ class AdminUserView extends CompositeView {
     '''));
     
     _admins = new CompositeView('useradmin-admins');
+    _admins.addChild(new View.html('''
+    <div class="message">Click to kick. :)</div>
+    '''));
     for (User admin in _udjApp.state.currentPlayer.value.admins) {
       View admin = new View.html('''
       <div class="useradmin-admins-admin">
@@ -32,7 +35,7 @@ class AdminUserView extends CompositeView {
       ''');
     }
   }
-    
+
   /**
    * Populate content generated from an ajax call.
    * Setup events and watchers.
@@ -43,12 +46,18 @@ class AdminUserView extends CompositeView {
       _users.removeAllChildren();
       
       if (users != null) {
+        _users.addChild(new View.html('''
+        <div class="message">Click to kick. :)</div>
+        '''));
+        
         for (User user in users) {
-          _users.addChild(new View.html('''
-          <div class="useradmin-users-user">
+          View userView = new View.html('''
+          <div class="useradmin-users-user" data-user-id="${user.id}">
             <span>${user.username}</span>
           </div>
-          '''));
+          ''');
+          _users.addChild(userView);
+          userView.addOnClick(_kickUser);
         } 
       } else {
         _users.addChild(new View.html('''
@@ -62,8 +71,27 @@ class AdminUserView extends CompositeView {
     });
     
     // events
+    //  - some are setup in content creation
     
     // watchers 
+  }
+  
+  // Event Handlers & Watchers
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Kick the user an admin clicks on.
+   */
+  void _kickUser(Event e) {
+    // find the right element
+    Element target = e.target;
+    while (target.classes.contains("useradmin-users-user") == false) {
+      target = target.parent;
+    }
+    
+    _controls.kickUser(target.dataAttributes['user-id'], () {
+      target.remove();
+    });
   }
   
 }

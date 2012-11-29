@@ -45,4 +45,5 @@ class Errors{
   
   // player admin
   static const String BAD_VOLUME = "bad-volume";
+  static const String USER_NOT_IN_PLAYER = "user-not-in-player"; // TODO: combine with NOT_IN_PLAYER ?
 }

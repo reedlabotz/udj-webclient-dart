@@ -150,6 +150,29 @@ class UdjService {
         if (req.status == 400) {
           error = Errors.BAD_VOLUME;
         }
+        
+        callback({'success': false, 'error': error});
+      }
+    });
+  }
+  
+  // User Administration
+  // --------------------------------------------------------------------------
+  
+  /**
+   * Kick a user from the given player.
+   */
+  void kickUser(String playerID, String userID, Function callback) {
+    authPutRequestJson('/udj/0_6/players/$playerID/kicked_users/$userID', {}, (HttpRequest req) {
+      if (req.status == 200) {
+        callback({'success': true});
+      } else {
+        String error = Errors.UNKOWN;
+        if (req.status == 404 && req.getResponseHeader('X-Udj-Missing-Resource') == 'user') {
+          error = Errors.USER_NOT_IN_PLAYER;
+        }
+        
+        callback({'success': false, 'error': error});
       }
     });
   }
