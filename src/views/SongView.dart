@@ -7,9 +7,11 @@ class SongView extends CompositeView{
   
   View _vote;
   
+  // TODO: refactor QueueSong parts out, so that a QueueSong contains an inner Song view
   SongView(this._udjApp,this._song):super('song'){
     if(_song.runtimeType.toString() == "QueueSong"){
       QueueSong song = _song;
+      
       _vote = new View.html('''
         <div class="song-vote" data-song-id="${song.id}">
           <div class="song-vote-up"><button><i class="icon-chevron-up"></i></button></div>
@@ -20,6 +22,16 @@ class SongView extends CompositeView{
         </div>
       ''');
       addChild(_vote);
+      
+      if (_udjApp.state.canAdmin()) {
+        View adder = new View.html('''
+          <div class="song-adder">
+            <span class="song-adder-user">Added by ${song.adder.username}</span>
+            <span class="song-adder-time"> at ${song.timeAdded}</span>
+          </div>
+        ''');
+      }
+      
     }else{
       View add = new View.html('''
         <div class="song-add" data-song-id="${_song.id}">
