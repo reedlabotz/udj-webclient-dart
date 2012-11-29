@@ -10,18 +10,38 @@ class AdminPlayerState extends UIState {
   // event handlers
   
   void play() {
-    if (_canAdmin()) {
-      // try to play the song
+    if (canAdmin() && _udjApp.state.playerState.value != "Playing") {
+      _udjApp.service.setPlayerState(_udjApp.state.currentPlayer.value.id, 'play', (Map status) {
+        if (status['success']) {
+          // TODO: refactor to a constant
+          _udjApp.state.playerState.value = "Playing"; // see sidebar view for value / similar functionality
+          
+        } else {
+          // handle errors
+          // notify user of errors
+        }
+        
+      });
       
     } else {
-      // error msg
+      // error msg- is not an admin
       
     }
   }
   
   void pause() {
-    if (_canAdmin()) {
-      // try to pause the song
+    if (canAdmin() && _udjApp.state.playerState != "Paused") {
+      _udjApp.service.setPlayerState(_udjApp.state.currentPlayer.value.id, 'pause', (Map status) {
+        if (status['success']) {
+          // TODO: refactor to a constant
+          _udjApp.state.playerState.value = "Paused"; // see sidebar view for value / similar functionality
+
+        } else {
+          // handle errors
+          // notify user of errors
+        }
+        
+      });
       
     } else {
       // error msg
@@ -30,7 +50,7 @@ class AdminPlayerState extends UIState {
   }
   
   void increaseVolume(int amount) {
-    if (_canAdmin()) {
+    if (canAdmin()) {
       
       // try to turn the volume up by amount
       //  - requires previous amount
@@ -41,7 +61,7 @@ class AdminPlayerState extends UIState {
   }
   
   void decreaseVolume(int amount) {
-    if (_canAdmin()) {
+    if (canAdmin()) {
   
       // try to turn the volume down by amount
       //  - requires previous amount
@@ -55,7 +75,7 @@ class AdminPlayerState extends UIState {
   /**
    * Make sure the user is in a player and is an admin of that player.
    */
-  bool _canAdmin() {
+  bool canAdmin() {
     Player p = _udjApp.state.currentPlayer.value;
     String name = _udjApp.state.currentUsername.value;
     
@@ -63,8 +83,9 @@ class AdminPlayerState extends UIState {
     bool isAdmin = p.admins.some((User admin) {
       return admin.username == name;
     });
+    bool isOwner = p.owner.username == name;
     
-    return inPlayer && isAdmin;
+    return inPlayer && (isAdmin || isOwner);
   }
   
 }
