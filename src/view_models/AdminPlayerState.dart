@@ -64,20 +64,4 @@ class AdminPlayerState extends UIState {
     }
   }
   
-  /**
-   * Make sure the user is in a player and is an admin of that player.
-   */
-  bool canAdmin() {
-    Player p = _udjApp.state.currentPlayer.value;
-    String name = _udjApp.state.currentUsername.value;
-    
-    bool inPlayer = p != null;
-    bool isAdmin = p.admins.some((User admin) {
-      return admin.username == name;
-    });
-    bool isOwner = p.owner.username == name;
-    
-    return inPlayer && (isAdmin || isOwner);
-  }
-  
 }
