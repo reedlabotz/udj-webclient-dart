@@ -45,15 +45,37 @@ class UdjState extends UIState {
     ready = new ObservableValue<bool>(false),
     creatingPlayer = new ObservableValue<bool>(false);
   
+  
+  // mulit view / state utilities
+    
+  // TODO: old code? remove?
   void voteSong(String action,String songId){
-    _udjApp.service.voteSong(action,_udjApp.state.currentPlayer.value.id,songId,(res){
+    _udjApp.service.voteSong(action,currentPlayer.value.id,songId,(res){
       
     });
   }
   
+  // TODO: old code? remove?
   void addSong(String songId){
-    _udjApp.service.addSong(_udjApp.state.currentPlayer.value.id,songId,(res){
+    _udjApp.service.addSong(currentPlayer.value.id,songId,(res){
       
     });
   }
+  
+  /**
+   * Make sure the user is in a player and is an admin of that player.
+   */
+  bool canAdmin() {
+    Player p = currentPlayer.value;
+    String name = currentUsername.value;
+    
+    bool inPlayer = p != null;
+    bool isAdmin = p.admins.some((User admin) {
+      return admin.username == name;
+    });
+    bool isOwner = p.owner.username == name;
+    
+    return inPlayer && (isAdmin || isOwner);
+  }
+  
 }

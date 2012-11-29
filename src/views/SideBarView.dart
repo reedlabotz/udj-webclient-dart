@@ -32,7 +32,7 @@ class SideBarView extends CompositeView {
     
     AdminPlayerState controlsState = new AdminPlayerState(_udjApp);
     _controls = new AdminPlayerView(this._udjApp, controlsState);
-    if (controlsState.canAdmin()) {
+    if (_udjApp.state.canAdmin()) {
       addChild(_controls);
     }
     

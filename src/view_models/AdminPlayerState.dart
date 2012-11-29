@@ -50,7 +50,7 @@ class AdminPlayerState extends UIState {
   }
   
   void changeVolume(int amount) {
-    if (canAdmin()) {
+    if (_udjApp.state.canAdmin()) {
       int newVolume = _udjApp.state.playerVolume.value + amount;
       _udjApp.service.setPlayerVolume(_udjApp.state.currentPlayer.value.id, newVolume, (Map status) {
         if (status['success']) {
