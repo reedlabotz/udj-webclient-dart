@@ -10,7 +10,7 @@ class AdminPlayerState extends UIState {
   // event handlers
   
   void play() {
-    if (canAdmin() && _udjApp.state.playerState.value != "Playing") {
+    if (_udjApp.state.canAdmin() && _udjApp.state.playerState.value != "Playing") {
       _udjApp.service.setPlayerState(_udjApp.state.currentPlayer.value.id, 'play', (Map status) {
         if (status['success']) {
           // TODO: refactor to a constant
@@ -30,7 +30,7 @@ class AdminPlayerState extends UIState {
   }
   
   void pause() {
-    if (canAdmin() && _udjApp.state.playerState != "Paused") {
+    if (_udjApp.state.canAdmin() && _udjApp.state.playerState != "Paused") {
       _udjApp.service.setPlayerState(_udjApp.state.currentPlayer.value.id, 'pause', (Map status) {
         if (status['success']) {
           // TODO: refactor to a constant
