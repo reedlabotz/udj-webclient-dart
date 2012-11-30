@@ -19,7 +19,7 @@ class AdminUserState extends UIState {
    * them as the input param.
    * 
    * An empty list indicates that no users are in the player.
-   * A null return indicates that an error occurred and the users are unkown.
+   * A null value indicates that an error occurred and the users are unkown.
    */
   void getCurrentUsers(Function callback) {
     Player current = _udjApp.state.currentPlayer.value;

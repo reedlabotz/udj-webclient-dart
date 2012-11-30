@@ -232,7 +232,6 @@ class UdjService {
       }
       
       callback({'success': false, 'error': error});
-      
     }
   }
   

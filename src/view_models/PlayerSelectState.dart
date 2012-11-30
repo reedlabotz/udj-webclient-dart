@@ -130,6 +130,8 @@ class PlayerSelectState extends UIState{
         errorMessage.value = "There was an error joining the server.";
         
       }
+      
+      // TODO: wrong password
     }
   }
   
