@@ -154,7 +154,7 @@ class Scroller implements Draggable, MomentumDelegate {
         _minOffset = new Coordinate(0, 0),
         _contentOffset = new Coordinate(0, 0) {
     _touchHandler = new TouchHandler(this, scrollableElem.parent);
-    _momentum = new Momentum(this, defaultDecelerationFactor);
+    _momentum = new TimeoutMomentum(this, defaultDecelerationFactor);
 
     Element parentElem = scrollableElem.parent;
     assert(parentElem != null);
@@ -543,7 +543,7 @@ class Scroller implements Draggable, MomentumDelegate {
    * and maxPoint allowed for scrolling.
    */
   void _resize(Callback callback) {
-    final frameRect = _frame.rect;
+    final frameRect = _frame;
     Future contentSizeFuture;
 
     if (_lookupContentSizeDelegate != null) {
@@ -553,14 +553,14 @@ class Scroller implements Draggable, MomentumDelegate {
       });
     } else {
       contentSizeFuture = _element.rect;
-      contentSizeFuture.then((ElementRect rect) {
-        _contentSize = new Size(rect.scroll.width, rect.scroll.height);
+      window.requestLayoutFrame(() {
+        _contentSize = new Size(contentSizeFuture.value.scroll.width, contentSizeFuture.value.scroll.height);
       });
     }
 
     joinFutures(<Future>[frameRect, contentSizeFuture], () {
-      _scrollSize = new Size(frameRect.value.offset.width,
-                             frameRect.value.offset.height);
+      _scrollSize = new Size(frameRect.offset.width,
+                             frameRect.offset.height);
       Size adjusted = _getAdjustedContentSize();
       _maxPoint = new Coordinate(-_maxOffset.x, -_maxOffset.y);
       _minPoint = new Coordinate(

@@ -4,6 +4,8 @@
 
 library view;
 
+import 'dart:core';
+
 import 'dart:html';
 import 'dart:math' as Math;
 
@@ -346,9 +348,9 @@ class View implements Positionable {
     // a good tradeoff?
     if (ViewLayout.hasCustomLayout(this)) {
       Completer sizeCompleter = new Completer<Size>();
-      _node.rect.then((ElementRect rect) {
+      window.requestLayoutFrame(() {
         sizeCompleter.complete(
-            new Size(rect.client.width, rect.client.height));
+            new Size(_node.client.width, _node.client.height));
       });
       layout.measureLayout(sizeCompleter.future, changed);
     } else {

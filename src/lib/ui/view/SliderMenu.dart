@@ -157,9 +157,9 @@ class SliderMenu extends View {
   void updateIndicator(bool animate) {
     if (selectedItem != null) {
       // calculate where we want to put the triangle
-      selectedItem.rect.then((ElementRect rect) {
-        num x = rect.offset.left +
-            rect.offset.width / 2 - TRIANGLE_WIDTH / 2;
+      window.requestLayoutFrame(() {
+        num x = selectedItem.offset.left +
+            selectedItem.offset.width / 2 - TRIANGLE_WIDTH / 2;
         _moveIndicator(x, animate);
       });
     } else {

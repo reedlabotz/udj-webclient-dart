@@ -73,7 +73,7 @@ class ViewLayout {
    * to determine how this view should be laid out.
    */
   LayoutParams layoutParams;
-  Future<ElementRect> _cachedViewRect;
+  Future<Element> _cachedViewRect;
 
   /** The view that this layout belongs to. */
   final Positionable view;
@@ -107,7 +107,7 @@ class ViewLayout {
   CSSStyleDeclaration get _style => layoutParams.style.value;
 
   void cacheExistingBrowserLayout() {
-    _cachedViewRect = view.node.rect;
+    _cachedViewRect = new Future<Element>(view.node);
   }
 
   int get currentWidth {

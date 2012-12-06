@@ -241,7 +241,7 @@ class GenericListView<D> extends View {
         scroller.onScrollerDragEnd.add((e) => _decelStart());
       }
       if (_showScrollbar) {
-        _scrollbar = new Scrollbar(scroller, true);
+        _scrollbar = new Scrollbar(scroller);
       }
     } else {
       _reserveArea();

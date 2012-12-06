@@ -2,7 +2,6 @@ library framework;
 import 'dart:json';
 import 'dart:html';
 import 'dart:math'as Math;
-import 'dart:coreimpl';
 import 'ui/base/base.dart';
 import 'ui/view/view.dart';
 import 'ui/observable/observable.dart';
