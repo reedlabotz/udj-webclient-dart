@@ -25,15 +25,8 @@ class AdminUserView extends CompositeView {
     
     _admins = new CompositeView('useradmin-admins');
     _admins.addChild(new View.html('''
-    <div class="message">Click to kick. :)</div>
+    <div class="message">Click to remove admin privileges. :)</div>
     '''));
-    for (User admin in _udjApp.state.currentPlayer.value.admins) {
-      View admin = new View.html('''
-      <div class="useradmin-admins-admin">
-        <span>${admin.username}</span>
-      </div>
-      ''');
-    }
   }
 
   /**
@@ -70,6 +63,16 @@ class AdminUserView extends CompositeView {
       
     });
     
+    for (User admin in _udjApp.state.currentPlayer.value.admins) {
+      View adminView = new View.html('''
+      <div class="useradmin-admins-admin" data-user-id="${admin.id}">
+        <span>${admin.username}</span>
+      </div>
+      ''');
+      _admins.addChild(adminView);
+      adminView.addOnClick(_demoteAdmin);
+    }
+    
     // events
     //  - some are setup in content creation
     
@@ -90,6 +93,21 @@ class AdminUserView extends CompositeView {
     }
     
     _controls.kickUser(target.dataAttributes['user-id'], () {
+      target.remove();
+    });
+  }
+  
+  /**
+   * Removes admin priviledges of an existing admin.
+   */
+  void _demoteAdmin(Event e) {
+    // find the right element
+    Element target = e.target;
+    while (target.classes.contains("useradmin-admins-admin") == false) {
+      target = target.parent;
+    }
+    
+    _controls.demoteAdmin(target.dataAttributes['user-id'], () {
       target.remove();
     });
   }

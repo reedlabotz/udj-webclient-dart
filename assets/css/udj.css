@@ -5547,6 +5547,16 @@ body {
     top: 200px;
     bottom: 10px; }
 
+/* Admin Player View
+---------------------------------------------------------------------------- */
+.playeradmin .playeradmin-play:hover, .playeradmin .playeradmin-pause:hover, .playeradmin .playeradmin-volumeUp:hover, .playeradmin .playeradmin-volumeDown:hover {
+  cursor: pointer; }
+
+/* Admin User View
+---------------------------------------------------------------------------- */
+.useradmin .useradmin-admins-admin:hover, .useradmin useradmin-users-user:hover {
+  cursor: pointer; }
+
 /* Library View
 ---------------------------------------------------------------------------- */
 .library-box {

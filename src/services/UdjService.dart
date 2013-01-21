@@ -177,6 +177,24 @@ class UdjService {
     });
   }
   
+  /**
+   * Demote an admin on the given player.
+   */
+  demoteAdmin(String playerID, String userID, Function callback) {
+     authDeleteRequest('/udj/0_6/players/$playerID/admins/$userID', {}, (HttpRequest req) {
+       if (req.status == 200) {
+         callback({'success': true});
+       } else {
+         String error = Errors.UNKOWN;
+         if (req.status == 404 && req.getResponseHeader('X-Udj-Missing-Resource') == 'user') {
+           error = Errors.USER_NOT_PLAYER_ADMIN;
+         }
+         
+         callback({'success': false, 'error': error});
+       }
+     });
+  }
+  
   // Player Interaction
   // --------------------------------------------------------------------------
   
@@ -402,6 +420,5 @@ class UdjService {
       request.send(body);
     }
   }
-  
-  
+
 }

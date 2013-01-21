@@ -47,7 +47,7 @@ class AdminUserState extends UIState {
    */
   void kickUser(String userID, Function callback) {
     _udjApp.service.kickUser(_udjApp.state.currentPlayer.value.id, userID, (Map status) {
-      if (status['success'] || status['error'] == Errors.USER_NOT_IN_PLAYER) {
+      if (status['success'] || status['error'] == Errors.USER_NOT_IN_PLAYER) { // todo: make this a success case
         callback(); // change to watcher
       } else {
         // notify user of errors?
@@ -56,4 +56,16 @@ class AdminUserState extends UIState {
     });
   }
   
+  /**
+   * Demotes an admin with the given id.
+   */
+  demoteAdmin(String userID, Function callback) {
+    _udjApp.service.demoteAdmin(_udjApp.state.currentPlayer.value.id, userID, (Map status) {
+      if (status['success']) {
+        callback(); // change to watcher
+      } else {
+        window.alert('Admin could not be removed.');
+      }
+    });
+  }
 }

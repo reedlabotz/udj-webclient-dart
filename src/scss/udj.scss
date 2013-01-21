@@ -218,6 +218,30 @@ body{
   }
 }
 
+/* Admin Player View
+---------------------------------------------------------------------------- */
+.playeradmin {
+  .playeradmin-play, .playeradmin-pause, .playeradmin-volumeUp, .playeradmin-volumeDown {
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+}
+
+/* Admin User View
+---------------------------------------------------------------------------- */
+.useradmin {
+  .useradmin-admins-admin, useradmin-users-user {
+      
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  
+}
+
 
 /* Library View
 ---------------------------------------------------------------------------- */

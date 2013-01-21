@@ -308,7 +308,7 @@ class PlayerSelectListView extends CompositeView {
       target = target.parent;
     }
     
-    String password = window.prompt("Enter the player's password", '');
+    String password = js.context.window.prompt("Enter the player's password", '');
     if (password != null) {
       _state.joinProtectedPlayer( target.dataAttributes['player-id'], password );
     }
