@@ -263,7 +263,7 @@ class GenericListView<D> extends View {
     }
 
     if (_selectedItem != null) {
-      addOnClick(function(Event e) { _onClick(e); });
+      addOnClick((Event e) { _onClick(e); });
     }
 
     if (_selectedItem != null) {
@@ -294,15 +294,13 @@ class GenericListView<D> extends View {
 
   void onResize() {
     int lastViewLength = _viewLength;
-    node.rect.then((ElementRect rect) {
-      _viewLength = _vertical ? rect.offset.height : rect.offset.width;
-      if (_viewLength != lastViewLength) {
-        if (_scrollbar != null) {
-          _scrollbar.refresh();
-        }
-        renderVisibleItems(true);
+    _viewLength = _vertical ? node.offsetHeight : node.offsetWidth;
+    if (_viewLength != lastViewLength) {
+      if (_scrollbar != null) {
+        _scrollbar.refresh();
       }
-    });
+      renderVisibleItems(true);
+    }
   }
 
   void enterDocument() {

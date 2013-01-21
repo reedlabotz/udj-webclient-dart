@@ -140,7 +140,7 @@ class PagedColumnView extends View {
   // TODO(jmesserly): would be better to not have this code in enterDocument.
   // But we need computedStyle to read our CSS properties.
   void enterDocument() {
-    contentView.node.computedStyle.then((CSSStyleDeclaration style) {
+    contentView.node.computedStyle.then((CssStyleDeclaration style) {
       _computeColumnGap(style);
 
       // Trigger a fake resize event so we measure our height.
@@ -162,7 +162,7 @@ class PagedColumnView extends View {
   }
 
   /** Read the column-gap setting so we know how far to translate the child. */
-  void _computeColumnGap(CSSStyleDeclaration style) {
+  void _computeColumnGap(CssStyleDeclaration style) {
     String gap = style.columnGap;
     if (gap == 'normal') {
       gap = style.fontSize;
@@ -188,7 +188,7 @@ class PagedColumnView extends View {
     // flow to the right correctly. So we copy our own height and set the height
     // of the content.
     window.requestLayoutFrame(() {
-      contentView.node.style.height = '${node.offset.height}px';
+      contentView.node.style.height = '${node.offsetHeight}px';
     });
     _updatePageCount(null);
   }
@@ -196,8 +196,8 @@ class PagedColumnView extends View {
   bool _updatePageCount(Callback callback) {
     int pageLength = 1;
     window.requestLayoutFrame(() {
-      if (_container.scroll.width > _container.offset.width) {
-        pageLength = (_container.scroll.width / _computePageSize(_container))
+      if (_container.scrollWidth > _container.offsetWidth) {
+        pageLength = (_container.scrollWidth / _computePageSize(_container))
             .ceil().toInt();
       }
       pageLength = Math.max(pageLength, 1);
@@ -266,7 +266,7 @@ class PagedColumnView extends View {
     // Hacky: we need to duplicate the way the columns are being computed,
     // including rounding, to figure out how far to translate the div.
     // See http://www.w3.org/TR/css3-multicol/#column-width
-    _viewportSize = elem.offset.width;
+    _viewportSize = elem.offsetWidth;
 
     // Figure out how many columns we're rendering.
     // The algorithm ensures we're bigger than the specified min size.

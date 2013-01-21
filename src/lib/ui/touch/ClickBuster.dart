@@ -190,7 +190,7 @@ class ClickBuster {
       if (!Device.supportsTouch) {
         startFn = mouseToTouchCallback(startFn);
       }
-      EventUtil.observe(document,
+      EventUtil.observe(document.documentElement,
           Device.supportsTouch ? document.on.touchStart : document.on.mouseDown,
           startFn, true, true);
       _coordinates = new DoubleLinkedQueue<num>();

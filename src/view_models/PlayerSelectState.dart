@@ -38,7 +38,7 @@ class PlayerSelectState extends UIState{
     
     window.navigator.geolocation.getCurrentPosition(
       (Geoposition position){
-        _udjApp.service.getPlayersByPosition(position, function(Map status) {
+        _udjApp.service.getPlayersByPosition(position, (Map status) {
           if (status['success']) {
             players.value = _buildPlayers(status['players']);
           } else {
@@ -56,7 +56,7 @@ class PlayerSelectState extends UIState{
    * Get the player by searching (for its name).
    */
   void searchPlayer(String search) {
-    _udjApp.service.getSearchPlayer(search, function(Map status) {
+    _udjApp.service.getSearchPlayer(search, (Map status) {
       if (status['success']) {
         players.value = _buildPlayers(status['players']);
       } else {

@@ -61,7 +61,7 @@ class OfflineSyncService extends View{
         } else {
           // if the player requires a password, try to join it with one
           if (status['error'] == Errors.PLAYER_PROTECTED) {
-            String password = window.prompt("Enter the player's password", '');
+            String password = js.context.window.prompt("Enter the player's password", '');
             if (password != null) {
               _service.joinProtectedPlayer(playerData['id'], password, (Map status) {
                 if (status['success']) {

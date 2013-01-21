@@ -11,6 +11,7 @@ import 'lib/ui/observable/observable.dart';
 import 'lib/ui/touch/touch.dart';
 import 'lib/ui/util/utilslib.dart';
 import 'lib/requestHelper.dart';
+import 'package:js/js.dart' as js;
 
 part 'UdjConstants.dart';
 part 'services/OfflineSyncService.dart';

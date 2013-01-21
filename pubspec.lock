@@ -1,1 +1,1 @@
-{"packages":{"js":{"version":"0.0.6","source":"hosted","description":"js"},"unittest":{"version":"0.0.0-r.13851","source":"sdk","description":"unittest"}}}
+{"packages":{"js":{"version":"0.0.13","source":"hosted","description":"js"},"browser":{"version":"0.0.1","source":"hosted","description":"browser"},"unittest":{"version":"0.2.10+1","source":"hosted","description":"unittest"}}}

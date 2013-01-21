@@ -112,7 +112,7 @@ class View implements Positionable {
    * document or not.
    */
   bool get isInDocument {
-    return _node != null && node.document.body.contains(node);
+    return _node != null && node.document.$dom_body.contains(node);
   }
 
   /**
@@ -350,7 +350,7 @@ class View implements Positionable {
       Completer sizeCompleter = new Completer<Size>();
       window.requestLayoutFrame(() {
         sizeCompleter.complete(
-            new Size(_node.client.width, _node.client.height));
+            new Size(_node.clientWidth, _node.clientHeight));
       });
       layout.measureLayout(sizeCompleter.future, changed);
     } else {

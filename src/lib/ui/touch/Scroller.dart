@@ -233,7 +233,7 @@ class Scroller implements Draggable, MomentumDelegate {
     // The scrollable element must be relatively positioned.
     // TODO(jacobr): this assert fires asynchronously which could be confusing.
     if (_scrollTechnique == ScrollerScrollTechnique.RELATIVE_POSITIONING) {
-      _element.computedStyle.then((CSSStyleDeclaration style) {
+      _element.computedStyle.then((CssStyleDeclaration style) {
         assert(style.position != "static");
       });
     }
@@ -552,15 +552,15 @@ class Scroller implements Draggable, MomentumDelegate {
         _contentSize = size;
       });
     } else {
-      contentSizeFuture = _element.rect;
+      contentSizeFuture = new Future.immediate(_element);
       window.requestLayoutFrame(() {
         _contentSize = new Size(contentSizeFuture.value.scroll.width, contentSizeFuture.value.scroll.height);
       });
     }
 
     joinFutures(<Future>[frameRect, contentSizeFuture], () {
-      _scrollSize = new Size(frameRect.offset.width,
-                             frameRect.offset.height);
+      _scrollSize = new Size(frameRect.offsetWidth,
+                             frameRect.offsetHeight);
       Size adjusted = _getAdjustedContentSize();
       _maxPoint = new Coordinate(-_maxOffset.x, -_maxOffset.y);
       _minPoint = new Coordinate(

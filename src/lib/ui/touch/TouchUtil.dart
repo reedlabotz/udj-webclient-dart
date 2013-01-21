@@ -202,8 +202,6 @@ class MockTouchEvent implements TouchEvent {
 
   bool get returnValue => wrapped.returnValue;
 
-  EventTarget get srcElement => wrapped.srcElement;
-
   EventTarget get target => wrapped.target;
 
   int get timeStamp => wrapped.timeStamp;
@@ -216,11 +214,7 @@ class MockTouchEvent implements TouchEvent {
 
   void stopPropagation() { wrapped.stopPropagation(); }
 
-  int get charCode => wrapped.charCode;
-
   int get detail => wrapped.detail;
-
-  int get keyCode => wrapped.keyCode;
 
   int get layerX => wrapped.layerX;
 

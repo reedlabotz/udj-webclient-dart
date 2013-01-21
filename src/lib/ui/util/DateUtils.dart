@@ -76,11 +76,6 @@ class DateUtils {
       }
     }
 
-    bool isUtc = text.endsWith('Z');
-    if (isUtc) {
-      text = text.substring(0, text.length - 1);
-    }
-
     final parts = text.split('T');
     ensure(parts.length == 2);
 
@@ -104,8 +99,7 @@ class DateUtils {
         int.parse(time[0]),
         int.parse(time[1]),
         int.parse(seconds[0]),
-        milliseconds,
-        isUtc: isUtc);
+        milliseconds);
   }
 
   /**
