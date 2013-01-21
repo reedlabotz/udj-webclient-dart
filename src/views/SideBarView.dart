@@ -81,7 +81,7 @@ class SideBarView extends CompositeView {
     Player p = _udjApp.state.currentPlayer.value;
     if (p != null) {
       _playerInfo.node.query(".player-name").text = p.name;
-      _playerInfo.node.query(".player-user-count").innerHTML = '<i class="icon-user"></i> ${p.numActiveUsers}';
+      _playerInfo.node.query(".player-user-count").innerHtml = '<i class="icon-user"></i> ${p.numActiveUsers}';
       _updateQueueCount(null);
       
     } else {
@@ -98,10 +98,10 @@ class SideBarView extends CompositeView {
   void _updateQueueCount(e) {
     List<QueueSong> queue = _udjApp.state.queue.value;
     if (queue != null && _udjApp.state.currentPlayer.value != null) {
-      _playerInfo.node.query(".player-queue-count").innerHTML = '<i class="icon-music"></i> ${queue.length}';
+      _playerInfo.node.query(".player-queue-count").innerHtml = '<i class="icon-music"></i> ${queue.length}';
       
     } else {
-      _playerInfo.node.query(".player-queue-count").innerHTML = '<i class="icon-music"></i> --';
+      _playerInfo.node.query(".player-queue-count").innerHtml = '<i class="icon-music"></i> --';
       
     }
   }
@@ -117,9 +117,9 @@ class SideBarView extends CompositeView {
   void _changePlayerState(e){
     // TODO: refactor to a constant
     if(_udjApp.state.playerState == "Playing"){
-      _nowPlaying.node.query(".now-playing-status").innerHTML = '<i class="icon-play"></i>';
+      _nowPlaying.node.query(".now-playing-status").innerHtml = '<i class="icon-play"></i>';
     }else{
-      _nowPlaying.node.query(".now-playing-status").innerHTML = '<i class="icon-pause"></i>';
+      _nowPlaying.node.query(".now-playing-status").innerHtml = '<i class="icon-pause"></i>';
     }
   }
   
