@@ -69,13 +69,16 @@ class UdjState extends UIState {
     Player p = currentPlayer.value;
     String name = currentUsername.value;
     
-    bool inPlayer = p != null;
+    if (p == null) {
+      return false;
+    }
+    
     bool isAdmin = p.admins.some((User admin) {
       return admin.username == name;
     });
     bool isOwner = p.owner.username == name;
     
-    return inPlayer && (isAdmin || isOwner);
+    return isAdmin || isOwner;
   }
   
 }
