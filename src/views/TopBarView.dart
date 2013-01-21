@@ -1,22 +1,21 @@
 part of udjlib;
-/**
- * The top bar which holds the library navigation and search bar
- */
+
+// TopBarView
+// ============================================================================
+
+// holds library navigation and search bar
 class TopBarView extends CompositeView {
   /// reference to the main app
   final UdjApp _udjApp;
   
   final TopBarState _state;
   
-  /// The menue at the top to choose library section
   SliderMenu _librarySelectView;
-  
-  /// Holder for search box
   View _searchBoxView;
   
-  /**
-   * Main constructor initalizes child views
-   */
+  // Constructors
+  // --------------------------------------------------------------------------
+  
   TopBarView(this._udjApp,this._state):super('top-bar'){
     // Create the logo holder
     var logoView = new View.html('''
@@ -42,6 +41,9 @@ class TopBarView extends CompositeView {
     ''');
     addChild(_searchBoxView);
   }  
+  
+  // Events
+  // --------------------------------------------------------------------------
   
   /**
    * Callback for when a new library view is selected

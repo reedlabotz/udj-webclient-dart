@@ -14,9 +14,6 @@ class AdminUserView extends CompositeView {
   // Constructors
   // --------------------------------------------------------------------------
   
-  /**
-   * Create the [AdminUserView].
-   */
   AdminUserView(this._udjApp,this._controls):super('useradmin'){
     _users = new CompositeView('useradmin-users');
     _users.addChild(new View.html('''
@@ -31,7 +28,6 @@ class AdminUserView extends CompositeView {
 
   /**
    * Populate content generated from an ajax call.
-   * Setup events and watchers.
    */
   void afterRender(Element node){
     // populate ajax content
@@ -75,11 +71,9 @@ class AdminUserView extends CompositeView {
     
     // events
     //  - some are setup in content creation
-    
-    // watchers 
   }
   
-  // Event Handlers & Watchers
+  // Events
   // --------------------------------------------------------------------------
   
   /**

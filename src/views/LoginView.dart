@@ -1,24 +1,20 @@
 part of udjlib;
 
-/**
- * The login view that holds the login form.
- */
+// LoginView
+// ============================================================================
+
 class LoginView extends CompositeView{
-  /// Reference to the main app
   final UdjApp _udjApp;
   
   final LoginState _state;
   
-  /// The actual form itself
   View _loginForm;
-  
   View _errorMessage;
   
-  /**
-   * The constructor will build the form.
-   */
+  // Constructors
+  // --------------------------------------------------------------------------
+  
   LoginView(this._udjApp,this._state):super('login-box'){
-    // create login form
     _loginForm = new View.html('''
       <div class="container" id="login-box">
         <div class="row">
@@ -48,9 +44,14 @@ class LoginView extends CompositeView{
     watch(_state.errorMessage,_showErrorMessage);
   }
   
-  /**
-   * Callback when form is submitted.
-   */
+  void afterRender(Element node){
+    // events
+    _loginForm.node.query("#login-form").on.submit.add(_loginFormSubmitted);
+  }
+  
+  // Events
+  // --------------------------------------------------------------------------
+  
   void _loginFormSubmitted(Event e){
     e.preventDefault();
     InputElement usernameInput = _loginForm.node.query("#username");
@@ -60,12 +61,8 @@ class LoginView extends CompositeView{
     _state.login(username,password);
   }
   
-  /**
-   * Add listener after render is done.
-   */
-  void afterRender(Element node){
-    _loginForm.node.query("#login-form").on.submit.add(_loginFormSubmitted);
-  }
+  // Watchers
+  // --------------------------------------------------------------------------
   
   void _showErrorMessage(e){
     InputElement passwordInput = _loginForm.node.query("#password");

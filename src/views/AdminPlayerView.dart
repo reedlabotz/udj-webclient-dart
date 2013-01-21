@@ -14,9 +14,6 @@ class AdminPlayerView extends CompositeView {
   // Constructors
   // --------------------------------------------------------------------------
   
-  /**
-   * Create the [AdminPlayerView].
-   */
   AdminPlayerView(this._udjApp,this._controls):super('playeradmin'){
     _playPause = new View.html('''
     <div class="playeradmin-playPause">
@@ -36,9 +33,6 @@ class AdminPlayerView extends CompositeView {
     
   }
   
-  /**
-   * Add watchers and event callbacks.
-   */
   void afterRender(Element node){
     // events
     _playPause.node.query("#controls-play").on.click.add((Event e) {

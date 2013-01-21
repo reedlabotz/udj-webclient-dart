@@ -10,30 +10,20 @@ part of udjlib;
  * to access the [PlayerCreateView].
  */
 class PlayerSelectView extends CompositeView {
-  /// The [UdjApp] (which provides access to the [UdjState]).
   final UdjApp _udjApp;
 
-  /// Other states this view can access.
   final PlayerSelectState _state;
     
-  /// Display the view's title and an exit button. 
   View _playerSelectHeader;
-  
-  /// A collection of view UI utilities, including search, error messages, and create player button.
   CompositeView _actionbar;
   View _search;
   View _errorMessage;
   View _createPlayer;
-
-  /// A list of players.
   PlayerSelectListView _playersList;
     
   // Constructors
   // --------------------------------------------------------------------------
   
-  /**
-   * The constructor to build the player selector.
-   */
   PlayerSelectView(this._udjApp, this._state):super('player-select'){ 
     // header
     _playerSelectHeader = new View.html('''
@@ -92,17 +82,8 @@ class PlayerSelectView extends CompositeView {
     addChild(playersListWrap);
   }
   
-  /**
-   * Add listeners after render is done.
-   */
   void afterRender(Element node){
     addClass('container');
-    
-    // watching
-    watch(_state.hidden, _displayPlayers);
-    watch(_state.players, _updatePlayers);
-    watch(_state.errorMessage, _displayErrorMsg);
-    watch(_udjApp.state.currentPlayer, _changePlayer);
     
     // events
     _search.node.on.submit.add(_searchFormSubmit);
@@ -119,9 +100,15 @@ class PlayerSelectView extends CompositeView {
       _udjApp.state.creatingPlayer.value = true;
     });
     
+    // watching
+    watch(_state.hidden, _displayPlayers);
+    watch(_state.players, _updatePlayers);
+    watch(_state.errorMessage, _displayErrorMsg);
+    watch(_udjApp.state.currentPlayer, _changePlayer);
+    
   }
   
-  // Event Handlers & Watchers
+  // Events
   // --------------------------------------------------------------------------
   
   /**
@@ -132,6 +119,9 @@ class PlayerSelectView extends CompositeView {
     InputElement searchBox = _search.node.query("#player-select-search-input");
     _state.searchPlayer(searchBox.value);
   }
+  
+  // Watchers
+  // --------------------------------------------------------------------------
   
   /**
    * Hide or show the [PlayerSelectView].
@@ -281,7 +271,7 @@ class PlayerSelectListView extends CompositeView {
     return player;
   }
   
-  // Events & Watchers
+  // Events
   // --------------------------------------------------------------------------
   
   /**

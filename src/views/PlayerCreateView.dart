@@ -1,13 +1,17 @@
 part of udjlib;
 
-class PlayerCreateView extends CompositeView {
+// PlayerCreateView
+// ============================================================================
 
-  final UdjApp _udjApp;  
+class PlayerCreateView extends CompositeView {
+  final UdjApp _udjApp;
+  
   final PlayerCreateState _state;
   
-  // views
   View _form;
   
+  // Constructors
+  // --------------------------------------------------------------------------
   PlayerCreateView(this._udjApp, this._state):super('player-create container') {
     CompositeView formRow = new CompositeView('row');
     CompositeView formSpan = new CompositeView('span4 offset4 player-create-wrap');
@@ -33,7 +37,6 @@ class PlayerCreateView extends CompositeView {
     formSpan.addChild(_form);
     
     addChild(formRow);
-    
   }
   
   void afterRender(Element node){

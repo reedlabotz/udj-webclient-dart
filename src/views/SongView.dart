@@ -1,11 +1,17 @@
 part of udjlib;
 
+// SongView
+// ============================================================================
+
 class SongView extends CompositeView{
   final UdjApp _udjApp;
   
   final Song _song;
   
   View _vote;
+  
+  // Constructors
+  // --------------------------------------------------------------------------
   
   // TODO: refactor QueueSong parts out, so that a QueueSong contains an inner Song view
   SongView(this._udjApp,this._song):super('song'){

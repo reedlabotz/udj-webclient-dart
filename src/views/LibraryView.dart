@@ -1,5 +1,7 @@
 part of udjlib;
 
+// LibraryView
+// ============================================================================
 
 class LibraryView extends CompositeView {
   final UdjApp _udjApp;
@@ -8,6 +10,8 @@ class LibraryView extends CompositeView {
   
   LibraryListView _libraryList;
   
+  // Constructors
+  // --------------------------------------------------------------------------
   LibraryView(this._udjApp,this._state):super("library-box"){
     _libraryList = new LibraryListView(_udjApp,_state);
     addChild(_libraryList);
@@ -20,6 +24,9 @@ class LibraryView extends CompositeView {
     watch(_state.results,_updateResults);
     super.afterRender(node);
   }
+  
+  // Watchers
+  // --------------------------------------------------------------------------
   
   void _updateResults(e){
     _libraryList.rerender(); 
@@ -45,10 +52,16 @@ class LibraryView extends CompositeView {
   }
 }
 
+// LibraryListView
+// ============================================================================
+
 class LibraryListView extends CompositeView{
   final UdjApp _udjApp;
   
   final LibraryState _state;
+  
+  // Constructors
+  // --------------------------------------------------------------------------
   
   LibraryListView(this._udjApp,this._state):super('library-box-results',true,true,true,true){
     rerender();

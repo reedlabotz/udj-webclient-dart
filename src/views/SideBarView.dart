@@ -1,22 +1,21 @@
 part of udjlib;
 
+// SideBarView
+// ============================================================================
+
 class SideBarView extends CompositeView {
   final UdjApp _udjApp;
   
   final SideBarState _state;
   
-  /// Information about the player a user is currently in.
-  View _playerInfo;
-  
+  View _playerInfo;  
   AdminPlayerView _controls;
-  
   AdminUserView _users;
-  
   View _nowPlaying;
-    
   QueueView _queueView;
   
-  // constructors
+  // Constructors
+  // --------------------------------------------------------------------------
   
   SideBarView(this._udjApp,this._state):super('sidebar-box'){
     // TODO: show player volume
@@ -72,7 +71,8 @@ class SideBarView extends CompositeView {
     });
   }
   
-  // watchers
+  // Watchers
+  // --------------------------------------------------------------------------
   
   /**
    * Update the player the user is currently in.
@@ -125,10 +125,17 @@ class SideBarView extends CompositeView {
   
 }
 
+
+// LoginView
+// ============================================================================
+
 class QueueView extends CompositeView{
   final UdjApp _udjApp;
   
   final SideBarState _state;
+  
+  // Constructors
+  // --------------------------------------------------------------------------
   
   QueueView(this._udjApp,this._state):super('queue-box',true,true,true,true){
     rerender();
