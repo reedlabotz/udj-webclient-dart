@@ -554,11 +554,11 @@ class Scroller implements Draggable, MomentumDelegate {
     } else {
       contentSizeFuture = new Future.immediate(_element);
       window.requestLayoutFrame(() {
-        _contentSize = new Size(contentSizeFuture.value.scroll.width, contentSizeFuture.value.scroll.height);
+        _contentSize = new Size(contentSizeFuture.value.scrollWidth, contentSizeFuture.value.scrollHeight);
       });
     }
 
-    joinFutures(<Future>[frameRect, contentSizeFuture], () {
+    joinFutures(<Future>[contentSizeFuture], () {
       _scrollSize = new Size(frameRect.offsetWidth,
                              frameRect.offsetHeight);
       Size adjusted = _getAdjustedContentSize();
